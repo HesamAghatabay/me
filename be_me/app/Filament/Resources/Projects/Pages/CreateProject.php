@@ -20,8 +20,8 @@ class CreateProject extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('پروژه ثبت شد')
-            ->body('پروژه جدید با موفقیت به مجموعه پورتفولیو اضافه گردید.');
+            ->title('پروژه ذخیره شد')
+            ->body('پروژه جدید با موفقیت به پورتفولیو اضافه شد.');
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array

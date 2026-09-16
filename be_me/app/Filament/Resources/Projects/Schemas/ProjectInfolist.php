@@ -29,7 +29,7 @@ class ProjectInfolist
                                     ->badge()
                                     ->color('primary'),
 
-                                TextEntry::make('short_description')
+                                TextEntry::make('summary')
                                     ->label('توضیح کوتاه')
                                     ->columnSpanFull(),
 

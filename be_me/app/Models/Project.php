@@ -21,11 +21,13 @@ class Project extends Model
         'demo_url',
         'github_url',
         'is_featured',
+        'is_published',
         'sort_order',
     ];
 
     protected $casts = [
         'is_featured' => 'boolean',
+        'is_published' => 'boolean',
         'sort_order' => 'integer',
     ];
 

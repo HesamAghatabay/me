@@ -15,11 +15,15 @@ class ExperienceForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(3)
             ->components([
-                Section::make('اطلاعات سابقه شغلی')
+                // ستون اصلی: مشخصات شرکت و شرح دستاوردها
+                Section::make('مشخصات و شرح موقعیت شغلی')
+                    ->description('عنوان شرکت، سمت کاری و جزئیات فعالیت‌ها')
                     ->schema([
                         TextInput::make('company')
                             ->label('نام شرکت / سازمان')
+                            ->placeholder('مثلاً: شرکت فناوری پیشرو')
                             ->required()
                             ->maxLength(120),
 
@@ -29,6 +33,19 @@ class ExperienceForm
                             ->required()
                             ->maxLength(120),
 
+                        Textarea::make('description')
+                            ->label('شرح وظایف و دستاوردها')
+                            ->placeholder('دستاوردهای فنی، پروژه‌های پیاده‌سازی‌شده و تکنولوژی‌های مورد استفاده...')
+                            ->rows(5)
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2)
+                    ->columnSpan(2),
+
+                // ستون کناری: بازه زمانی، وضعیت اشتغال و اولویت
+                Section::make('دوره زمانی و وضعیت')
+                    ->description('تاریخ همکاری و ترتیب نمایش در تایم‌لاین')
+                    ->schema([
                         DatePicker::make('start_date')
                             ->label('تاریخ شروع')
                             ->required()
@@ -41,22 +58,18 @@ class ExperienceForm
                             ->required(fn (Get $get): bool => ! (bool) $get('is_current')),
 
                         Toggle::make('is_current')
-                            ->label('همچنان در این موقعیت شغلی مشغول به کار هستم')
+                            ->label('مشغول به کار فعلی')
+                            ->helperText('در صورت فعال بودن، تاریخ پایان غیرفعال می‌شود')
                             ->live()
                             ->default(false),
 
                         TextInput::make('sort_order')
                             ->label('ترتیب نمایش')
                             ->numeric()
-                            ->default(0),
-
-                        Textarea::make('description')
-                            ->label('شرح وظایف و دستاوردها')
-                            ->placeholder('دستاوردهای فنی، پروژه‌های پیاده‌سازی‌شده و مهارت‌های مورد استفاده...')
-                            ->rows(4)
-                            ->columnSpanFull(),
+                            ->default(0)
+                            ->helperText('ترتیب قرارگیری در تایم‌لاین رزومه'),
                     ])
-                    ->columns(2),
+                    ->columnSpan(1),
             ]);
     }
 }
