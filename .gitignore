@@ -1,0 +1,3 @@
+﻿# dependencies / tool caches outside the app folders
+.npm-cache/
+

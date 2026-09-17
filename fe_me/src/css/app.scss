@@ -1,1 +1,340 @@
-// app global css
+/* ==========================================================================
+   Global styles — "Luxury Dark Navy" design system
+   --------------------------------------------------------------------------
+   Tokens live here (not per-component) so every section shares one visual
+   language. Quasar clones its Sass palette onto :root, so the brand colours
+   below reference --q-* instead of hardcoding the same hex twice.
+
+   Note: postcss-rtlcss runs in `override` mode, so physical left/right
+   properties in this file are automatically converted to logical ones for RTL.
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --app-bg: #0b0f19;
+  --app-bg-soft: #0f172a;
+  --app-surface: rgba(30, 41, 59, 0.7);
+  --app-surface-strong: rgba(15, 23, 42, 0.85);
+  --app-border: rgba(255, 255, 255, 0.08);
+  --app-border-strong: rgba(255, 255, 255, 0.14);
+
+  /* Accents (mirrors the Sass palette above) */
+  --app-accent: var(--q-primary);
+  --app-accent-2: var(--q-secondary);
+
+  /* Text */
+  --app-text: #f8fafc;
+  --app-text-muted: #94a3b8;
+  --app-text-dim: #64748b;
+
+  /* Effects */
+  --app-glow: 0 0 40px rgba(59, 130, 246, 0.35);
+  --app-glow-strong: 0 0 60px rgba(99, 102, 241, 0.45);
+  --app-radius: 20px;
+  --app-radius-sm: 14px;
+  --app-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.75);
+
+  /* Layout */
+  --app-header-h: 60px;
+  --app-maxw: 1200px;
+}
+
+/* --- Base ---------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Sticky header must not cover anchored section headings. */
+  scroll-padding-top: calc(var(--app-header-h) + 16px);
+  /* Safety net: decorative orbs/rings must never cause sideways scrolling. */
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family:
+    'Vazirmatn',
+    'Roboto',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+  font-feature-settings: 'ss01';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Quasar paints `body--dark` and the page container with its own colours;
+   keep both on the design-system canvas so nothing flashes white. */
+.body--dark,
+.q-body--dark,
+.q-layout,
+.q-page-container,
+.q-page {
+  background: transparent;
+}
+
+body,
+.body--dark {
+  background-color: var(--app-bg);
+}
+
+/* Ambient glow behind the whole page. Fixed so it never scrolls away. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, rgba(59, 130, 246, 0.16), transparent 60%),
+    radial-gradient(50rem 35rem at 5% 10%, rgba(99, 102, 241, 0.14), transparent 60%);
+}
+
+/* --- Typography ---------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--app-text);
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  line-height: 1.95;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --- Reusable building blocks ------------------------------------------- */
+
+/* Glassmorphism card — the core surface of this design. */
+.app-glass {
+  background: var(--app-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+}
+
+/* Container that keeps content centred and balanced on wide screens.
+   The generous inline padding is what gives the hero its equal breathing room
+   on both sides instead of hugging the viewport edges. */
+.app-container {
+  width: 100%;
+  max-width: var(--app-maxw);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 64px);
+}
+
+/* Section vertical rhythm. */
+.app-section {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(48px, 9vw, 120px);
+}
+
+/* Small uppercase-ish eyebrow label above section titles. */
+.app-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: var(--app-accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.app-section-title {
+  font-size: clamp(1.6rem, 3.4vw, 2.5rem);
+  font-weight: 800;
+}
+
+.app-section-subtitle {
+  color: var(--app-text-muted);
+  font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+  max-width: 62ch;
+}
+
+/* Animated gradient text used for key headings. */
+.app-gradient-text {
+  background: linear-gradient(
+    100deg,
+    #60a5fa 0%,
+    #818cf8 25%,
+    #c084fc 50%,
+    #818cf8 75%,
+    #60a5fa 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: app-gradient-pan 7s linear infinite;
+}
+
+@keyframes app-gradient-pan {
+  to {
+    background-position: 250% center;
+  }
+}
+
+/* Neon CTA button — deliberately compact and quiet so it reads as an accent,
+   not the loudest thing on the page.
+
+   Quasar sizes buttons as `min-height: 2.572em` with `font-size:
+   $button-font-size`, so font-size is what actually controls the height.
+   The doubled class selector keeps this above `.q-btn--lg`/`--sm`/`--xs`
+   in specificity, which are single-class rules. */
+.app-btn-glow.app-btn-glow {
+  min-height: 36px;
+  padding-inline: 16px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  background: linear-gradient(120deg, var(--app-accent), var(--app-accent-2));
+  box-shadow: 0 8px 22px -12px rgba(59, 130, 246, 0.7);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    filter 0.22s ease;
+}
+
+.app-btn-glow.app-btn-glow:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 12px 28px -12px rgba(99, 102, 241, 0.8);
+}
+
+/* Outline/ghost button that only reveals its border tint on hover. */
+.app-btn-ghost.app-btn-ghost {
+  min-height: 36px;
+  padding-inline: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--app-border-strong);
+  color: var(--app-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  background: rgba(255, 255, 255, 0.02);
+  transition:
+    border-color 0.22s ease,
+    background 0.22s ease,
+    transform 0.22s ease;
+}
+
+.app-btn-ghost.app-btn-ghost:hover {
+  border-color: rgba(59, 130, 246, 0.6);
+  background: rgba(59, 130, 246, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Card hover lift, shared by projects / services / stats. */
+.app-hover-lift {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.app-hover-lift:hover {
+  transform: translateY(-6px);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: var(--app-shadow);
+}
+
+/* --- Scroll reveal ------------------------------------------------------- */
+
+.app-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.app-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- Responsive tokens --------------------------------------------------- */
+
+/* Compact header on phones so the hero's top offset does not eat the screen. */
+@media (max-width: 599px) {
+  :root {
+    --app-header-h: 56px;
+  }
+}
+
+/* --- Accessibility & motion --------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--app-accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .app-gradient-text {
+    animation: none;
+  }
+
+  .app-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .app-hover-lift:hover,
+  .app-btn-glow:hover,
+  .app-btn-ghost:hover {
+    transform: none;
+  }
+}
+
+/* Scrollbar polish (WebKit/Blink). */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--app-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #26324a;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #33415c;
+}

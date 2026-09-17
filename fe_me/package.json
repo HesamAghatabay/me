@@ -1,8 +1,8 @@
 {
   "name": "fe-me",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "description": "نمونه‌کارها، مهارت‌ها و سوابق کاری حسام اقطی‌بای — توسعه‌دهنده فول‌استک Laravel و Vue.js",
+  "productName": "حسام اقطی‌بای",
   "author": "Hesam Aghatabay <program.h.p.2023@gmail.com>",
   "type": "module",
   "private": true,
@@ -14,26 +14,27 @@
     "postinstall": "quasar prepare --silent"
   },
   "dependencies": {
-    "vue-i18n": "^11.3.0",
-    "pinia": "^4.0.2",
     "@quasar/extras": "^2.1.0",
+    "pinia": "^4.0.2",
     "quasar": "^2.32.3",
     "vue": "^3.5.22",
+    "vue-i18n": "^11.3.0",
     "vue-router": "^5.0.6"
   },
   "devDependencies": {
-    "@intlify/unplugin-vue-i18n": "^11.0.0",
     "@eslint/js": "^10.0.1",
+    "@intlify/unplugin-vue-i18n": "^11.0.0",
+    "@quasar/app-vite": "^3.8.4",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "autoprefixer": "^10.4.27",
     "eslint": "^10.8.0",
     "eslint-plugin-vue": "^10.8.0",
     "globals": "^17.4.0",
-    "vite-plugin-checker": "^0.14.5",
-    "vue-eslint-parser": "^10.4.0",
-    "@vue/eslint-config-prettier": "^10.2.0",
+    "postcss": "^8.5.8",
+    "postcss-rtlcss": "^6.0.0",
     "prettier": "^3.8.1",
-    "@quasar/app-vite": "^3.8.4",
-    "autoprefixer": "^10.4.27",
-    "postcss": "^8.5.8"
+    "vite-plugin-checker": "^0.14.5",
+    "vue-eslint-parser": "^10.4.0"
   },
   "keywords": [
     "quasar",
