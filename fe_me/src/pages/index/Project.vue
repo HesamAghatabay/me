@@ -1,15 +1,14 @@
 <template>
-  <q-page class="project-page bg-dark-navy text-slate-100 q-px-md q-py-lg q-py-md-xl">
+  <q-page class="bg-transparent text-app q-px-md q-py-lg q-py-md-xl">
     <div class="app-container">
-
       <!-- Breadcrumb Navigation -->
       <nav class="row items-center justify-between q-mb-lg">
-        <div class="row items-center text-caption text-grey-5 breadcrumb-row">
+        <div class="row items-center text-caption text-app-muted breadcrumb-row">
           <router-link to="/" class="nav-crumb-link">خانه</router-link>
           <q-icon name="chevron_left" size="16px" class="q-mx-xs" />
           <router-link to="/#projects" class="nav-crumb-link">پروژه‌ها</router-link>
           <q-icon name="chevron_left" size="16px" class="q-mx-xs" />
-          <span class="text-grey-3">{{ project.title }}</span>
+          <span class="text-app-dim">{{ project.title }}</span>
         </div>
 
         <q-btn
@@ -17,11 +16,10 @@
           dense
           rounded
           no-caps
-          color="blue-4"
           icon="arrow_forward"
           label="بازگشت به خانه"
           to="/"
-          class="q-px-sm"
+          class="q-px-sm link-arrow-btn"
         />
       </nav>
 
@@ -37,16 +35,16 @@
               <span class="badge-status">تکمیل‌شده</span>
             </div>
 
-            <h1 class="text-h4 text-md-h3 text-weight-bolder text-white q-mb-sm leading-tight">
+            <h1 class="text-h4 text-md-h3 text-weight-bolder text-app q-mb-sm leading-tight">
               {{ project.title }}
             </h1>
-            <p class="text-body1 text-grey-4 line-relaxed q-mb-md">
+            <p class="text-body1 text-app-muted line-relaxed q-mb-md">
               {{ project.summary }}
             </p>
 
             <div class="row q-gutter-xs">
               <span v-for="sk in project.skills" :key="sk.id" class="skill-tag">
-                <q-icon :name="sk.icon" size="15px" class="q-ml-xs text-blue-4" />
+                <q-icon :name="sk.icon" size="15px" class="q-ml-xs text-neon" />
                 {{ sk.name }}
               </span>
             </div>
@@ -69,12 +67,11 @@
                 v-if="project.github_url"
                 outline
                 rounded
-                color="grey-4"
                 icon-right="code"
                 label="مشاهده سورس در گیت‌هاب"
                 :href="project.github_url"
                 target="_blank"
-                class="full-width q-py-sm"
+                class="full-width q-py-sm btn-muted-outline"
               />
             </div>
           </div>
@@ -94,17 +91,15 @@
 
       <!-- Main Grid: Two Column Layout (Content & Sticky Sidebar) -->
       <div class="row q-col-gutter-xl items-start q-mb-xl">
-
         <!-- Case Study Content Column (70%) -->
         <main class="col-12 col-md-8">
           <article class="glass-panel q-pa-lg q-pa-md-xl">
-
             <section class="q-mb-xl">
-              <h2 class="section-heading text-weight-bold text-white q-mb-md">
+              <h2 class="section-heading text-weight-bold text-app q-mb-md">
                 <span class="heading-accent"></span>
                 صورت مسئله و اهداف پروژه
               </h2>
-              <div class="text-body1 text-grey-4 line-relaxed">
+              <div class="text-body1 text-app-muted line-relaxed">
                 {{ project.summary }}
               </div>
             </section>
@@ -116,37 +111,34 @@
 
             <!-- Gallery Section -->
             <section v-if="project.media && project.media.length" class="q-mt-xl">
-              <h2 class="section-heading text-weight-bold text-white q-mb-lg">
+              <h2 class="section-heading text-weight-bold text-app q-mb-lg">
                 <span class="heading-accent"></span>
                 تصاویر و اسکرین‌شات‌های محیط برنامه
               </h2>
 
               <div class="row q-col-gutter-md">
-                <div
-                  v-for="(img, idx) in project.media"
-                  :key="idx"
-                  class="col-12 col-sm-6"
-                >
+                <div v-for="(img, idx) in project.media" :key="idx" class="col-12 col-sm-6">
                   <div class="gallery-card" @click="openLightbox(img.file_path)">
-                    <div class="gallery-thumb flex flex-center bg-slate-800">
-                      <q-icon name="dashboard" size="36px" color="blue-4" />
+                    <div class="gallery-thumb flex flex-center app-sunken">
+                      <q-icon name="dashboard" size="36px" class="text-neon" />
                     </div>
                     <div class="gallery-overlay flex flex-center">
                       <q-icon name="zoom_in" size="30px" color="white" />
                     </div>
                   </div>
-                  <div class="text-caption text-grey-5 q-mt-xs text-center">{{ img.alt_text }}</div>
+                  <div class="text-caption text-app-muted q-mt-xs text-center">
+                    {{ img.alt_text }}
+                  </div>
                 </div>
               </div>
             </section>
-
           </article>
         </main>
 
         <!-- Sticky Sidebar Column (30%) -->
         <aside class="col-12 col-md-4 sticky-sidebar">
           <div class="glass-panel q-pa-lg q-mb-md">
-            <h3 class="text-subtitle1 text-weight-bold text-white q-mb-md">مشخصات و متاداده</h3>
+            <h3 class="text-subtitle1 text-weight-bold text-app q-mb-md">مشخصات و متاداده</h3>
 
             <div class="meta-list">
               <div class="meta-row">
@@ -163,19 +155,28 @@
               </div>
               <div class="meta-row">
                 <span class="meta-title">دسترسی دمو</span>
-                <span class="meta-val text-teal-4">{{ project.demo_url ? 'آنلاین' : 'خصوصی' }}</span>
+                <span class="meta-val text-teal-4">{{
+                  project.demo_url ? 'آنلاین' : 'خصوصی'
+                }}</span>
               </div>
             </div>
 
-            <q-separator dark class="q-my-md opacity-10" />
+            <q-separator class="q-my-md app-hairline opacity-10" />
 
             <div class="row items-center justify-between">
-              <span class="text-caption text-grey-5">اشتراک‌گذاری:</span>
+              <span class="text-caption text-app-muted">اشتراک‌گذاری:</span>
               <div class="row q-gutter-xs">
-                <q-btn flat round dense icon="content_copy" color="grey-4" @click="copyProjectLink">
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="content_copy"
+                  class="icon-ghost-btn"
+                  @click="copyProjectLink"
+                >
                   <q-tooltip>کپی لینک</q-tooltip>
                 </q-btn>
-                <q-btn flat round dense icon="share" color="grey-4" @click="shareProject">
+                <q-btn flat round dense icon="share" class="icon-ghost-btn" @click="shareProject">
                   <q-tooltip>اشتراک‌گذاری</q-tooltip>
                 </q-btn>
               </div>
@@ -184,9 +185,13 @@
 
           <!-- Quick CTA Card -->
           <div class="glass-panel q-pa-lg text-center cta-sidebar-card">
-            <q-icon name="rocket_launch" size="32px" color="blue-4" class="q-mb-xs" />
-            <div class="text-subtitle1 text-weight-bold text-white q-mb-xs">پروژه‌ای مشابه دارید؟</div>
-            <p class="text-caption text-grey-5 q-mb-md">برای بررسی نیازمندی‌ها و تخمین زمان پیاده‌سازی گفتگو کنیم.</p>
+            <q-icon name="rocket_launch" size="32px" class="text-neon q-mb-xs" />
+            <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
+              پروژه‌ای مشابه دارید؟
+            </div>
+            <p class="text-caption text-app-muted q-mb-md">
+              برای بررسی نیازمندی‌ها و تخمین زمان پیاده‌سازی گفتگو کنیم.
+            </p>
             <q-btn
               unelevated
               rounded
@@ -197,42 +202,47 @@
             />
           </div>
         </aside>
-
       </div>
 
       <!-- Navigation Pagination -->
       <section class="row q-col-gutter-md q-mb-xl">
         <div class="col-12 col-sm-6">
-          <div class="nav-project-card glass-panel q-pa-md cursor-pointer" @click="navigateToOther('analytics-dashboard')">
-            <div class="text-caption text-grey-5 row items-center q-mb-xs">
+          <div
+            class="nav-project-card glass-panel q-pa-md cursor-pointer"
+            @click="navigateToOther('analytics-dashboard')"
+          >
+            <div class="text-caption text-app-muted row items-center q-mb-xs">
               <q-icon name="arrow_forward" size="14px" class="q-ml-xs" />
               پروژه قبلی
             </div>
-            <div class="text-subtitle2 text-weight-bold text-white">داشبورد آنالیز و فروش</div>
+            <div class="text-subtitle2 text-weight-bold text-app">داشبورد آنالیز و فروش</div>
           </div>
         </div>
 
         <div class="col-12 col-sm-6 text-left">
-          <div class="nav-project-card glass-panel q-pa-md cursor-pointer" @click="navigateToOther('marketplace-app')">
-            <div class="text-caption text-grey-5 row items-center justify-end q-mb-xs">
+          <div
+            class="nav-project-card glass-panel q-pa-md cursor-pointer"
+            @click="navigateToOther('marketplace-app')"
+          >
+            <div class="text-caption text-app-muted row items-center justify-end q-mb-xs">
               پروژه بعدی
               <q-icon name="arrow_back" size="14px" class="q-mr-xs" />
             </div>
-            <div class="text-subtitle2 text-weight-bold text-white text-right">پلتفرم چندفروشندگی آنلاین</div>
+            <div class="text-subtitle2 text-weight-bold text-app text-right">
+              پلتفرم چندفروشندگی آنلاین
+            </div>
           </div>
         </div>
       </section>
-
     </div>
 
     <!-- Lightbox Modal -->
     <q-dialog v-model="lightboxOpen">
-      <q-card class="bg-dark-navy q-pa-md text-center" style="min-width: 320px;">
-        <q-icon name="image" size="100px" color="blue-4" class="q-my-lg" />
-        <div class="text-caption text-grey-4">پیش‌نمایش تصویر در محیط تست</div>
+      <q-card class="app-glass-strong app-shadow q-pa-md text-center" style="min-width: 320px">
+        <q-icon name="image" size="100px" class="text-neon q-my-lg" />
+        <div class="text-caption text-app-muted">پیش‌نمایش تصویر در محیط تست</div>
       </q-card>
     </q-dialog>
-
   </q-page>
 </template>
 
@@ -271,7 +281,8 @@ const project = reactive({
   id: 1,
   title: 'سامانه یکپارچه مدیریت سفارشات و انبارداری',
   slug: 'order-management-system',
-  summary: 'طراحی و پیاده‌سازی پلتفرم متمرکز پردازش بلادرنگ سفارش‌ها، انبارداری هوشمند و صدور خودکار فاکتورهای مالی با قابلیت تحمل ترافیک و مقیاس‌پذیری بالا.',
+  summary:
+    'طراحی و پیاده‌سازی پلتفرم متمرکز پردازش بلادرنگ سفارش‌ها، انبارداری هوشمند و صدور خودکار فاکتورهای مالی با قابلیت تحمل ترافیک و مقیاس‌پذیری بالا.',
   gradient: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #6366f1 100%)',
   is_featured: true,
   is_published: true,
@@ -283,7 +294,7 @@ const project = reactive({
     { id: 3, name: 'Quasar Framework', icon: 'dashboard' },
     { id: 4, name: 'MySQL', icon: 'storage' },
     { id: 5, name: 'Redis Cache', icon: 'memory' },
-    { id: 6, name: 'Docker', icon: 'inventory_2' }
+    { id: 6, name: 'Docker', icon: 'inventory_2' },
   ],
   description: `
     <h3>چالش‌های اصلی پروژه</h3>
@@ -301,20 +312,12 @@ const project = reactive({
   `,
   media: [
     { file_path: '', alt_text: 'داشبورد نمودارهای فروش بلادرنگ' },
-    { file_path: '', alt_text: 'فرم پیشرفته مدیریت آیتم‌های فاکتور' }
-  ]
+    { file_path: '', alt_text: 'فرم پیشرفته مدیریت آیتم‌های فاکتور' },
+  ],
 })
 </script>
 
 <style scoped>
-.bg-dark-navy {
-  background-color: #0b0f19;
-}
-
-.bg-slate-800 {
-  background-color: rgba(30, 41, 59, 0.8);
-}
-
 .app-container {
   max-width: 1140px;
   margin: 0 auto;
@@ -324,28 +327,31 @@ const project = reactive({
   line-height: 1.9;
 }
 
-.glass-panel {
-  background: rgba(15, 23, 42, 0.75) !important;
+/* Glass panel: translucent slate in dark mode, frosted white in light mode.
+   The doubled class outranks Quasar's own `q-card` background. */
+.glass-panel.glass-panel {
+  background: var(--app-surface);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--app-border);
   border-radius: 20px;
 }
 
 .nav-crumb-link {
-  color: #94a3b8;
+  color: var(--app-text-muted);
   text-decoration: none;
 }
 
 .nav-crumb-link:hover {
-  color: #38bdf8;
+  color: var(--app-neon);
 }
 
 .badge-featured {
   display: inline-flex;
   align-items: center;
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  color: #fbbf24;
+  background: var(--app-badge-bg);
+  border: 1px solid var(--app-badge-border);
+  color: var(--app-badge-ink);
   font-size: 0.75rem;
   padding: 4px 10px;
   border-radius: 999px;
@@ -356,7 +362,7 @@ const project = reactive({
   display: inline-flex;
   background: rgba(20, 184, 166, 0.15);
   border: 1px solid rgba(20, 184, 166, 0.3);
-  color: #2dd4bf;
+  color: var(--app-teal);
   font-size: 0.75rem;
   padding: 4px 10px;
   border-radius: 999px;
@@ -365,9 +371,9 @@ const project = reactive({
 .skill-tag {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #cbd5e1;
+  background: var(--app-pill-bg);
+  border: 1px solid var(--app-pill-border);
+  color: var(--app-text-muted);
   padding: 5px 12px;
   border-radius: 8px;
   font-size: 0.8rem;
@@ -399,17 +405,18 @@ const project = reactive({
   border-radius: 4px;
 }
 
-/* Style list items & code blocks cleanly */
+/* Style list items & code blocks cleanly — the case study is injected with
+   `v-html`, so these need a scoped :deep() hook to reach the inner nodes. */
 .case-study-html :deep(h3) {
   font-size: 1.15rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--app-text);
   margin-top: 1.75rem;
   margin-bottom: 0.75rem;
 }
 
 .case-study-html :deep(p) {
-  color: #94a3b8;
+  color: var(--app-text-muted);
   font-size: 0.95rem;
   margin-bottom: 1.2rem;
 }
@@ -417,7 +424,7 @@ const project = reactive({
 .case-study-html :deep(ul) {
   padding-right: 1.25rem;
   margin-bottom: 1.5rem;
-  color: #cbd5e1;
+  color: var(--app-text-muted);
   list-style-type: disc;
 }
 
@@ -431,7 +438,7 @@ const project = reactive({
   border-radius: 14px;
   overflow: hidden;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--app-border);
 }
 
 .gallery-thumb {
@@ -441,7 +448,7 @@ const project = reactive({
 .gallery-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(11, 15, 25, 0.6);
+  background: rgba(11, 15, 25, 0.55);
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -469,11 +476,11 @@ const project = reactive({
 }
 
 .meta-title {
-  color: #94a3b8;
+  color: var(--app-text-muted);
 }
 
 .meta-val {
-  color: #f1f5f9;
+  color: var(--app-text);
   font-weight: 600;
 }
 
@@ -482,8 +489,8 @@ const project = reactive({
 }
 
 .cta-sidebar-card {
-  border: 1px dashed rgba(59, 130, 246, 0.3);
-  background: rgba(30, 58, 138, 0.15) !important;
+  border: 1px dashed var(--app-accent-border);
+  background: var(--app-accent-soft) !important;
 }
 
 .nav-project-card {
@@ -491,7 +498,13 @@ const project = reactive({
 }
 
 .nav-project-card:hover {
-  border-color: rgba(59, 130, 246, 0.5);
+  border-color: var(--app-accent-border);
   transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-project-card:hover {
+    transform: none;
+  }
 }
 </style>

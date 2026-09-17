@@ -23,7 +23,35 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta name="theme-color" content="#0B0F19" />
+    <meta name="theme-color" content="#0B0F19" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)" />
+
+    <script>
+      /*
+        Applies the theme before this document's scripts run, so a visitor who
+        picked light mode never sees the dark palette (the design system's
+        default) flash on load. Mirrors src/boot/theme.js: the stored value is
+        Quasar's own `q-dark` key, `true`/`false` are explicit picks and
+        anything else means "follow the operating system". Boot keeps ownership
+        after this — it re-applies the same decision through $q.dark.
+      */
+      ;(() => {
+        let stored = null
+        try {
+          stored = window.localStorage.getItem('q-dark')
+        } catch {
+          /* storage unavailable — fall through to the OS preference */
+        }
+
+        const prefersDark =
+          typeof window.matchMedia === 'function' &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches
+
+        const wantsDark = stored === 'true' || (stored !== 'false' && prefersDark)
+
+        document.body.classList.add(wantsDark ? 'body--dark' : 'body--light')
+      })()
+    </script>
 
     <!-- Vazirmatn: the standard Persian webfont used for RTL Persian typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

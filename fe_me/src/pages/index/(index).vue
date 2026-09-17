@@ -1,5 +1,5 @@
 <template>
-  <q-page class="landing-page bg-dark-navy text-slate-100 q-px-md q-py-xl">
+  <q-page class="bg-transparent text-app q-px-md q-py-xl">
     <div class="app-container">
       <!-- 1. HERO SECTION RESPONSIVE -->
       <section id="hero" class="hero-section q-py-lg q-py-md-xl">
@@ -11,7 +11,7 @@
               آماده پذیرش پروژه‌های جدید
             </div>
 
-            <h1 class="hero-main-title text-weight-bolder text-white q-mb-xs">
+            <h1 class="hero-main-title text-weight-bolder text-app q-mb-xs">
               سلام، من <span class="text-neon-blue">حسام</span> هستم
             </h1>
 
@@ -20,7 +20,7 @@
             </div>
 
             <p
-              class="text-body2 text-md-body1 text-grey-5 q-mb-lg line-relaxed max-w-text q-mx-auto q-mx-md-none"
+              class="text-body2 text-md-body1 text-app-muted q-mb-lg line-relaxed max-w-text q-mx-auto q-mx-md-none"
             >
               متمرکز روی طراحی دیتابیس‌های بهینه، پیاده‌سازی RESTful APIهای مقیاس‌پذیر در لاراول، و
               خلق رابط‌های کاربری مدرن و واکنش‌گرا با Vue و Quasar.
@@ -40,10 +40,9 @@
               <q-btn
                 outline
                 rounded
-                color="grey-4"
                 icon="download"
                 label="دانلود رزومه"
-                class="col-12 col-sm-auto q-px-lg q-py-sm"
+                class="btn-muted-outline col-12 col-sm-auto q-px-lg q-py-sm"
                 @click="downloadResume"
               />
             </div>
@@ -56,11 +55,10 @@
                 flat
                 round
                 dense
-                color="grey-4"
                 :icon="s.icon"
                 :href="s.href"
                 target="_blank"
-                class="social-btn"
+                class="social-btn icon-ghost-btn"
               >
                 <q-tooltip>{{ s.label }}</q-tooltip>
               </q-btn>
@@ -72,8 +70,8 @@
             <div class="hero-avatar-box">
               <div class="avatar-glow-ring"></div>
               <div class="avatar-inner-card flex flex-center">
-                <q-icon name="terminal" size="64px" color="blue-4" />
-                <div class="text-caption text-grey-4 text-weight-medium q-mt-sm">
+                <q-icon name="terminal" size="64px" class="text-neon" />
+                <div class="text-caption text-app-muted text-weight-medium q-mt-sm">
                   Full-Stack Architect
                 </div>
               </div>
@@ -85,7 +83,7 @@
       <section class="ticker-wrapper q-my-xl">
         <div class="ticker-scroll">
           <div v-for="skill in tickerSkills" :key="skill.id" class="ticker-pill">
-            <q-icon :name="skill.icon" size="18px" color="blue-4" class="q-ml-xs" />
+            <q-icon :name="skill.icon" size="18px" class="q-ml-xs text-neon" />
             <span>{{ skill.name }}</span>
           </div>
         </div>
@@ -95,11 +93,11 @@
       <section id="about" class="q-py-xl">
         <div class="section-title-box text-center q-mb-xl">
           <div class="text-caption text-indigo-4 text-weight-bold">درباره من</div>
-          <h3 class="text-h4 text-weight-bold text-white q-mt-xs">مهندسی نرم‌افزار و خلق محصول</h3>
+          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">مهندسی نرم‌افزار و خلق محصول</h3>
         </div>
 
         <div class="row q-col-gutter-xl items-center q-mb-xl">
-          <div class="col-12 col-md-7 text-grey-4 text-body1 line-relaxed">
+          <div class="col-12 col-md-7 text-app-muted text-body1 line-relaxed">
             <p>
               بیش از چند سال است که به‌صورت متمرکز در حال توسعه سامانه‌های وب هستم. هدف من همیشه
               نوشتن کدی تمیز، قابل نگهداری و ارائه خروجی پایدار تحت بارهای ترافیکی بالاست.
@@ -114,9 +112,9 @@
           <div class="col-12 col-md-5">
             <div class="row q-col-gutter-md">
               <div v-for="st in stats" :key="st.label" class="col-6">
-                <q-card flat class="glass-card text-center q-pa-md">
+                <q-card flat class="glass-card app-hover-lift text-center q-pa-md">
                   <div class="text-h4 text-weight-bolder text-neon-blue">{{ st.display }}</div>
-                  <div class="text-caption text-grey-4 q-mt-xs">{{ st.label }}</div>
+                  <div class="text-caption text-app-muted q-mt-xs">{{ st.label }}</div>
                 </q-card>
               </div>
             </div>
@@ -128,22 +126,22 @@
       <section id="projects" class="q-py-xl">
         <div class="section-title-box text-center q-mb-xl">
           <div class="text-caption text-indigo-4 text-weight-bold">نمونه‌کارها</div>
-          <h3 class="text-h4 text-weight-bold text-white q-mt-xs">پروژه‌های شاخص</h3>
+          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">پروژه‌های شاخص</h3>
         </div>
 
         <div class="row q-col-gutter-lg">
           <div v-for="prj in projects" :key="prj.id" class="col-12 col-sm-6 col-md-4">
-            <q-card flat class="glass-card project-card flex column justify-between">
+            <q-card flat class="glass-card app-hover-lift project-card flex column justify-between">
               <div>
                 <div class="project-cover flex flex-center" :style="{ background: prj.gradient }">
                   <q-icon name="devices" size="40px" color="white" />
                   <span v-if="prj.is_featured" class="featured-badge">ویژه</span>
                 </div>
                 <div class="q-pa-md">
-                  <div class="text-subtitle1 text-weight-bold text-white q-mb-xs">
+                  <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
                     {{ prj.title }}
                   </div>
-                  <p class="text-caption text-grey-5 line-clamp-3 q-mb-md">{{ prj.summary }}</p>
+                  <p class="text-caption text-app-muted line-clamp-3 q-mb-md">{{ prj.summary }}</p>
 
                   <div class="row q-gutter-xs q-mb-md">
                     <q-badge
@@ -165,7 +163,7 @@
                   flat
                   dense
                   no-caps
-                  color="blue-4"
+                  class="link-arrow-btn"
                   icon-right="arrow_back"
                   label="مطالعه موردی"
                   @click="goToProject(prj.slug)"
@@ -177,7 +175,7 @@
                     round
                     dense
                     icon="code"
-                    color="grey-4"
+                    class="icon-ghost-btn"
                     :href="prj.github_url"
                     target="_blank"
                   />
@@ -187,7 +185,7 @@
                     round
                     dense
                     icon="open_in_new"
-                    color="grey-4"
+                    class="icon-ghost-btn"
                     :href="prj.demo_url"
                     target="_blank"
                   />
@@ -202,17 +200,17 @@
       <section id="services" class="q-py-xl">
         <div class="section-title-box text-center q-mb-xl">
           <div class="text-caption text-indigo-4 text-weight-bold">خدمات</div>
-          <h3 class="text-h4 text-weight-bold text-white q-mt-xs">راهکارهای فنی و اجرایی</h3>
+          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">راهکارهای فنی و اجرایی</h3>
         </div>
 
         <div class="row q-col-gutter-lg">
           <div v-for="srv in services" :key="srv.id" class="col-12 col-sm-6 col-md-4">
-            <q-card flat class="glass-card service-card q-pa-lg">
+            <q-card flat class="glass-card app-hover-lift service-card q-pa-lg">
               <div class="service-icon-box q-mb-md">
                 <q-icon :name="srv.icon" size="28px" color="white" />
               </div>
-              <div class="text-subtitle1 text-weight-bold text-white q-mb-xs">{{ srv.title }}</div>
-              <div class="text-caption text-grey-5 line-relaxed">{{ srv.description }}</div>
+              <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">{{ srv.title }}</div>
+              <div class="text-caption text-app-muted line-relaxed">{{ srv.description }}</div>
             </q-card>
           </div>
         </div>
@@ -222,11 +220,12 @@
       <section id="experience" class="q-py-xl">
         <div class="section-title-box text-center q-mb-xl">
           <div class="text-caption text-indigo-4 text-weight-bold">سوابق</div>
-          <h3 class="text-h4 text-weight-bold text-white q-mt-xs">تجربه‌های کاری</h3>
+          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">تجربه‌های کاری</h3>
         </div>
 
         <div class="max-w-timeline q-mx-auto">
-          <q-timeline color="blue-5" dark>
+          <!-- `dark` is bound so the timeline ink follows the active theme. -->
+          <q-timeline color="blue-5" :dark="isDark">
             <q-timeline-entry
               v-for="exp in experiences"
               :key="exp.id"
@@ -234,7 +233,7 @@
               :subtitle="`${exp.company} | ${exp.start_date} ${exp.is_current ? 'تا اکنون' : 'تا ' + exp.end_date}`"
             >
               <q-card flat class="glass-card q-pa-md q-mt-sm">
-                <div class="text-body2 text-grey-4 line-relaxed">{{ exp.description }}</div>
+                <div class="text-body2 text-app-muted line-relaxed">{{ exp.description }}</div>
               </q-card>
             </q-timeline-entry>
           </q-timeline>
@@ -250,8 +249,8 @@
             <span class="status-dot"></span>
             ارتباط مستقیم
           </div>
-          <h3 class="text-h4 text-weight-bolder text-white q-mt-xs">بیایید همکاری را شروع کنیم</h3>
-          <p class="text-caption text-grey-5 q-mt-sm">
+          <h3 class="text-h4 text-weight-bolder text-app q-mt-xs">بیایید همکاری را شروع کنیم</h3>
+          <p class="text-caption text-app-muted q-mt-sm">
             ایده یا پروژه‌ای دارید؟ یک پیام کوتاه بفرستید، سریعاً پاسخ می‌دهم.
           </p>
         </div>
@@ -261,8 +260,8 @@
             <!-- سمت اطلاعات ارتباطی (کارت‌های تعاملی) -->
             <div class="col-12 col-md-5 column justify-between">
               <div>
-                <div class="text-subtitle1 text-weight-bold text-white q-mb-xs">راه‌های تماس</div>
-                <p class="text-caption text-grey-5 q-mb-lg">
+                <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">راه‌های تماس</div>
+                <p class="text-caption text-app-muted q-mb-lg">
                   همیشه از طریق این کانال‌ها در دسترسم:
                 </p>
 
@@ -270,7 +269,7 @@
                   <!-- ایمیل -->
                   <a href="mailto:hesam@example.com" class="contact-tile">
                     <div class="tile-icon-box bg-blue-glow">
-                      <q-icon name="mail" size="20px" color="blue-4" />
+                      <q-icon name="mail" size="20px" class="text-neon" />
                     </div>
                     <div class="tile-info">
                       <span class="tile-label">پست الکترونیک</span>
@@ -281,7 +280,7 @@
                   <!-- موقعیت -->
                   <div class="contact-tile">
                     <div class="tile-icon-box bg-purple-glow">
-                      <q-icon name="location_on" size="20px" color="indigo-4" />
+                      <q-icon name="location_on" size="20px" class="text-indigo" />
                     </div>
                     <div class="tile-info">
                       <span class="tile-label">موقعیت مکانی</span>
@@ -292,7 +291,7 @@
                   <!-- وضعیت کاری -->
                   <div class="contact-tile">
                     <div class="tile-icon-box bg-teal-glow">
-                      <q-icon name="bolt" size="20px" color="teal-4" />
+                      <q-icon name="bolt" size="20px" class="text-teal" />
                     </div>
                     <div class="tile-info">
                       <span class="tile-label">زمان پاسخ‌گویی</span>
@@ -303,18 +302,17 @@
               </div>
 
               <div class="social-quick-row q-mt-xl">
-                <span class="text-caption text-grey-5 q-ml-sm">شبکه‌های اجتماعی:</span>
+                <span class="text-caption text-app-muted q-ml-sm">شبکه‌های اجتماعی:</span>
                 <q-btn
                   v-for="s in socials"
                   :key="s.label"
                   flat
                   round
                   dense
-                  color="grey-4"
                   :icon="s.icon"
                   :href="s.href"
                   target="_blank"
-                  class="social-btn"
+                  class="social-btn icon-ghost-btn"
                 />
               </div>
             </div>
@@ -326,7 +324,6 @@
                   <div class="col-12 col-sm-6">
                     <q-input
                       v-model="form.name"
-                      dark
                       outlined
                       dense
                       label="نام شما *"
@@ -338,7 +335,6 @@
                   <div class="col-12 col-sm-6">
                     <q-input
                       v-model="form.email"
-                      dark
                       outlined
                       dense
                       type="email"
@@ -352,7 +348,6 @@
 
                 <q-input
                   v-model="form.subject"
-                  dark
                   outlined
                   dense
                   label="موضوع همکاری (اختیاری)"
@@ -362,7 +357,6 @@
 
                 <q-input
                   v-model="form.message"
-                  dark
                   outlined
                   dense
                   type="textarea"
@@ -536,17 +530,13 @@ const experiences = ref([
 </script>
 
 <style scoped>
-.bg-dark-navy {
-  background-color: #0b0f19;
-}
-
 .app-container {
   max-width: 1140px;
   margin: 0 auto;
 }
 
 .text-neon-blue {
-  color: #38bdf8;
+  color: var(--app-neon);
 }
 
 .max-w-text {
@@ -561,21 +551,33 @@ const experiences = ref([
   line-height: 1.85;
 }
 
-.glass-card {
-  background: rgba(30, 41, 59, 0.6) !important;
+/* Glass cards: translucent slate in dark mode, frosted white in light mode.
+   The doubled class outranks Quasar's own `q-card` background. */
+.glass-card.glass-card {
+  background: var(--app-surface);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--app-border);
   border-radius: 16px;
 }
 
+/* Larger glass surface used by the contact block. */
+.glass-panel.glass-panel {
+  background: var(--app-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--app-border);
+  border-radius: 20px;
+}
+
 .border-top-glass {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--app-border);
 }
 
 .badge-pill {
-  background: rgba(59, 130, 246, 0.12);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: #93c5fd;
+  background: var(--app-accent-soft);
+  border: 1px solid var(--app-accent-border);
+  color: var(--app-accent-ink);
   padding: 6px 14px;
   border-radius: 9999px;
   font-size: 0.8rem;
@@ -612,16 +614,17 @@ const experiences = ref([
   width: 100%;
   height: 100%;
   border-radius: 24px;
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--app-surface-strong);
+  border: 1px solid var(--app-border);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   flex-direction: column;
 }
 
 /* Ticker */
 .ticker-wrapper {
   overflow: hidden;
-  border-block: 1px solid rgba(255, 255, 255, 0.06);
+  border-block: 1px solid var(--app-border);
   padding: 16px 0;
 }
 
@@ -636,8 +639,8 @@ const experiences = ref([
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--app-pill-bg);
+  border: 1px solid var(--app-pill-border);
   padding: 6px 16px;
   border-radius: 9999px;
   font-size: 0.85rem;
@@ -659,12 +662,13 @@ const experiences = ref([
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fbbf24;
+  background: var(--app-badge-bg);
+  color: var(--app-badge-ink);
   font-size: 0.72rem;
   padding: 2px 8px;
   border-radius: 6px;
-  border: 1px solid rgba(251, 191, 36, 0.4);
+  border: 1px solid var(--app-badge-border);
+  backdrop-filter: blur(6px);
 }
 
 .line-clamp-3 {
@@ -684,7 +688,128 @@ const experiences = ref([
   align-items: center;
   justify-content: center;
 }
-/* تایپوگرافی روان و بهینه برای موبایل */
+/* --- Contact block -------------------------------------------------------
+   Tiles, form and ambient glow read from the same tokens as the cards, so the
+   whole section flips cleanly between dark glass and frosted white. */
+
+.contact-section {
+  position: relative;
+}
+
+.contact-ambient-glow {
+  position: absolute;
+  inset: auto 10% 5% 10%;
+  height: 320px;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(60% 60% at 50% 50%, var(--app-ambient-1), transparent 70%);
+  filter: blur(20px);
+}
+
+.modern-contact-card {
+  position: relative;
+  z-index: 1;
+  padding: clamp(20px, 4vw, 40px);
+}
+
+/* Individual channel tile — a small glass card, not a plain row. */
+.contact-tile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--app-radius-sm);
+  background: var(--app-surface);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--app-border);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
+}
+
+.contact-tile:hover {
+  transform: translateY(-2px);
+  border-color: var(--app-accent-border);
+  background: var(--app-surface-strong);
+}
+
+.tile-icon-box {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--app-border);
+}
+
+.bg-blue-glow {
+  background: var(--app-accent-soft);
+}
+
+.bg-purple-glow {
+  background: rgba(139, 92, 246, 0.14);
+}
+
+.bg-teal-glow {
+  background: rgba(20, 184, 166, 0.14);
+}
+
+.tile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.tile-label {
+  color: var(--app-text-dim);
+  font-size: 0.74rem;
+}
+
+.tile-val {
+  color: var(--app-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.social-quick-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Quasar paints the field chrome itself; only the sizing and the faint
+   background are ours, which keeps both themes consistent. */
+.contact-inner-form .modern-input :deep(.q-field__control) {
+  border-radius: 12px;
+  background: var(--app-surface-sunken);
+}
+
+.contact-inner-form .modern-input :deep(.q-field__label),
+.contact-inner-form .modern-input :deep(.q-field__native),
+.contact-inner-form .modern-input :deep(.q-field__input) {
+  color: var(--app-text);
+}
+
+.contact-inner-form .modern-input :deep(.q-field__native::placeholder),
+.contact-inner-form .modern-input :deep(.q-field__input::placeholder) {
+  color: var(--app-text-dim);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-tile:hover {
+    transform: none;
+  }
+}
+
+/* --- تایپوگرافی روان و بهینه برای موبایل --- */
 .hero-main-title {
   font-size: clamp(2rem, 6vw, 3.2rem);
   line-height: 1.25;

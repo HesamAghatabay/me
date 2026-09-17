@@ -9,18 +9,45 @@
    properties in this file are automatically converted to logical ones for RTL.
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   Theme tokens.
+
+   Everything below the `body--light` block is written against these tokens,
+   so the whole design system flips with one class. Quasar's Dark plugin owns
+   that class (`body--dark` / `body--light`), which is why the light palette is
+   keyed off `.body--light` instead of a `prefers-color-scheme` media query:
+   an explicit visitor choice must beat the OS setting.
+   -------------------------------------------------------------------------- */
+
 :root {
   /* Surfaces */
   --app-bg: #0b0f19;
   --app-bg-soft: #0f172a;
   --app-surface: rgba(30, 41, 59, 0.7);
   --app-surface-strong: rgba(15, 23, 42, 0.85);
+  --app-surface-hover: rgba(255, 255, 255, 0.06);
+  --app-surface-sunken: rgba(15, 23, 42, 0.6);
   --app-border: rgba(255, 255, 255, 0.08);
   --app-border-strong: rgba(255, 255, 255, 0.14);
+
+  /* Chrome: header, footer, nav pills, mobile drawer */
+  --app-chrome: rgba(11, 15, 25, 0.8);
+  --app-badge-ink: #fcd34d;
+  --app-badge-bg: rgba(245, 158, 11, 0.15);
+  --app-badge-border: rgba(245, 158, 11, 0.4);
+  --app-footer-bg: rgba(8, 11, 20, 0.95);
+  --app-drawer-bg: #0f172a;
+  --app-pill-bg: rgba(255, 255, 255, 0.03);
+  --app-pill-border: rgba(255, 255, 255, 0.06);
 
   /* Accents (mirrors the Sass palette above) */
   --app-accent: var(--q-primary);
   --app-accent-2: var(--q-secondary);
+  --app-neon: #38bdf8;
+  --app-teal: #2dd4bf;
+  --app-accent-soft: rgba(59, 130, 246, 0.12);
+  --app-accent-border: rgba(59, 130, 246, 0.3);
+  --app-accent-ink: #93c5fd;
 
   /* Text */
   --app-text: #f8fafc;
@@ -30,6 +57,10 @@
   /* Effects */
   --app-glow: 0 0 40px rgba(59, 130, 246, 0.35);
   --app-glow-strong: 0 0 60px rgba(99, 102, 241, 0.45);
+  --app-ambient-1: rgba(59, 130, 246, 0.16);
+  --app-ambient-2: rgba(99, 102, 241, 0.14);
+  --app-scrollbar: #26324a;
+  --app-scrollbar-hover: #33415c;
   --app-radius: 20px;
   --app-radius-sm: 14px;
   --app-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.75);
@@ -37,6 +68,138 @@
   /* Layout */
   --app-header-h: 60px;
   --app-maxw: 1200px;
+}
+
+/* --- Light mode ----------------------------------------------------------
+   Quasar adds `body--light` whenever dark mode is off, including in `auto`
+   mode on a light OS. The page background stays a very light grey so the
+   frosted white cards keep a visible edge. */
+
+body.body--light {
+  --app-bg: #f8fafc;
+  --app-bg-soft: #f1f5f9;
+  --app-surface: rgba(255, 255, 255, 0.85);
+  --app-surface-strong: rgba(255, 255, 255, 0.95);
+  --app-surface-hover: rgba(15, 23, 42, 0.05);
+  --app-surface-sunken: rgba(241, 245, 249, 0.9);
+  --app-border: rgba(15, 23, 42, 0.08);
+  --app-border-strong: rgba(15, 23, 42, 0.14);
+
+  --app-chrome: rgba(255, 255, 255, 0.82);
+  --app-badge-ink: #92400e;
+  --app-badge-bg: rgba(245, 158, 11, 0.14);
+  --app-badge-border: rgba(180, 83, 9, 0.32);
+  --app-footer-bg: rgba(241, 245, 249, 0.94);
+  --app-drawer-bg: #ffffff;
+  --app-pill-bg: rgba(15, 23, 42, 0.035);
+  --app-pill-border: rgba(15, 23, 42, 0.08);
+
+  --app-neon: #0284c7;
+  --app-teal: #0d9488;
+  --app-accent-soft: rgba(37, 99, 235, 0.1);
+  --app-accent-border: rgba(37, 99, 235, 0.28);
+  --app-accent-ink: #1d4ed8;
+
+  --app-text: #0f172a;
+  --app-text-muted: #475569;
+  --app-text-dim: #64748b;
+
+  --app-ambient-1: rgba(37, 99, 235, 0.12);
+  --app-ambient-2: rgba(99, 102, 241, 0.1);
+  --app-scrollbar: #cbd5e1;
+  --app-scrollbar-hover: #94a3b8;
+  /* Light UI reads depth from a soft shadow, never from a glow. */
+  --app-shadow: 0 18px 40px -24px rgba(15, 23, 42, 0.35);
+}
+
+/* --- Light-mode corrections for fixed-shade utilities ---------------------
+   The pages carry Quasar shade utilities (`text-white`, `text-grey-5`,
+   `border-top-glass`, …) written for the dark canvas. Rather than fork every
+   template in two, the shades are remapped here whenever the body is light.
+   These rules live in the global sheet on purpose: `!important` inside a
+   scoped block would still lose to Quasar's own utility specificity. */
+
+body.body--light .text-white,
+body.body--light .text-slate-100 {
+  color: var(--app-text) !important;
+}
+
+/* Secondary copy: grey-4 is far too pale to read on white. */
+body.body--light .text-grey-4 {
+  color: #334155 !important;
+}
+
+body.body--light .text-grey-5 {
+  color: #475569 !important;
+}
+
+body.body--light .text-grey-6 {
+  color: #64748b !important;
+}
+
+body.body--light .text-grey-3 {
+  color: #1e293b !important;
+}
+
+/* Neon accents stay blue/indigo, just deep enough to pass contrast. */
+body.body--light .text-blue-4,
+body.body--light .text-blue-2 {
+  color: #2563eb !important;
+}
+
+body.body--light .text-indigo-4 {
+  color: #4f46e5 !important;
+}
+
+body.body--light .text-teal-4 {
+  color: #0d9488 !important;
+}
+
+body.body--light .text-amber-4,
+body.body--light .text-amber-6 {
+  color: #b45309 !important;
+}
+
+body.body--light .border-top-glass,
+body.body--light .border-glass {
+  border-color: var(--app-border) !important;
+}
+
+/* Native UI (scrollbars, form controls, `color-scheme`-aware widgets). */
+body {
+  color-scheme: dark;
+}
+
+body.body--light {
+  color-scheme: light;
+}
+
+/* --- Semantic text helpers ------------------------------------------------
+   Used by the templates instead of Quasar's fixed-shade utilities, so a
+   heading keeps a readable contrast in both themes. */
+
+.text-app {
+  color: var(--app-text) !important;
+}
+
+.text-app-muted {
+  color: var(--app-text-muted) !important;
+}
+
+.text-app-dim {
+  color: var(--app-text-dim) !important;
+}
+
+.text-neon {
+  color: var(--app-neon) !important;
+}
+
+.text-teal {
+  color: var(--app-teal) !important;
+}
+
+.text-indigo {
+  color: var(--app-accent-ink) !important;
 }
 
 /* --- Base ---------------------------------------------------------------- */
@@ -80,8 +243,11 @@ body {
   background: transparent;
 }
 
+/* `body.body--dark` outranks a lone `.body--dark`, hence the compound
+   selector here and on the surface classes below. */
 body,
-.body--dark {
+body.body--dark,
+body.body--light {
   background-color: var(--app-bg);
 }
 
@@ -93,8 +259,8 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(60rem 40rem at 85% -10%, rgba(59, 130, 246, 0.16), transparent 60%),
-    radial-gradient(50rem 35rem at 5% 10%, rgba(99, 102, 241, 0.14), transparent 60%);
+    radial-gradient(60rem 40rem at 85% -10%, var(--app-ambient-1), transparent 60%),
+    radial-gradient(50rem 35rem at 5% 10%, var(--app-ambient-2), transparent 60%);
 }
 
 /* --- Typography ---------------------------------------------------------- */
@@ -124,13 +290,81 @@ a {
 
 /* --- Reusable building blocks ------------------------------------------- */
 
-/* Glassmorphism card — the core surface of this design. */
-.app-glass {
+/* Glassmorphism card — the core surface of this design.
+   The doubled class keeps it above Quasar's `q-card` background, which is
+   what lets the same markup serve both themes. */
+.app-glass.app-glass {
   background: var(--app-surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--app-border);
   border-radius: var(--app-radius);
+}
+
+/* Opaque variant for panels that sit on top of other glass surfaces. */
+.app-glass-strong.app-glass-strong {
+  background: var(--app-surface-strong);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--app-border);
+}
+
+/* Recessive block — inputs, code, thumbnails. */
+.app-sunken.app-sunken {
+  background: var(--app-surface-sunken);
+}
+
+/* Hairline separator that survives the theme flip. */
+.app-hairline {
+  border-color: var(--app-border) !important;
+}
+
+/* Soft depth in light mode / glow in dark mode. */
+.app-shadow {
+  box-shadow: var(--app-shadow);
+}
+
+/* --- Theme-aware controls -------------------------------------------------
+   Quasar's `color="grey-4"` only works on a dark canvas: on white it turns
+   invisible, in dark mode it is too bright. These classes read the token
+   instead, so one markup serves both themes. */
+
+/* Muted icon button — social links, share/copy actions, header icons. */
+.icon-ghost-btn {
+  color: var(--app-text-muted);
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.icon-ghost-btn:hover,
+.icon-ghost-btn:focus-visible {
+  color: var(--app-neon);
+  background: var(--app-surface-hover);
+}
+
+/* Neutral outlined button (secondary CTA, "download resume"). */
+.btn-muted-outline.btn-muted-outline {
+  color: var(--app-text);
+  border: 1px solid var(--app-border-strong);
+  background: transparent;
+}
+
+.btn-muted-outline.btn-muted-outline:hover {
+  border-color: var(--app-accent-border);
+  background: var(--app-accent-soft);
+  color: var(--app-accent-ink);
+}
+
+/* Text link with a trailing arrow, e.g. "مطالعه موردی". */
+.link-arrow-btn {
+  color: var(--app-neon);
+  font-weight: 500;
+}
+
+.link-arrow-btn:hover {
+  color: var(--app-accent-ink);
 }
 
 /* Container that keeps content centred and balanced on wide screens.
@@ -157,9 +391,9 @@ a {
   gap: 8px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.25);
-  color: var(--app-accent);
+  background: var(--app-accent-soft);
+  border: 1px solid var(--app-accent-border);
+  color: var(--app-accent-ink);
   font-size: 0.8rem;
   font-weight: 600;
 }
@@ -290,6 +524,30 @@ a {
   }
 }
 
+/* --- Theme flip transition ------------------------------------------------
+   Only colour-ish properties are animated, and only for a moment: the fade is
+   opt-in via `data-theme-transition` (set by the header toggle) and removed
+   again right after, so scrolling and hovers never inherit a transition. */
+
+body[data-theme-transition] {
+  transition:
+    background-color 0.32s ease,
+    color 0.32s ease;
+}
+
+body[data-theme-transition] .q-header,
+body[data-theme-transition] .q-page,
+body[data-theme-transition] .app-footer,
+body[data-theme-transition] .app-glass,
+body[data-theme-transition] .app-glass-strong,
+body[data-theme-transition] .glass-card,
+body[data-theme-transition] .glass-panel {
+  transition:
+    background-color 0.32s ease,
+    border-color 0.32s ease,
+    color 0.32s ease;
+}
+
 /* --- Accessibility & motion --------------------------------------------- */
 
 :focus-visible {
@@ -318,6 +576,11 @@ a {
   .app-btn-ghost:hover {
     transform: none;
   }
+
+  body[data-theme-transition],
+  body[data-theme-transition] * {
+    transition: none !important;
+  }
 }
 
 /* Scrollbar polish (WebKit/Blink). */
@@ -331,10 +594,10 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #26324a;
+  background: var(--app-scrollbar);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #33415c;
+  background: var(--app-scrollbar-hover);
 }
