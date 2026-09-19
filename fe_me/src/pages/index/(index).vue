@@ -5,25 +5,26 @@
       <section id="hero" class="hero-section q-py-lg q-py-md-xl">
         <div class="row items-center q-col-gutter-y-xl q-col-gutter-md-xl">
           <!-- Text Column -->
-          <div class="col-12 col-md-7 text-center text-md-right">
+          <div class="col-12 col-md-7 text-center text-md-start">
             <div class="badge-pill inline-block q-mb-md">
               <span class="status-dot"></span>
-              آماده پذیرش پروژه‌های جدید
+              {{ t('hero.badge') }}
             </div>
 
             <h1 class="hero-main-title text-weight-bolder text-app q-mb-xs">
-              سلام، من <span class="text-neon-blue">حسام</span> هستم
+              {{ t('hero.title_before') }}
+              <span class="text-neon-blue">{{ t('hero.title_accent') }}</span>
+              {{ t('hero.title_after') }}
             </h1>
 
             <div class="hero-sub-title text-weight-bold text-indigo-4 q-mb-md dir-ltr">
-              Full-Stack Developer (Laravel & Vue.js)
+              {{ t('brand.role_long') }}
             </div>
 
             <p
               class="text-body2 text-md-body1 text-app-muted q-mb-lg line-relaxed max-w-text q-mx-auto q-mx-md-none"
             >
-              متمرکز روی طراحی دیتابیس‌های بهینه، پیاده‌سازی RESTful APIهای مقیاس‌پذیر در لاراول، و
-              خلق رابط‌های کاربری مدرن و واکنش‌گرا با Vue و Quasar.
+              {{ t('hero.lead') }}
             </p>
 
             <!-- CTA Buttons -->
@@ -33,7 +34,7 @@
                 rounded
                 color="primary"
                 icon="rocket_launch"
-                label="مشاهده پروژه‌ها"
+                :label="t('actions.view_projects')"
                 class="glow-button col-12 col-sm-auto q-px-lg q-py-sm"
                 @click="scrollTo('projects')"
               />
@@ -41,7 +42,7 @@
                 outline
                 rounded
                 icon="download"
-                label="دانلود رزومه"
+                :label="t('actions.download_resume')"
                 class="btn-muted-outline col-12 col-sm-auto q-px-lg q-py-sm"
                 @click="downloadResume"
               />
@@ -51,7 +52,7 @@
             <div class="row q-gutter-xs justify-center justify-md-start items-center">
               <q-btn
                 v-for="s in socials"
-                :key="s.label"
+                :key="s.labelKey"
                 flat
                 round
                 dense
@@ -59,8 +60,9 @@
                 :href="s.href"
                 target="_blank"
                 class="social-btn icon-ghost-btn"
+                :aria-label="t(s.labelKey)"
               >
-                <q-tooltip>{{ s.label }}</q-tooltip>
+                <q-tooltip>{{ t(s.labelKey) }}</q-tooltip>
               </q-btn>
             </div>
           </div>
@@ -72,7 +74,7 @@
               <div class="avatar-inner-card flex flex-center">
                 <q-icon name="terminal" size="64px" class="text-neon" />
                 <div class="text-caption text-app-muted text-weight-medium q-mt-sm">
-                  Full-Stack Architect
+                  {{ t('brand.avatar_caption') }}
                 </div>
               </div>
             </div>
@@ -92,29 +94,22 @@
       <!-- 3. ABOUT & STATS -->
       <section id="about" class="q-py-xl">
         <div class="section-title-box text-center q-mb-xl">
-          <div class="text-caption text-indigo-4 text-weight-bold">درباره من</div>
-          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">مهندسی نرم‌افزار و خلق محصول</h3>
+          <div class="text-caption text-indigo-4 text-weight-bold">{{ t('about.eyebrow') }}</div>
+          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">{{ t('about.heading') }}</h3>
         </div>
 
         <div class="row q-col-gutter-xl items-center q-mb-xl">
           <div class="col-12 col-md-7 text-app-muted text-body1 line-relaxed">
-            <p>
-              بیش از چند سال است که به‌صورت متمرکز در حال توسعه سامانه‌های وب هستم. هدف من همیشه
-              نوشتن کدی تمیز، قابل نگهداری و ارائه خروجی پایدار تحت بارهای ترافیکی بالاست.
-            </p>
-            <p>
-              تسلط بر معماری دیتابیس، نوشتن کوئری‌های بهینه و درک دقیق از اکوسیستم فرانت‌اند و
-              فریم‌ورک‌های مدرن به من اجازه می‌دهد تا ایده را از نقطه صفر به یک وب‌اپلیکیشن کاربردی
-              و سریع تبدیل کنم.
-            </p>
+            <p>{{ t('about.body_p1') }}</p>
+            <p>{{ t('about.body_p2') }}</p>
           </div>
 
           <div class="col-12 col-md-5">
             <div class="row q-col-gutter-md">
-              <div v-for="st in stats" :key="st.label" class="col-6">
+              <div v-for="st in stats" :key="st.labelKey" class="col-6">
                 <q-card flat class="glass-card app-hover-lift text-center q-pa-md">
                   <div class="text-h4 text-weight-bolder text-neon-blue">{{ st.display }}</div>
-                  <div class="text-caption text-app-muted q-mt-xs">{{ st.label }}</div>
+                  <div class="text-caption text-app-muted q-mt-xs">{{ t(st.labelKey) }}</div>
                 </q-card>
               </div>
             </div>
@@ -125,8 +120,8 @@
       <!-- 4. PROJECTS -->
       <section id="projects" class="q-py-xl">
         <div class="section-title-box text-center q-mb-xl">
-          <div class="text-caption text-indigo-4 text-weight-bold">نمونه‌کارها</div>
-          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">پروژه‌های شاخص</h3>
+          <div class="text-caption text-indigo-4 text-weight-bold">{{ t('projects.eyebrow') }}</div>
+          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">{{ t('projects.heading') }}</h3>
         </div>
 
         <div class="row q-col-gutter-lg">
@@ -135,13 +130,17 @@
               <div>
                 <div class="project-cover flex flex-center" :style="{ background: prj.gradient }">
                   <q-icon name="devices" size="40px" color="white" />
-                  <span v-if="prj.is_featured" class="featured-badge">ویژه</span>
+                  <span v-if="prj.is_featured" class="featured-badge">
+                    {{ t('projects.featured') }}
+                  </span>
                 </div>
                 <div class="q-pa-md">
                   <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
-                    {{ prj.title }}
+                    {{ t(prj.titleKey) }}
                   </div>
-                  <p class="text-caption text-app-muted line-clamp-3 q-mb-md">{{ prj.summary }}</p>
+                  <p class="text-caption text-app-muted line-clamp-3 q-mb-md">
+                    {{ t(prj.summaryKey) }}
+                  </p>
 
                   <div class="row q-gutter-xs q-mb-md">
                     <q-badge
@@ -164,8 +163,8 @@
                   dense
                   no-caps
                   class="link-arrow-btn"
-                  icon-right="arrow_back"
-                  label="مطالعه موردی"
+                  :icon-right="isRtl ? 'arrow_forward' : 'arrow_back'"
+                  :label="t('actions.case_study')"
                   @click="goToProject(prj.slug)"
                 />
                 <div class="row q-gutter-xs">
@@ -199,8 +198,8 @@
       <!-- 5. SERVICES -->
       <section id="services" class="q-py-xl">
         <div class="section-title-box text-center q-mb-xl">
-          <div class="text-caption text-indigo-4 text-weight-bold">خدمات</div>
-          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">راهکارهای فنی و اجرایی</h3>
+          <div class="text-caption text-indigo-4 text-weight-bold">{{ t('services.eyebrow') }}</div>
+          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">{{ t('services.heading') }}</h3>
         </div>
 
         <div class="row q-col-gutter-lg">
@@ -209,8 +208,12 @@
               <div class="service-icon-box q-mb-md">
                 <q-icon :name="srv.icon" size="28px" color="white" />
               </div>
-              <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">{{ srv.title }}</div>
-              <div class="text-caption text-app-muted line-relaxed">{{ srv.description }}</div>
+              <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
+                {{ t(srv.titleKey) }}
+              </div>
+              <div class="text-caption text-app-muted line-relaxed">
+                {{ t(srv.descriptionKey) }}
+              </div>
             </q-card>
           </div>
         </div>
@@ -219,8 +222,10 @@
       <!-- 6. EXPERIENCE -->
       <section id="experience" class="q-py-xl">
         <div class="section-title-box text-center q-mb-xl">
-          <div class="text-caption text-indigo-4 text-weight-bold">سوابق</div>
-          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">تجربه‌های کاری</h3>
+          <div class="text-caption text-indigo-4 text-weight-bold">
+            {{ t('experience.eyebrow') }}
+          </div>
+          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">{{ t('experience.heading') }}</h3>
         </div>
 
         <div class="max-w-timeline q-mx-auto">
@@ -229,11 +234,13 @@
             <q-timeline-entry
               v-for="exp in experiences"
               :key="exp.id"
-              :title="exp.role"
-              :subtitle="`${exp.company} | ${exp.start_date} ${exp.is_current ? 'تا اکنون' : 'تا ' + exp.end_date}`"
+              :title="t(exp.roleKey)"
+              :subtitle="`${t(exp.companyKey)} | ${experiencePeriod(exp)}`"
             >
               <q-card flat class="glass-card q-pa-md q-mt-sm">
-                <div class="text-body2 text-app-muted line-relaxed">{{ exp.description }}</div>
+                <div class="text-body2 text-app-muted line-relaxed">
+                  {{ t(exp.descriptionKey) }}
+                </div>
               </q-card>
             </q-timeline-entry>
           </q-timeline>
@@ -247,11 +254,11 @@
         <div class="section-title-box text-center q-mb-xl">
           <div class="badge-pill inline-block q-mb-xs">
             <span class="status-dot"></span>
-            ارتباط مستقیم
+            {{ t('contact.badge') }}
           </div>
-          <h3 class="text-h4 text-weight-bolder text-app q-mt-xs">بیایید همکاری را شروع کنیم</h3>
+          <h3 class="text-h4 text-weight-bolder text-app q-mt-xs">{{ t('contact.heading') }}</h3>
           <p class="text-caption text-app-muted q-mt-sm">
-            ایده یا پروژه‌ای دارید؟ یک پیام کوتاه بفرستید، سریعاً پاسخ می‌دهم.
+            {{ t('contact.intro') }}
           </p>
         </div>
 
@@ -260,9 +267,11 @@
             <!-- سمت اطلاعات ارتباطی (کارت‌های تعاملی) -->
             <div class="col-12 col-md-5 column justify-between">
               <div>
-                <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">راه‌های تماس</div>
+                <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
+                  {{ t('contact.channels') }}
+                </div>
                 <p class="text-caption text-app-muted q-mb-lg">
-                  همیشه از طریق این کانال‌ها در دسترسم:
+                  {{ t('contact.channels_hint') }}
                 </p>
 
                 <div class="q-gutter-y-md">
@@ -272,7 +281,7 @@
                       <q-icon name="mail" size="20px" class="text-neon" />
                     </div>
                     <div class="tile-info">
-                      <span class="tile-label">پست الکترونیک</span>
+                      <span class="tile-label">{{ t('contact.email_label') }}</span>
                       <span class="tile-val dir-ltr">hesam@example.com</span>
                     </div>
                   </a>
@@ -283,8 +292,8 @@
                       <q-icon name="location_on" size="20px" class="text-indigo" />
                     </div>
                     <div class="tile-info">
-                      <span class="tile-label">موقعیت مکانی</span>
-                      <span class="tile-val">ایران، تهران (آماده همکاری ریموت)</span>
+                      <span class="tile-label">{{ t('contact.location_label') }}</span>
+                      <span class="tile-val">{{ t('contact.location_value') }}</span>
                     </div>
                   </div>
 
@@ -294,18 +303,18 @@
                       <q-icon name="bolt" size="20px" class="text-teal" />
                     </div>
                     <div class="tile-info">
-                      <span class="tile-label">زمان پاسخ‌گویی</span>
-                      <span class="tile-val">کمتر از ۲۴ ساعت در روزهای کاری</span>
+                      <span class="tile-label">{{ t('contact.response_label') }}</span>
+                      <span class="tile-val">{{ t('contact.response_value') }}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="social-quick-row q-mt-xl">
-                <span class="text-caption text-app-muted q-ml-sm">شبکه‌های اجتماعی:</span>
+                <span class="text-caption text-app-muted q-ml-sm">{{ t('contact.socials') }}</span>
                 <q-btn
                   v-for="s in socials"
-                  :key="s.label"
+                  :key="s.labelKey"
                   flat
                   round
                   dense
@@ -313,6 +322,7 @@
                   :href="s.href"
                   target="_blank"
                   class="social-btn icon-ghost-btn"
+                  :aria-label="t(s.labelKey)"
                 />
               </div>
             </div>
@@ -326,10 +336,10 @@
                       v-model="form.name"
                       outlined
                       dense
-                      label="نام شما *"
-                      placeholder="مثلاً علی رضایی"
+                      :label="t('contact.form_name')"
+                      :placeholder="t('contact.form_name_placeholder')"
                       class="modern-input"
-                      :rules="[(v) => !!v || 'الزامی است']"
+                      :rules="[requiredRule]"
                     />
                   </div>
                   <div class="col-12 col-sm-6">
@@ -338,10 +348,10 @@
                       outlined
                       dense
                       type="email"
-                      label="آدرس ایمیل *"
+                      :label="t('contact.form_email')"
                       placeholder="example@mail.com"
                       class="modern-input"
-                      :rules="[(v) => !!v || 'الزامی است']"
+                      :rules="[requiredRule]"
                     />
                   </div>
                 </div>
@@ -350,8 +360,8 @@
                   v-model="form.subject"
                   outlined
                   dense
-                  label="موضوع همکاری (اختیاری)"
-                  placeholder="طراحی وب‌سایت، توسعه بک‌اند، ..."
+                  :label="t('contact.form_subject')"
+                  :placeholder="t('contact.form_subject_placeholder')"
                   class="modern-input q-mb-md"
                 />
 
@@ -361,17 +371,17 @@
                   dense
                   type="textarea"
                   rows="4"
-                  label="توضیحات پروژه یا پیام شما *"
-                  placeholder="مختصری از هدف یا نیاز فنی‌تان را بنویسید..."
+                  :label="t('contact.form_message')"
+                  :placeholder="t('contact.form_message_placeholder')"
                   class="modern-input q-mb-lg"
-                  :rules="[(v) => !!v || 'الزامی است']"
+                  :rules="[requiredRule]"
                 />
 
                 <q-btn
                   unelevated
                   rounded
                   color="primary"
-                  label="ارسال پیام"
+                  :label="t('contact.form_submit')"
                   icon-right="send"
                   type="submit"
                   class="full-width q-py-sm glow-button submit-btn"
@@ -388,18 +398,30 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
+import { useLocale } from '@/composables/useLocale'
 
 const router = useRouter()
 const $q = useQuasar()
+const { t } = useI18n({ useScope: 'global' })
+const { isRtl } = useLocale()
 
+/**
+ * Validation message is reactive: it must follow the locale like everything
+ * else, so the rule reads `t()` at validation time instead of capturing a
+ * translated string once.
+ */
+const requiredRule = (value) => !!value || t('contact.required')
+
+/** Social links are language-independent; only their labels are translated. */
 const socials = [
-  { label: 'GitHub', icon: 'code', href: 'https://github.com' },
-  { label: 'LinkedIn', icon: 'work', href: 'https://linkedin.com' },
-  { label: 'Telegram', icon: 'send', href: 'https://telegram.org' },
+  { labelKey: 'socials.github', icon: 'code', href: 'https://github.com' },
+  { labelKey: 'socials.linkedin', icon: 'work', href: 'https://linkedin.com' },
+  { labelKey: 'socials.telegram', icon: 'send', href: 'https://telegram.org' },
 ]
 
-const form = reactive({ name: '', email: '', message: '' })
+const form = reactive({ name: '', email: '', subject: '', message: '' })
 
 function scrollTo(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -410,21 +432,23 @@ function goToProject(slug) {
 }
 
 function downloadResume() {
-  $q.notify({ type: 'info', message: 'لینک رزومه آماده دانلود شد.' })
+  $q.notify({ type: 'info', message: t('contact.resume_ready') })
 }
 
 function submitContact() {
-  $q.notify({ type: 'positive', message: 'پیام شما دریافت شد. به‌زودی تماس می‌گیرم.' })
+  $q.notify({ type: 'positive', message: t('contact.success') })
   form.name = ''
   form.email = ''
+  form.subject = ''
   form.message = ''
 }
 
+/** Numbers stay locale-neutral so they read correctly in both languages. */
 const stats = [
-  { label: 'پروژه موفق', display: '+۲۵' },
-  { label: 'سال سابقه کار', display: '+۴' },
-  { label: 'رضایت کارفرما', display: '۱۰۰٪' },
-  { label: 'کد تمیز و تست‌شده', display: 'A+' },
+  { labelKey: 'stats.projects', display: '+25' },
+  { labelKey: 'stats.years', display: '+4' },
+  { labelKey: 'stats.satisfaction', display: '100%' },
+  { labelKey: 'stats.quality', display: 'A+' },
 ]
 
 const tickerSkills = ref([
@@ -441,9 +465,9 @@ const tickerSkills = ref([
 const projects = ref([
   {
     id: 1,
-    title: 'سامانه مدیریت سفارشات',
+    titleKey: 'projects.order_title',
+    summaryKey: 'projects.order_summary',
     slug: 'order-management',
-    summary: 'پلتفرم جامع ثبت و رهگیری بلادرنگ سفارشات به همراه داشبورد تحلیلی با لاراول و ویو.',
     gradient: 'linear-gradient(135deg, #1e3a8a, #3b82f6)',
     is_featured: true,
     github_url: 'https://github.com',
@@ -456,9 +480,9 @@ const projects = ref([
   },
   {
     id: 2,
-    title: 'داشبورد آنالیز و فروش',
+    titleKey: 'projects.analytics_title',
+    summaryKey: 'projects.analytics_summary',
     slug: 'analytics-dashboard',
-    summary: 'رابط کاربری پیشرفته مانیتورینگ نرخ تبدیل و فروش با نمودارهای بهینه‌شده.',
     gradient: 'linear-gradient(135deg, #312e81, #6366f1)',
     is_featured: true,
     github_url: 'https://github.com',
@@ -470,9 +494,9 @@ const projects = ref([
   },
   {
     id: 3,
-    title: 'پلتفرم چندفروشندگی آنلاین',
+    titleKey: 'projects.marketplace_title',
+    summaryKey: 'projects.marketplace_summary',
     slug: 'marketplace-app',
-    summary: 'مارکت‌پلیس با درگاه پرداخت، سیستم انبارداری و پنل مجزا برای فروشندگان.',
     gradient: 'linear-gradient(135deg, #065f46, #10b981)',
     is_featured: false,
     github_url: null,
@@ -487,20 +511,20 @@ const projects = ref([
 const services = ref([
   {
     id: 1,
-    title: 'توسعه وب‌اپلیکیشن اختصاصی',
-    description: 'پیاده‌سازی ماژولار از ایده تا استقرار کامل بر پایه متدهای مدرن چابک.',
+    titleKey: 'services.web_title',
+    descriptionKey: 'services.web_description',
     icon: 'web',
   },
   {
     id: 2,
-    title: 'طراحی معماری دیتابیس و REST API',
-    description: 'نوشتن APIهای فوق سریع، امن و استاندارد برای ارتباط با موبایل و وب.',
+    titleKey: 'services.api_title',
+    descriptionKey: 'services.api_description',
     icon: 'api',
   },
   {
     id: 3,
-    title: 'بهینه‌سازی کارایی و ریفکتور',
-    description: 'حل مشکل کندی کوئری‌ها، بهینه‌سازی بار سرور و پیاده‌سازی کشینگ با Redis.',
+    titleKey: 'services.perf_title',
+    descriptionKey: 'services.perf_description',
     icon: 'speed',
   },
 ])
@@ -508,25 +532,35 @@ const services = ref([
 const experiences = ref([
   {
     id: 1,
-    role: 'توسعه‌دهنده ارشد لاراول و فرانت‌اند',
-    company: 'شرکت فناوری پیشرو',
-    start_date: '۱۴۰۲',
-    end_date: null,
+    roleKey: 'experience.senior_role',
+    companyKey: 'experience.senior_company',
+    startKey: 'experience.senior_start',
+    endKey: null,
     is_current: true,
-    description:
-      'مدیریت و بازطراحی هسته پلتفرم، ارتقای سرعت پاسخ‌دهی سرویس‌ها و استقرار زیرساخت‌های پایدار.',
+    descriptionKey: 'experience.senior_description',
   },
   {
     id: 2,
-    role: 'برنامه‌نویس فول‌استک',
-    company: 'استودیو نرم‌افزار آرکا',
-    start_date: '۱۴۰۰',
-    end_date: '۱۴۰۲',
+    roleKey: 'experience.fullstack_role',
+    companyKey: 'experience.fullstack_company',
+    startKey: 'experience.fullstack_start',
+    endKey: 'experience.fullstack_end',
     is_current: false,
-    description:
-      'توسعه بیش از ۱۰ سامانه تحت وب، اتصال به درگاه‌های پرداخت بانکی و پیاده‌سازی فرم‌های پیچیده مالی.',
+    descriptionKey: 'experience.fullstack_description',
   },
 ])
+
+/**
+ * Renders the "from – to" half of a timeline subtitle. Both the range wording
+ * and the open-ended case differ per language, so they come from the
+ * dictionary rather than being concatenated from raw dates. `t()` is called on
+ * every render, which keeps the result reactive to locale changes.
+ */
+function experiencePeriod(exp) {
+  return exp.is_current
+    ? `${t(exp.startKey)} — ${t('experience.until_now')}`
+    : `${t(exp.startKey)} — ${t('experience.until', { date: t(exp.endKey) })}`
+}
 </script>
 
 <style scoped>

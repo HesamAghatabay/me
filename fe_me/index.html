@@ -26,21 +26,44 @@
     <meta name="theme-color" content="#0B0F19" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)" />
 
+    <!--
+      Vazirmatn: the standard Persian webfont, used for the RTL typography.
+      Inter: the Latin face, enabled through `html[lang="en-US"]` in app.scss so
+      English copy is not rendered with Persian-tuned Latin glyphs.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/png" sizes="128x128" href="icons/favicon-128x128.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png" />
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+
     <script>
       /*
-        Applies the theme before this document's scripts run, so a visitor who
-        picked light mode never sees the dark palette (the design system's
-        default) flash on load. Mirrors src/boot/theme.js: the stored value is
-        Quasar's own `q-dark` key, `true`/`false` are explicit picks and
-        anything else means "follow the operating system". Boot keeps ownership
-        after this — it re-applies the same decision through $q.dark.
+        Applies the saved theme *and* language direction before this document's
+        scripts run, so a visitor never sees the dark palette or the RTL layout
+        flash before their own preference loads. Mirrors src/boot/theme.js and
+        src/composables/useLocale.js: Quasar's own `q-dark` / `q-lang` keys hold
+        the choice, and both boot files keep ownership afterwards.
       */
       ;(() => {
         let stored = null
+        let storedLocale = null
         try {
           stored = window.localStorage.getItem('q-dark')
+          storedLocale = window.localStorage.getItem('q-lang')
         } catch {
-          /* storage unavailable — fall through to the OS preference */
+          /* storage unavailable — fall through to the system preferences */
         }
 
         const prefersDark =
@@ -50,22 +73,14 @@
         const wantsDark = stored === 'true' || (stored !== 'false' && prefersDark)
 
         document.body.classList.add(wantsDark ? 'body--dark' : 'body--light')
+
+        // A stored "en" flips the document to LTR for the first paint too.
+        if (storedLocale === 'en') {
+          document.documentElement.setAttribute('dir', 'ltr')
+          document.documentElement.setAttribute('lang', 'en-US')
+        }
       })()
     </script>
-
-    <!-- Vazirmatn: the standard Persian webfont used for RTL Persian typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-
-    <link rel="icon" type="image/png" sizes="128x128" href="icons/favicon-128x128.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png" />
-    <link rel="icon" type="image/ico" href="favicon.ico" />
   </head>
   <body>
     <!-- quasar:entry-point -->

@@ -1,5 +1,10 @@
-import enUS from './en-US'
+import en from './en'
+import fa from './fa'
 
-export default {
-  'en-US': enUS,
-}
+/**
+ * Locale dictionaries keyed by the locale code used across the app.
+ *
+ * `fa` is the default (see `DEFAULT_LOCALE` in `@/composables/useLocale`),
+ * `en` exists for the language switch.
+ */
+export default { fa, en }

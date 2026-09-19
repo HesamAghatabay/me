@@ -98,8 +98,8 @@ export default defineConfig((ctx) => {
       config: {},
 
       // iconSet: 'material-icons', // Quasar icon set
-      // 'fa-IR' carries `rtl: true`, which is what switches Quasar's own
-      // components to a right-to-left layout.
+      // `fa-IR` carries `rtl: true`; the boot file swaps in `en-US` (LTR) when
+      // the visitor switches language, which also rewrites <html dir>.
       lang: 'fa-IR',
 
       // For special cases outside of where the auto-import strategy can have an impact

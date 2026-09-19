@@ -5,7 +5,11 @@
     Shown only below 1024px (the same threshold at which the desktop nav appears),
     and it slides away while scrolling down so it never covers content.
   -->
-  <nav class="bottom-nav lt-lg" :class="{ 'is-hidden': chromeHidden }" aria-label="ناوبری پایین">
+  <nav
+    class="bottom-nav lt-lg"
+    :class="{ 'is-hidden': chromeHidden }"
+    :aria-label="t('nav.bottom_nav')"
+  >
     <ul class="bottom-nav-list">
       <li v-for="item in barItems" :key="item.id" class="bottom-nav-item">
         <a
@@ -26,7 +30,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { barItems, useAutoHideChrome, useSectionNav } from '@/composables/useSectionNav'
+
+const { t } = useI18n({ useScope: 'global' })
 
 const { activeSection, chromeHidden, scrollToSection } = useSectionNav()
 

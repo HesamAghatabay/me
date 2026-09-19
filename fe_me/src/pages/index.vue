@@ -9,10 +9,12 @@
             <q-icon name="terminal" size="20px" color="white" />
           </div>
           <div class="column">
-            <span class="text-subtitle1 text-weight-bolder text-app brand-title"
-              >حسام آق آتابای</span
-            >
-            <span class="text-caption text-neon font-mono brand-subtitle">Full-Stack Dev</span>
+            <span class="text-subtitle1 text-weight-bolder text-app brand-title">
+              {{ t('brand.name') }}
+            </span>
+            <span class="text-caption text-neon font-mono brand-subtitle">
+              {{ t('brand.role') }}
+            </span>
           </div>
         </router-link>
 
@@ -26,22 +28,40 @@
             dense
             no-caps
             class="nav-tab-btn"
-            :label="item.label"
+            :label="t(item.labelKey)"
             @click="handleNavigation(item.id)"
           />
         </nav>
 
-        <!-- CTA & Theme Toggle & Mobile Drawer Toggle -->
+        <!-- CTA & Locale switch & Theme switch & Mobile Drawer Toggle -->
         <div class="row items-center q-gutter-sm">
           <q-btn
             unelevated
             rounded
             color="primary"
             icon-right="mail"
-            label="ارتباط با من"
-            class="glow-cta-btn q-px-md gt-xs"
+            :label="t('actions.contact_me')"
+            class="glow-cta-btn q-px-md gt-sm"
             @click="handleNavigation('contact')"
           />
+
+          <!--
+            Locale switch: shows the language a click switches *to*, which is
+            the convention users expect from a compact FA / EN control. The
+            whole swap (copy, direction, fonts, Quasar packs) happens through
+            `setLocale`, with no page reload.
+          -->
+          <q-btn
+            flat
+            round
+            dense
+            class="locale-switch-btn"
+            :aria-label="`${t('theme.switch_language')}: ${alternateLabel}`"
+            @click="toggleLocale"
+          >
+            <span class="locale-switch-label" dir="ltr">{{ alternateCode.toUpperCase() }}</span>
+            <q-tooltip>{{ t('theme.switch_language') }}</q-tooltip>
+          </q-btn>
 
           <!--
             Dark / light switch. The icon announces the current theme, and a
@@ -54,11 +74,11 @@
             dense
             class="theme-toggle-btn"
             :icon="isDark ? 'dark_mode' : 'light_mode'"
-            :aria-label="isDark ? 'روشن کردن حالت روز' : 'فعال‌سازی حالت شب'"
+            :aria-label="isDark ? t('theme.to_light') : t('theme.to_dark')"
             :aria-pressed="isDark ? 'true' : 'false'"
             @click="toggleTheme"
           >
-            <q-tooltip>{{ isDark ? 'حالت روشن' : 'حالت شب' }}</q-tooltip>
+            <q-tooltip>{{ isDark ? t('theme.light') : t('theme.dark') }}</q-tooltip>
           </q-btn>
 
           <!-- Mobile Hamburger Menu Button -->
@@ -68,23 +88,29 @@
             dense
             class="icon-ghost-btn lt-md"
             icon="menu"
+            :aria-label="t('nav.open_menu')"
             @click="drawerOpen = !drawerOpen"
-            aria-label="منو"
           />
         </div>
       </q-toolbar>
     </q-header>
 
-    <!-- Mobile Drawer Navigation -->
+    <!--
+      Mobile Drawer Navigation.
+
+      `side` is derived from the active direction: RTL puts the drawer on the
+      right, LTR on the left, so it always opens from the "natural" edge of the
+      reading direction instead of a hard-coded physical side.
+    -->
     <q-drawer
       v-model="drawerOpen"
-      side="right"
+      :side="drawerSide"
       overlay
       behavior="mobile"
       class="mobile-drawer q-pa-md"
     >
       <div class="row items-center justify-between q-mb-xl">
-        <span class="text-subtitle1 text-weight-bold text-app">منوی ناوبری</span>
+        <span class="text-subtitle1 text-weight-bold text-app">{{ t('nav.menu') }}</span>
         <q-btn flat round dense icon="close" class="icon-ghost-btn" @click="drawerOpen = false" />
       </div>
 
@@ -95,30 +121,26 @@
           clickable
           v-ripple
           class="drawer-item rounded-borders"
-          @click="
-            handleNavigation(item.id);
-            drawerOpen = false
-          "
+          @click="handleDrawerNavigation(item.id)"
         >
           <q-item-section avatar>
             <q-icon :name="item.icon" class="text-neon" />
           </q-item-section>
-          <q-item-section class="text-weight-medium">{{ item.label }}</q-item-section>
+          <q-item-section class="text-weight-medium">{{ t(item.labelKey) }}</q-item-section>
         </q-item>
 
         <q-item
           clickable
           v-ripple
           class="drawer-item drawer-cta rounded-borders q-mt-md"
-          @click="
-            handleNavigation('contact');
-            drawerOpen = false
-          "
+          @click="handleDrawerNavigation('contact')"
         >
           <q-item-section avatar>
             <q-icon name="send" color="white" />
           </q-item-section>
-          <q-item-section class="text-white text-weight-bold">شروع همکاری</q-item-section>
+          <q-item-section class="text-white text-weight-bold">
+            {{ t('actions.start_collaboration') }}
+          </q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
@@ -138,21 +160,22 @@
               <div class="logo-icon-box q-mr-sm">
                 <q-icon name="terminal" size="20px" color="white" />
               </div>
-              <span class="text-h6 text-weight-bolder text-app">حسام آق آتابای</span>
+              <span class="text-h6 text-weight-bolder text-app">{{ t('brand.name') }}</span>
             </div>
             <p class="text-body2 text-app-muted line-relaxed q-mb-md" style="max-width: 420px">
-              توسعه وب‌اپلیکیشن‌های سریع، مقیاس‌پذیر و امن با تکیه بر معماری تمیز و تکنولوژی‌های روز
-              دنیا.
+              {{ t('footer.tagline') }}
             </p>
             <div class="row items-center text-caption text-app-dim">
               <span class="status-dot q-ml-xs"></span>
-              آماده برای موقعیت‌های شغلی و پروژه‌های جدید
+              {{ t('footer.available') }}
             </div>
           </div>
 
           <!-- Column 2: Quick Links -->
           <div class="col-6 col-md-3">
-            <div class="text-subtitle2 text-weight-bold text-app q-mb-md">دسترسی سریع</div>
+            <div class="text-subtitle2 text-weight-bold text-app q-mb-md">
+              {{ t('footer.quick_links') }}
+            </div>
             <div class="column q-gutter-y-sm">
               <a
                 v-for="link in navLinks"
@@ -160,44 +183,31 @@
                 class="footer-text-link"
                 @click.prevent="handleNavigation(link.id)"
               >
-                {{ link.label }}
+                {{ t(link.labelKey) }}
               </a>
             </div>
           </div>
 
           <!-- Column 3: Direct Connect -->
           <div class="col-6 col-md-4">
-            <div class="text-subtitle2 text-weight-bold text-app q-mb-md">ارتباط مستقیم</div>
+            <div class="text-subtitle2 text-weight-bold text-app q-mb-md">
+              {{ t('footer.direct_contact') }}
+            </div>
             <div class="column q-gutter-y-sm text-body2 text-app-muted">
-              <span class="dir-ltr text-right">hesam@example.com</span>
-              <span>ایران، تهران</span>
+              <span class="dir-ltr text-start">hesam@example.com</span>
+              <span>{{ t('footer.location') }}</span>
               <div class="row q-gutter-xs q-mt-sm">
                 <q-btn
+                  v-for="link in socials"
+                  :key="link.labelKey"
                   flat
                   round
                   dense
-                  icon="code"
-                  class="icon-ghost-btn"
-                  href="https://github.com"
+                  :icon="link.icon"
+                  :href="link.href"
                   target="_blank"
-                />
-                <q-btn
-                  flat
-                  round
-                  dense
-                  icon="work"
                   class="icon-ghost-btn"
-                  href="https://linkedin.com"
-                  target="_blank"
-                />
-                <q-btn
-                  flat
-                  round
-                  dense
-                  icon="send"
-                  class="icon-ghost-btn"
-                  href="https://telegram.org"
-                  target="_blank"
+                  :aria-label="t(link.labelKey)"
                 />
               </div>
             </div>
@@ -208,9 +218,10 @@
         <div
           class="footer-bottom-bar border-top-glass q-pt-md row items-center justify-between text-caption text-app-dim"
         >
-          <div>© {{ new Date().getFullYear() }} حسام آق آتابای — تمامی حقوق محفوظ است.</div>
+          <div>{{ t('footer.rights', { year: new Date().getFullYear() }) }}</div>
           <div class="row items-center">
-            ساخته شده با <span class="text-neon q-mx-xs">Quasar & Vue 3</span>
+            {{ t('footer.built_with') }}
+            <span class="text-neon q-mx-xs">Quasar & Vue 3</span>
           </div>
         </div>
       </div>
@@ -219,13 +230,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useTheme } from '@/composables/useTheme'
+import { otherLocales, useLocale } from '@/composables/useLocale'
 
 const router = useRouter()
 const route = useRoute()
 const drawerOpen = ref(false)
+const { t, locale } = useI18n({ useScope: 'global' })
 
 /**
  * Theme state comes from the shared composable so the header and the boot
@@ -233,26 +247,69 @@ const drawerOpen = ref(false)
  */
 const { isDark, toggleTheme } = useTheme()
 
+/** Locale state (copy + direction) comes from the same kind of shared owner. */
+const { currentLocale, isRtl, toggleLocale } = useLocale()
+
+/**
+ * Bilingual SEO: the delivered `index.html` only carries the Persian title and
+ * description, so both are re-applied whenever the locale changes.
+ */
+watch(
+  locale,
+  () => {
+    document.title = t('seo.title')
+
+    const description = document.querySelector('meta[name="description"]')
+    description?.setAttribute('content', t('seo.description'))
+  },
+  { immediate: true },
+)
+
+/**
+ * The switch advertises the target language: in Persian it reads "EN", in
+ * English "FA". That is more useful than echoing the active one, which the
+ * page content already shows.
+ */
+const alternateCode = computed(() => otherLocales(currentLocale.value)[0] ?? 'en')
+const alternateLabel = computed(() => (alternateCode.value === 'fa' ? 'فارسی' : 'English'))
+
+/** Sections the nav points at; labels stay language-agnostic keys. */
 const navLinks = [
-  { id: 'hero', label: 'صفحه نخست', icon: 'home' },
-  { id: 'about', label: 'درباره من', icon: 'person' },
-  { id: 'projects', label: 'پروژه‌ها', icon: 'devices' },
-  { id: 'services', label: 'خدمات', icon: 'widgets' },
-  { id: 'experience', label: 'سوابق', icon: 'timeline' },
-  { id: 'contact', label: 'تماس', icon: 'mail' },
+  { id: 'hero', labelKey: 'nav.home', icon: 'home' },
+  { id: 'about', labelKey: 'nav.about', icon: 'person' },
+  { id: 'projects', labelKey: 'nav.projects', icon: 'devices' },
+  { id: 'services', labelKey: 'nav.services', icon: 'widgets' },
+  { id: 'experience', labelKey: 'nav.experience', icon: 'timeline' },
+  { id: 'contact', labelKey: 'nav.contact', icon: 'mail' },
 ]
 
+const socials = [
+  { labelKey: 'socials.github', icon: 'code', href: 'https://github.com' },
+  { labelKey: 'socials.linkedin', icon: 'work', href: 'https://linkedin.com' },
+  { labelKey: 'socials.telegram', icon: 'send', href: 'https://telegram.org' },
+]
+
+/**
+ * The mobile drawer always opens from the reading direction's own edge: the
+ * right under RTL, the left under LTR.
+ */
+const drawerSide = computed(() => (isRtl.value ? 'right' : 'left'))
+
 async function handleNavigation(sectionId) {
-  // اگر در صفحه‌ای غیر از صفحه اصلی بودیم
+  // Coming from a project page: go home first, then scroll to the section.
   if (route.path !== '/') {
     await router.push('/')
-    // کمی مکث تا صفحه نخست مونت شود
-    setTimeout(() => {
-      scrollToSection(sectionId)
-    }, 150)
-  } else {
-    scrollToSection(sectionId)
   }
+
+  // Wait for the landing page to render before measuring its sections.
+  await nextTick()
+  scrollToSection(sectionId)
+}
+
+/** Closes the drawer first so the scroll is measured against the settled page. */
+function handleDrawerNavigation(sectionId) {
+  drawerOpen.value = false
+  void handleNavigation(sectionId)
 }
 
 function scrollToSection(id) {
@@ -260,10 +317,8 @@ function scrollToSection(id) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
     return
   }
-  const target = document.getElementById(id)
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 </script>
 
@@ -341,6 +396,35 @@ function scrollToSection(id) {
   font-size: 0.82rem;
 }
 
+/* Locale switch: same shape as the theme switch, but the label carries the
+   target language code, so it stays legible in both directions. */
+.locale-switch-btn {
+  color: var(--app-text);
+  border: 1px solid transparent;
+  transition:
+    color 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.22s ease;
+}
+
+.locale-switch-btn:hover {
+  color: var(--app-neon);
+  background: var(--app-surface-hover);
+  border-color: var(--app-accent-border);
+}
+
+.locale-switch-btn:active {
+  transform: scale(0.92);
+}
+
+.locale-switch-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
 /* Theme switch: a minimal round icon button that matches the header glass. */
 .theme-toggle-btn {
   color: var(--app-text);
@@ -394,6 +478,7 @@ function scrollToSection(id) {
 
 .footer-text-link:hover {
   color: var(--app-neon);
+  /* Logical axis: nudges the link "outward" in either direction. */
   transform: translateX(-4px);
 }
 
@@ -417,13 +502,22 @@ function scrollToSection(id) {
   box-shadow: var(--app-shadow);
 }
 
-/* Quasar pins the drawer from the inline-end edge under RTL, which on a
-   `side="right"` drawer resolves to the wrong side — pin it explicitly. */
+/* Pin the drawer explicitly: postcss-rtlcss rewrites physical insets, so the
+   logical default would put a right-side drawer on the wrong edge under RTL. */
 .mobile-drawer.q-drawer--on-top,
 .mobile-drawer.q-drawer--mobile {
-  inset: 0 0 0 auto;
   width: 290px;
   max-width: 86vw;
+}
+
+.mobile-drawer.q-drawer--mobile.q-drawer--right,
+.mobile-drawer.q-drawer--on-top.q-drawer--right {
+  inset: 0 0 0 auto;
+}
+
+.mobile-drawer.q-drawer--mobile.q-drawer--left,
+.mobile-drawer.q-drawer--on-top.q-drawer--left {
+  inset: 0 auto 0 0;
 }
 
 .mobile-drawer .drawer-item {
@@ -453,6 +547,7 @@ function scrollToSection(id) {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .locale-switch-btn:active,
   .theme-toggle-btn:active,
   .footer-text-link:hover {
     transform: none;

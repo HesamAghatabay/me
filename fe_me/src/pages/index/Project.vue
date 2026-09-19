@@ -4,10 +4,14 @@
       <!-- Breadcrumb Navigation -->
       <nav class="row items-center justify-between q-mb-lg">
         <div class="row items-center text-caption text-app-muted breadcrumb-row">
-          <router-link to="/" class="nav-crumb-link">خانه</router-link>
-          <q-icon name="chevron_left" size="16px" class="q-mx-xs" />
-          <router-link to="/#projects" class="nav-crumb-link">پروژه‌ها</router-link>
-          <q-icon name="chevron_left" size="16px" class="q-mx-xs" />
+          <router-link to="/" class="nav-crumb-link">
+            {{ t('project.breadcrumb_home') }}
+          </router-link>
+          <q-icon :name="crumbIcon" size="16px" class="q-mx-xs" />
+          <router-link to="/#projects" class="nav-crumb-link">
+            {{ t('project.breadcrumb_projects') }}
+          </router-link>
+          <q-icon :name="crumbIcon" size="16px" class="q-mx-xs" />
           <span class="text-app-dim">{{ project.title }}</span>
         </div>
 
@@ -16,8 +20,8 @@
           dense
           rounded
           no-caps
-          icon="arrow_forward"
-          label="بازگشت به خانه"
+          :icon="backIcon"
+          :label="t('project.back_home')"
           to="/"
           class="q-px-sm link-arrow-btn"
         />
@@ -30,9 +34,9 @@
             <div class="row items-center q-gutter-sm q-mb-sm">
               <span v-if="project.is_featured" class="badge-featured">
                 <q-icon name="star" size="14px" class="q-ml-xs" />
-                پروژه برگزیده
+                {{ t('project.featured') }}
               </span>
-              <span class="badge-status">تکمیل‌شده</span>
+              <span class="badge-status">{{ t('project.status_done') }}</span>
             </div>
 
             <h1 class="text-h4 text-md-h3 text-weight-bolder text-app q-mb-sm leading-tight">
@@ -58,7 +62,7 @@
                 rounded
                 color="primary"
                 icon-right="open_in_new"
-                label="مشاهده دموی آنلاین"
+                :label="t('project.demo_button')"
                 :href="project.demo_url"
                 target="_blank"
                 class="glow-button full-width q-py-sm"
@@ -68,7 +72,7 @@
                 outline
                 rounded
                 icon-right="code"
-                label="مشاهده سورس در گیت‌هاب"
+                :label="t('project.source_button')"
                 :href="project.github_url"
                 target="_blank"
                 class="full-width q-py-sm btn-muted-outline"
@@ -84,7 +88,7 @@
           <div class="cover-content-inner flex flex-center column text-center q-pa-lg">
             <q-icon name="devices" size="64px" color="white" class="q-mb-md" />
             <div class="text-h5 text-weight-bold text-white">{{ project.title }}</div>
-            <div class="text-caption text-blue-2 q-mt-xs">معماری و توسعه فول‌استک</div>
+            <div class="text-caption text-blue-2 q-mt-xs">{{ t('project.cover_caption') }}</div>
           </div>
         </div>
       </section>
@@ -97,14 +101,14 @@
             <section class="q-mb-xl">
               <h2 class="section-heading text-weight-bold text-app q-mb-md">
                 <span class="heading-accent"></span>
-                صورت مسئله و اهداف پروژه
+                {{ t('project.problem_heading') }}
               </h2>
               <div class="text-body1 text-app-muted line-relaxed">
                 {{ project.summary }}
               </div>
             </section>
 
-            <!-- Rich Content Area -->
+            <!-- Rich Content Area — the case study is translated HTML from the dictionary -->
             <section class="case-study-html line-relaxed">
               <div v-html="project.description"></div>
             </section>
@@ -113,7 +117,7 @@
             <section v-if="project.media && project.media.length" class="q-mt-xl">
               <h2 class="section-heading text-weight-bold text-app q-mb-lg">
                 <span class="heading-accent"></span>
-                تصاویر و اسکرین‌شات‌های محیط برنامه
+                {{ t('project.gallery_heading') }}
               </h2>
 
               <div class="row q-col-gutter-md">
@@ -138,33 +142,37 @@
         <!-- Sticky Sidebar Column (30%) -->
         <aside class="col-12 col-md-4 sticky-sidebar">
           <div class="glass-panel q-pa-lg q-mb-md">
-            <h3 class="text-subtitle1 text-weight-bold text-app q-mb-md">مشخصات و متاداده</h3>
+            <h3 class="text-subtitle1 text-weight-bold text-app q-mb-md">
+              {{ t('project.meta_heading') }}
+            </h3>
 
             <div class="meta-list">
               <div class="meta-row">
-                <span class="meta-title">نقش در پروژه</span>
-                <span class="meta-val">توسعه‌دهنده فول‌استک</span>
+                <span class="meta-title">{{ t('project.meta_role') }}</span>
+                <span class="meta-val">{{ t('project.meta_role_value') }}</span>
               </div>
               <div class="meta-row">
-                <span class="meta-title">موقعیت معماری</span>
-                <span class="meta-val dir-ltr">Monolith / REST API</span>
+                <span class="meta-title">{{ t('project.meta_architecture') }}</span>
+                <span class="meta-val dir-ltr">{{ t('project.meta_architecture_value') }}</span>
               </div>
               <div class="meta-row">
-                <span class="meta-title">تکنولوژی‌های اصلی</span>
-                <span class="meta-val dir-ltr">Laravel, Vue, MySQL</span>
+                <span class="meta-title">{{ t('project.meta_stack') }}</span>
+                <span class="meta-val dir-ltr">{{ t('project.meta_stack_value') }}</span>
               </div>
               <div class="meta-row">
-                <span class="meta-title">دسترسی دمو</span>
-                <span class="meta-val text-teal-4">{{
-                  project.demo_url ? 'آنلاین' : 'خصوصی'
-                }}</span>
+                <span class="meta-title">{{ t('project.meta_demo') }}</span>
+                <span class="meta-val text-teal-4">
+                  {{
+                    t(project.demo_url ? 'project.meta_demo_online' : 'project.meta_demo_private')
+                  }}
+                </span>
               </div>
             </div>
 
             <q-separator class="q-my-md app-hairline opacity-10" />
 
             <div class="row items-center justify-between">
-              <span class="text-caption text-app-muted">اشتراک‌گذاری:</span>
+              <span class="text-caption text-app-muted">{{ t('project.share') }}</span>
               <div class="row q-gutter-xs">
                 <q-btn
                   flat
@@ -172,12 +180,21 @@
                   dense
                   icon="content_copy"
                   class="icon-ghost-btn"
+                  :aria-label="t('project.share_copy')"
                   @click="copyProjectLink"
                 >
-                  <q-tooltip>کپی لینک</q-tooltip>
+                  <q-tooltip>{{ t('project.share_copy') }}</q-tooltip>
                 </q-btn>
-                <q-btn flat round dense icon="share" class="icon-ghost-btn" @click="shareProject">
-                  <q-tooltip>اشتراک‌گذاری</q-tooltip>
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="share"
+                  class="icon-ghost-btn"
+                  :aria-label="t('project.share_action')"
+                  @click="shareProject"
+                >
+                  <q-tooltip>{{ t('project.share_action') }}</q-tooltip>
                 </q-btn>
               </div>
             </div>
@@ -187,16 +204,16 @@
           <div class="glass-panel q-pa-lg text-center cta-sidebar-card">
             <q-icon name="rocket_launch" size="32px" class="text-neon q-mb-xs" />
             <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
-              پروژه‌ای مشابه دارید؟
+              {{ t('project.cta_title') }}
             </div>
             <p class="text-caption text-app-muted q-mb-md">
-              برای بررسی نیازمندی‌ها و تخمین زمان پیاده‌سازی گفتگو کنیم.
+              {{ t('project.cta_body') }}
             </p>
             <q-btn
               unelevated
               rounded
               color="primary"
-              label="درخواست همکاری"
+              :label="t('project.cta_button')"
               to="/#contact"
               class="full-width glow-button q-py-xs"
             />
@@ -212,24 +229,26 @@
             @click="navigateToOther('analytics-dashboard')"
           >
             <div class="text-caption text-app-muted row items-center q-mb-xs">
-              <q-icon name="arrow_forward" size="14px" class="q-ml-xs" />
-              پروژه قبلی
+              <q-icon :name="backIcon" size="14px" class="q-ml-xs" />
+              {{ t('project.prev_project') }}
             </div>
-            <div class="text-subtitle2 text-weight-bold text-app">داشبورد آنالیز و فروش</div>
+            <div class="text-subtitle2 text-weight-bold text-app">
+              {{ t('projects.analytics_title') }}
+            </div>
           </div>
         </div>
 
-        <div class="col-12 col-sm-6 text-left">
+        <div class="col-12 col-sm-6 text-end">
           <div
             class="nav-project-card glass-panel q-pa-md cursor-pointer"
             @click="navigateToOther('marketplace-app')"
           >
             <div class="text-caption text-app-muted row items-center justify-end q-mb-xs">
-              پروژه بعدی
-              <q-icon name="arrow_back" size="14px" class="q-mr-xs" />
+              {{ t('project.next_project') }}
+              <q-icon :name="crumbIcon" size="14px" class="q-mr-xs" />
             </div>
-            <div class="text-subtitle2 text-weight-bold text-app text-right">
-              پلتفرم چندفروشندگی آنلاین
+            <div class="text-subtitle2 text-weight-bold text-app text-end">
+              {{ t('projects.marketplace_title') }}
             </div>
           </div>
         </div>
@@ -240,21 +259,34 @@
     <q-dialog v-model="lightboxOpen">
       <q-card class="app-glass-strong app-shadow q-pa-md text-center" style="min-width: 320px">
         <q-icon name="image" size="100px" class="text-neon q-my-lg" />
-        <div class="text-caption text-app-muted">پیش‌نمایش تصویر در محیط تست</div>
+        <div class="text-caption text-app-muted">{{ t('project.lightbox_caption') }}</div>
       </q-card>
     </q-dialog>
   </q-page>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
+import { useLocale } from '@/composables/useLocale'
 
 const router = useRouter()
 const $q = useQuasar()
+const { t } = useI18n({ useScope: 'global' })
+const { isRtl } = useLocale()
 
 const lightboxOpen = ref(false)
+
+/**
+ * Direction-aware navigation icons. The page flips between RTL and LTR with the
+ * locale, and mirrored glyphs (`chevron_left`, `arrow_back`) point the wrong
+ * way once it does, so the icon set is derived from the active direction
+ * instead of being hard-coded.
+ */
+const crumbIcon = computed(() => (isRtl.value ? 'chevron_left' : 'chevron_right'))
+const backIcon = computed(() => (isRtl.value ? 'arrow_forward' : 'arrow_back'))
 
 function openLightbox() {
   lightboxOpen.value = true
@@ -262,7 +294,7 @@ function openLightbox() {
 
 function copyProjectLink() {
   navigator.clipboard?.writeText(window.location.href)
-  $q.notify({ type: 'positive', message: 'لینک پروژه کپی شد.' })
+  $q.notify({ type: 'positive', message: t('project.link_copied') })
 }
 
 function shareProject() {
@@ -277,17 +309,46 @@ function navigateToOther(slug) {
   router.push(`/project/${slug}`)
 }
 
+/**
+ * Case-study content. Everything text-shaped is a getter over the dictionary,
+ * so the whole page re-renders in the new language the moment the locale
+ * changes — including the `v-html` body, which is translated HTML.
+ */
 const project = reactive({
   id: 1,
-  title: 'سامانه یکپارچه مدیریت سفارشات و انبارداری',
   slug: 'order-management-system',
-  summary:
-    'طراحی و پیاده‌سازی پلتفرم متمرکز پردازش بلادرنگ سفارش‌ها، انبارداری هوشمند و صدور خودکار فاکتورهای مالی با قابلیت تحمل ترافیک و مقیاس‌پذیری بالا.',
   gradient: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #6366f1 100%)',
   is_featured: true,
   is_published: true,
   demo_url: 'https://example.com',
   github_url: 'https://github.com/example/order-system',
+
+  get title() {
+    return t('project.title')
+  },
+
+  get summary() {
+    return t('project.summary')
+  },
+
+  get description() {
+    return `
+      <h3>${t('project.body_challenges_heading')}</h3>
+      <p>${t('project.body_challenges')}</p>
+
+      <h3>${t('project.body_solution_heading')}</h3>
+      <ul>
+        <li>${t('project.body_solution_1')}</li>
+        <li>${t('project.body_solution_2')}</li>
+        <li>${t('project.body_solution_3')}</li>
+      </ul>
+
+      <h3>${t('project.body_results_heading')}</h3>
+      <p>${t('project.body_results')}</p>
+    `
+  },
+
+  // Technology names are proper nouns and stay untranslated by design.
   skills: [
     { id: 1, name: 'Laravel 11', icon: 'dns' },
     { id: 2, name: 'Vue.js 3', icon: 'code' },
@@ -296,24 +357,16 @@ const project = reactive({
     { id: 5, name: 'Redis Cache', icon: 'memory' },
     { id: 6, name: 'Docker', icon: 'inventory_2' },
   ],
-  description: `
-    <h3>چالش‌های اصلی پروژه</h3>
-    <p>در مدل قدیمی این سیستم به دلیل تجمیع کوئری‌های سنگین گزارش‌گیری بر روی دیتابیس تراکنشی و قفل شدن جداول هنگام پردازش همزمان سفارش‌ها، زمان پاسخ‌دهی سرور به شدت افت می‌کرد.</p>
 
-    <h3>راهکار فنی و معماری پیاده‌سازی‌شده</h3>
-    <ul>
-      <li>تفکیک لایه گزارش‌گیری با بهره‌گیری از جاب‌های پس‌زمینه در صف‌های Redis (Laravel Queues).</li>
-      <li>طراحی معماری دیتابیس نرمال‌شده همراه با ایندکس‌گذاری دقیق روی ستون‌های پرتکرار جستجو.</li>
-      <li>پیاده‌سازی فرانت‌اند ماژولار و بسیار سبک با فریم‌ورک کوازار و مدیریت حالت با Pinia.</li>
-    </ul>
-
-    <h3>نتایج و دستاوردهای عددی</h3>
-    <p>پس از پیاده‌سازی و ریفکتور معماری، زمان پاسخ‌دهی APIها از ۱.۸ ثانیه به کمتر از ۱۲۰ میلی‌ثانیه کاهش یافت و فرآیند ثبت و صدور اسناد انبار به شکل کاملاً آنی درآمد.</p>
-  `,
   media: [
-    { file_path: '', alt_text: 'داشبورد نمودارهای فروش بلادرنگ' },
-    { file_path: '', alt_text: 'فرم پیشرفته مدیریت آیتم‌های فاکتور' },
-  ],
+    { file_path: '', altKey: 'project.media_dashboard' },
+    { file_path: '', altKey: 'project.media_invoice_form' },
+  ].map((item) => ({
+    ...item,
+    get alt_text() {
+      return t(item.altKey)
+    },
+  })),
 })
 </script>
 
