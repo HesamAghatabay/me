@@ -13,13 +13,13 @@ class ViewProject extends ViewRecord
 
     public function getTitle(): string
     {
-        return 'مشاهده پروژه: ' . $this->record->title;
+        $title = $this->record->getTranslation('title', 'fa') ?? $this->record->title;
+        return 'مشاهده پروژه: ' . $title;
     }
 
     protected function getHeaderActions(): array
     {
         return [
-            // باز کردن لینک دمو در تب جدید (در صورت وجود)
             Action::make('open_demo')
                 ->label('مشاهده دموی آنلاین')
                 ->icon('heroicon-o-arrow-top-right-on-square')
@@ -28,12 +28,10 @@ class ViewProject extends ViewRecord
                 ->openUrlInNewTab()
                 ->visible(fn (): bool => filled($this->record->demo_url)),
 
-            // ویرایش پروژه
             EditAction::make()
                 ->label('ویرایش پروژه')
                 ->icon('heroicon-o-pencil-square'),
 
-            // دکمه بازگشت به لیست
             Action::make('back')
                 ->label('بازگشت به لیست')
                 ->icon('heroicon-o-arrow-right')

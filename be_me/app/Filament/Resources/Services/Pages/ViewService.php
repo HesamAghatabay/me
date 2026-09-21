@@ -13,7 +13,8 @@ class ViewService extends ViewRecord
 
     public function getTitle(): string
     {
-        return 'مشاهده خدمت: ' . $this->record->title;
+        $title = $this->record->getTranslation('title', 'fa') ?? $this->record->title;
+        return 'مشاهده خدمت: ' . $title;
     }
 
     protected function getHeaderActions(): array

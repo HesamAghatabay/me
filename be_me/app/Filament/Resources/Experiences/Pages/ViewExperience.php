@@ -13,7 +13,10 @@ class ViewExperience extends ViewRecord
 
     public function getTitle(): string
     {
-        return 'مشاهده سابقه: ' . $this->record->role . ' در ' . $this->record->company;
+        $role = $this->record->getTranslation('role', 'fa') ?? $this->record->role;
+        $company = $this->record->getTranslation('company', 'fa') ?? $this->record->company;
+
+        return 'مشاهده سابقه: ' . $role . ' در ' . $company;
     }
 
     protected function getHeaderActions(): array

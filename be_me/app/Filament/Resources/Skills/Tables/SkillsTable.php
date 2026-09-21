@@ -23,6 +23,11 @@ class SkillsTable
     {
         return $table
             ->columns([
+                TextColumn::make('icon')
+                    ->label('آیکون')
+                    ->badge()
+                    ->color('gray'),
+
                 TextColumn::make('name')
                     ->label('نام مهارت')
                     ->searchable()

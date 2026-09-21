@@ -44,8 +44,14 @@ class SkillForm
 
                 // ستون کناری تنظیمات و ویترین
                 Section::make('تنظیمات ویترین')
-                    ->description('موقعیت و شیوه نمایش در سایت')
+                    ->description('آیکون، موقعیت و شیوه نمایش در سایت')
                     ->schema([
+                        TextInput::make('icon')
+                            ->label('نام آیکون (Material/Quasar)')
+                            ->placeholder('مثلاً: code یا storage')
+                            ->helperText('نام آیکون متریال برای نمایش نشان مهارت')
+                            ->maxLength(60),
+
                         TextInput::make('sort_order')
                             ->label('ترتیب نمایش')
                             ->numeric()

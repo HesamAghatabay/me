@@ -15,10 +15,11 @@ class ViewSkill extends ViewRecord
      * تنظیم عنوان صفحه بر اساس نام رکورد فعلی
      */
     public function getTitle(): string
-    {
-        return 'مشاهده مهارت: ' . $this->record->name;
-    }
+{
+    $name = $this->record->getTranslation('name', 'fa') ?? $this->record->name;
 
+    return 'مشاهده مهارت: ' . $name;
+}
     protected function getHeaderActions(): array
     {
         return [

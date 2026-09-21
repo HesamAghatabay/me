@@ -35,13 +35,15 @@ class ProjectForm
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(function (Get $get, Set $set, ?string $state) {
                                         if (empty($get('slug')) && filled($state)) {
-                                            $set('slug', Str::slug($state));
+                                            // ساخت اسلاگ با پشتیبانی از حروف یونیکد/فارسی
+                                            $set('slug', Str::slug($state, '-', null));
                                         }
                                     }),
 
                                 TextInput::make('slug')
                                     ->label('اسلاگ (URL)')
                                     ->placeholder('project-slug')
+                                    ->helperText('ترجیحاً نام انگلیسی کوتاه با خط تیره وارد کنید')
                                     ->required()
                                     ->unique(ignoreRecord: true)
                                     ->maxLength(180),
@@ -51,7 +53,7 @@ class ProjectForm
                                     ->placeholder('یک یا دو خط معرفی شاخص...')
                                     ->required()
                                     ->rows(3)
-                                    ->maxLength(250)
+                                    ->maxLength(350)
                                     ->columnSpanFull(),
 
                                 RichEditor::make('description')
@@ -121,7 +123,8 @@ class ProjectForm
                                 Select::make('skills')
                                     ->label('تکنولوژی‌ها و ابزارها')
                                     ->placeholder('انتخاب استک فنی...')
-                                    ->relationship('skills', 'name')
+                                    // نمایش فیلد JSON به زبان فارسی در منوی انتخابی
+                                    ->relationship('skills', 'name->fa')
                                     ->multiple()
                                     ->preload()
                                     ->searchable()

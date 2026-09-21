@@ -33,10 +33,16 @@ class ServiceForm
                     ])
                     ->columnSpan(2),
 
-                // ستون کناری: تنظیمات و اولویت‌بندی
+                // ستون کناری: تنظیمات، آیکون و اولویت‌بندی
                 Section::make('تنظیمات نمایش')
-                    ->description('موقعیت قرارگیری در کارت‌های صفحه اصلی')
+                    ->description('آیکون و موقعیت قرارگیری در کارت‌های صفحه اصلی')
                     ->schema([
+                        TextInput::make('icon')
+                            ->label('نام آیکون (Material/Quasar)')
+                            ->placeholder('مثلاً: api یا code یا speed')
+                            ->helperText('نام آیکون متریال برای نمایش روی کارت خدمت')
+                            ->maxLength(80),
+
                         TextInput::make('sort_order')
                             ->label('ترتیب نمایش')
                             ->placeholder('0')

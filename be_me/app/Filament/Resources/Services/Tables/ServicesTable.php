@@ -21,6 +21,11 @@ class ServicesTable
     {
         return $table
             ->columns([
+                TextColumn::make('icon')
+                    ->label('آیکون')
+                    ->badge()
+                    ->color('gray'),
+
                 TextColumn::make('title')
                     ->label('عنوان خدمت')
                     ->searchable()
@@ -29,7 +34,7 @@ class ServicesTable
                 TextColumn::make('description')
                     ->label('توضیحات')
                     ->limit(60)
-                    ->tooltip(fn ($record): string => $record->description),
+                    ->tooltip(fn ($record): string => (string) ($record->getTranslation('description', 'fa') ?? $record->description)),
 
                 TextColumn::make('sort_order')
                     ->label('ترتیب')
