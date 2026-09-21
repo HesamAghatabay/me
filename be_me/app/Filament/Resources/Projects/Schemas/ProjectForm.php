@@ -55,16 +55,8 @@ class ProjectForm
                         RichEditor::make('description')
                             ->label('مطالعه موردی و تشریح فنی (Case Study)')
                             ->placeholder('توضیحات کامل، چالش‌های فنی و دستاوردها...')
+                            ->json(false)
                             ->default('')
-                            ->formatStateUsing(function ($record, $state): string {
-                                if ($record) {
-                                    $val = $record->getTranslation('description', 'fa', false);
-                                    return is_string($val) ? $val : '';
-                                }
-
-                                return is_string($state) ? $state : '';
-                            })
-                            ->dehydrateStateUsing(fn($state): string => is_string($state) ? $state : '')
                             ->columnSpanFull(),
 
                         Repeater::make('media')
@@ -73,8 +65,10 @@ class ProjectForm
                             ->schema([
                                 FileUpload::make('file_path')
                                     ->label('فایل تصویر')
-                                    ->image()
+                                    ->disk('public')
                                     ->directory('projects')
+                                    ->visibility('public')
+                                    ->image()
                                     ->imageEditor()
                                     ->maxSize(5120)
                                     ->required(),
@@ -88,6 +82,22 @@ class ProjectForm
                                     ->label('تصویر کاور اصلی')
                                     ->default(false),
                             ])
+                            ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
+                                if (! empty($data['file_path'])) {
+                                    $data['file_name'] = basename($data['file_path']);
+                                    $data['mime_type'] = 'image/' . pathinfo($data['file_path'], PATHINFO_EXTENSION);
+                                }
+
+                                return $data;
+                            })
+                            ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
+                                if (! empty($data['file_path'])) {
+                                    $data['file_name'] = basename($data['file_path']);
+                                    $data['mime_type'] = 'image/' . pathinfo($data['file_path'], PATHINFO_EXTENSION);
+                                }
+
+                                return $data;
+                            })
                             ->columns(3)
                             ->orderColumn('sort_order')
                             ->collapsible()
