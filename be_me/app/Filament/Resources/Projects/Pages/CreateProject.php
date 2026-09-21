@@ -6,11 +6,17 @@ use App\Filament\Resources\Projects\ProjectResource;
 use App\Models\Project;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use App\Jobs\TranslateModelJob;
 
 class CreateProject extends CreateRecord
 {
     protected static string $resource = ProjectResource::class;
 
+
+    protected function afterCreate(): void
+    {
+        TranslateModelJob::dispatch($this->record);
+    }
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

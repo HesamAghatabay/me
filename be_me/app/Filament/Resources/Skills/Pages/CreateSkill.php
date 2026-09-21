@@ -6,11 +6,16 @@ use App\Filament\Resources\Skills\SkillResource;
 use App\Models\Skill;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use App\Jobs\TranslateModelJob;
 
 class CreateSkill extends CreateRecord
 {
     protected static string $resource = SkillResource::class;
 
+    protected function afterCreate(): void
+    {
+        TranslateModelJob::dispatch($this->record);
+    }
     /**
      * هدایت به صفحه لیست مهارت‌ها بعد از ایجاد موفق
      */

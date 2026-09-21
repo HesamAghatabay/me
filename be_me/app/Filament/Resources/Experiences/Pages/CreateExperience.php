@@ -6,11 +6,17 @@ use App\Filament\Resources\Experiences\ExperienceResource;
 use App\Models\Experience;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use App\Jobs\TranslateModelJob;
 
 class CreateExperience extends CreateRecord
 {
     protected static string $resource = ExperienceResource::class;
 
+
+    protected function afterCreate(): void
+    {
+        TranslateModelJob::dispatch($this->record);
+    }
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

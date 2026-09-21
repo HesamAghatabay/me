@@ -6,11 +6,16 @@ use App\Filament\Resources\Services\ServiceResource;
 use App\Models\Service;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use App\Jobs\TranslateModelJob;
 
 class CreateService extends CreateRecord
 {
     protected static string $resource = ServiceResource::class;
 
+    protected function afterCreate(): void
+    {
+        TranslateModelJob::dispatch($this->record);
+    }
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

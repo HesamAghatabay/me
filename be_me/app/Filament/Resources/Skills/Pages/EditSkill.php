@@ -10,11 +10,16 @@ use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
+use App\Jobs\TranslateModelJob;
 
 class EditSkill extends EditRecord
 {
     protected static string $resource = SkillResource::class;
 
+    protected function afterSave(): void
+    {
+        TranslateModelJob::dispatch($this->record);
+    }
     protected function getHeaderActions(): array
     {
         return [
