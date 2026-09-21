@@ -7,16 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Translatable\HasTranslations;
 
 class Skill extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTranslations;
 
     protected $fillable = [
         'name',
         'category',
+        'icon',       // نام آیکون متریال/کوازار در صورت استفاده از ستون متنی
         'in_ticker',
         'sort_order',
+    ];
+
+    /**
+     * فیلدهایی که دارای ترجمه JSON هستند.
+     * با پکیج Spatie، ذخیره‌سازی و بازیابی چندزبانه روی این ستون‌ها خودکار است.
+     */
+    public array $translatable = [
+        'name',
+        'category', // اگر می‌خواهی دسته‌بندی هم توسط هوش مصنوعی ترجمه شود
     ];
 
     protected $casts = [
@@ -29,7 +40,10 @@ class Skill extends Model
         return $this->belongsToMany(Project::class);
     }
 
-    public function icon(): MorphOne
+    /**
+     * در صورتی که برای اسکیل فایل SVG/PNG به عنوان مدیا آپلود شود.
+     */
+    public function iconMedia(): MorphOne
     {
         return $this->morphOne(Media::class, 'mediable');
     }

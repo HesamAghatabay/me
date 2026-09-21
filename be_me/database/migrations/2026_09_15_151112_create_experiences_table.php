@@ -10,13 +10,13 @@ return new class extends Migration
     {
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
-            $table->string('role', 150);
-            $table->string('company', 150);
-            $table->string('employment_type', 50)->nullable();
+            $table->json('role');                               // دوزبانه (fa, en)
+            $table->json('company');                            // دوزبانه (fa, en)
+            $table->json('employment_type')->nullable();        // دوزبانه (تمام‌وقت / Full-time)
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->boolean('is_current')->default(false);
-            $table->text('description')->nullable();
+            $table->json('description')->nullable();            // دوزبانه (شرح وظایف)
             $table->integer('sort_order')->default(0);
             $table->timestamps();
             $table->softDeletes();

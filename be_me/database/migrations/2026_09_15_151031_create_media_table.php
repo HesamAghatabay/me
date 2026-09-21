@@ -15,7 +15,8 @@ return new class extends Migration
             $table->string('file_name');
             $table->string('mime_type', 100)->nullable();
             $table->unsignedInteger('file_size')->nullable();
-            $table->boolean('is_primary')->default(false);
+            $table->json('alt_text')->nullable(); // چندزبانه (fa, en) برای سئو و فرانت‌اند
+            $table->boolean('is_primary')->default(false)->index();
             $table->integer('sort_order')->default(0);
             $table->timestamps();
             $table->softDeletes();

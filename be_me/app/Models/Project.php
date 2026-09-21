@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Translatable\HasTranslations;
 
 class Project extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTranslations;
 
     protected $fillable = [
         'title',
@@ -23,6 +24,15 @@ class Project extends Model
         'is_featured',
         'is_published',
         'sort_order',
+    ];
+
+    /**
+     * فیلدهایی که در دیتابیس JSON هستند و ترجمه Spatie را فعال می‌کنند.
+     */
+    public array $translatable = [
+        'title',
+        'summary',
+        'description',
     ];
 
     protected $casts = [

@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Translatable\HasTranslations;
 
 class Experience extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTranslations;
 
     protected $fillable = [
         'role',
@@ -19,6 +20,16 @@ class Experience extends Model
         'is_current',
         'description',
         'sort_order',
+    ];
+
+    /**
+     * فیلدهای چندزبانه برای ترجمه خودکار با هوش مصنوعی و Spatie.
+     */
+    public array $translatable = [
+        'role',
+        'company',
+        'employment_type',
+        'description',
     ];
 
     protected $casts = [

@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Translatable\HasTranslations;
 
 class Media extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTranslations;
 
     protected $fillable = [
         'mediable_id',
@@ -18,8 +19,16 @@ class Media extends Model
         'file_name',
         'mime_type',
         'file_size',
+        'alt_text',
         'is_primary',
         'sort_order',
+    ];
+
+    /**
+     * فیلدهای چندزبانه برای پشتیبانی از سئو در هر دو زبان
+     */
+    public array $translatable = [
+        'alt_text',
     ];
 
     protected $casts = [
