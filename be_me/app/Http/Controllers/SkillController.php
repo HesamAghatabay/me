@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Skill;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SkillController extends Controller
@@ -10,9 +11,21 @@ class SkillController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        //
+        $skills = Skill::query()
+            ->when($request->boolean('ticker'), fn($query) => $query->where('in_ticker', true))
+            ->orderBy('sort_order')
+            ->get()
+            ->map(fn($skill) => [
+                'id' => $skill->id,
+                'name' => $skill->getTranslations('name'),
+                'category' => $skill->category,
+                'icon' => $skill->icon,
+                'in_ticker' => (bool) $skill->in_ticker,
+            ]);
+
+        return response()->json($skills);
     }
 
     /**

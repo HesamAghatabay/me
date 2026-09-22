@@ -85,8 +85,8 @@
       <section class="ticker-wrapper q-my-xl">
         <div class="ticker-scroll">
           <div v-for="skill in tickerSkills" :key="skill.id" class="ticker-pill">
-            <q-icon :name="skill.icon" size="18px" class="q-ml-xs text-neon" />
-            <span>{{ skill.name }}</span>
+            <!-- <q-icon :name="skill.icon" size="18px" class="q-ml-xs text-neon" /> -->
+            <span>{{ localize(skill.name) }}</span>
           </div>
         </div>
       </section>
@@ -128,32 +128,45 @@
           <div v-for="prj in projects" :key="prj.id" class="col-12 col-sm-6 col-md-4">
             <q-card flat class="glass-card app-hover-lift project-card flex column justify-between">
               <div>
-                <div class="project-cover flex flex-center" :style="{ background: prj.gradient }">
-                  <q-icon name="devices" size="40px" color="white" />
+                <!-- کاور بازطراحی‌شده با فریم و انیمیشن هوور -->
+                <div class="project-cover-container">
+                  <q-img
+                    v-if="prj.cover_image"
+                    :src="prj.cover_image"
+                    :alt="prj.title"
+                    fit="contain"
+                    class="project-cover-img"
+                  >
+                    <template #loading>
+                      <q-spinner-dots color="primary" />
+                    </template>
+                  </q-img>
+
+                  <div v-else class="project-cover-placeholder flex flex-center">
+                    <q-icon name="devices" size="48px" class="text-neon" />
+                  </div>
+
+                  <!-- گرادینت روی عکس برای ترکیب رنگ با کارت -->
+                  <div class="project-cover-overlay"></div>
+
+                  <!-- نشان ویژه -->
                   <span v-if="prj.is_featured" class="featured-badge">
+                    <q-icon name="star" size="13px" class="q-mr-xs text-amber" />
                     {{ t('projects.featured') }}
                   </span>
                 </div>
-                <div class="q-pa-md">
-                  <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
-                    {{ t(prj.titleKey) }}
-                  </div>
-                  <p class="text-caption text-app-muted line-clamp-3 q-mb-md">
-                    {{ t(prj.summaryKey) }}
-                  </p>
 
-                  <div class="row q-gutter-xs q-mb-md">
-                    <q-badge
-                      v-for="sk in prj.skills"
-                      :key="sk.id"
-                      color="blue-10"
-                      text-color="blue-2"
-                      rounded
-                      class="q-px-sm"
-                    >
-                      {{ sk.name }}
-                    </q-badge>
-                  </div>
+                <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
+                  {{ localize(prj.title) }}
+                </div>
+                <p class="text-caption text-app-muted line-clamp-3 q-mb-md">
+                  {{ localize(prj.summary) }}
+                </p>
+
+                <div class="row q-gutter-xs q-mb-md">
+                  <q-badge v-for="sk in prj.skills" :key="sk.id" class="tech-badge">
+                    {{ localize(sk.name) }}
+                  </q-badge>
                 </div>
               </div>
 
@@ -209,10 +222,10 @@
                 <q-icon :name="srv.icon" size="28px" color="white" />
               </div>
               <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
-                {{ t(srv.titleKey) }}
+                {{ localize(srv.title) }}
               </div>
               <div class="text-caption text-app-muted line-relaxed">
-                {{ t(srv.descriptionKey) }}
+                {{ localize(srv.description) }}
               </div>
             </q-card>
           </div>
@@ -234,12 +247,12 @@
             <q-timeline-entry
               v-for="exp in experiences"
               :key="exp.id"
-              :title="t(exp.roleKey)"
-              :subtitle="`${t(exp.companyKey)} | ${experiencePeriod(exp)}`"
+              :title="localize(exp.role)"
+              :subtitle="`${localize(exp.company)} | ${experiencePeriod(exp)}`"
             >
               <q-card flat class="glass-card q-pa-md q-mt-sm">
                 <div class="text-body2 text-app-muted line-relaxed">
-                  {{ t(exp.descriptionKey) }}
+                  {{ localize(exp.description) }}
                 </div>
               </q-card>
             </q-timeline-entry>
@@ -384,6 +397,7 @@
                   :label="t('contact.form_submit')"
                   icon-right="send"
                   type="submit"
+                  :loading="isSubmitting"
                   class="full-width q-py-sm glow-button submit-btn"
                 />
               </q-form>
@@ -396,32 +410,85 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 import { useLocale } from '@/composables/useLocale'
+import { api } from '@/boot/axios'
+import { useTheme } from '@/composables/useTheme'
 
+const { isDark } = useTheme()
 const router = useRouter()
 const $q = useQuasar()
-const { t } = useI18n({ useScope: 'global' })
+const { t, locale } = useI18n({ useScope: 'global' })
 const { isRtl } = useLocale()
 
-/**
- * Validation message is reactive: it must follow the locale like everything
- * else, so the rule reads `t()` at validation time instead of capturing a
- * translated string once.
- */
 const requiredRule = (value) => !!value || t('contact.required')
-
-/** Social links are language-independent; only their labels are translated. */
+// دریافت متن بر اساس زبان فعال سیستم
+function localize(field) {
+  if (!field) return ''
+  if (typeof field === 'string') return field
+  return field[locale.value] || field.fa || field.en || ''
+}
 const socials = [
   { labelKey: 'socials.github', icon: 'code', href: 'https://github.com' },
   { labelKey: 'socials.linkedin', icon: 'work', href: 'https://linkedin.com' },
   { labelKey: 'socials.telegram', icon: 'send', href: 'https://telegram.org' },
 ]
 
+const stats = [
+  { labelKey: 'stats.projects', display: '+25' },
+  { labelKey: 'stats.years', display: '+4' },
+  { labelKey: 'stats.satisfaction', display: '100%' },
+  { labelKey: 'stats.quality', display: 'A+' },
+]
+
 const form = reactive({ name: '', email: '', subject: '', message: '' })
+const isSubmitting = ref(false)
+
+// وضعیت‌های داده از API
+const tickerSkills = ref([])
+const projects = ref([])
+const services = ref([])
+const experiences = ref([])
+const loading = ref(true)
+
+async function fetchPortfolioData() {
+  loading.value = true
+  api.defaults.headers.common['Accept-Language'] = locale.value
+
+  try {
+    const [skillsRes, projectsRes, servicesRes, experiencesRes] = await Promise.all([
+      api.get('/skills?ticker=1'),
+      api.get('/projects'),
+      api.get('/services'),
+      api.get('/experiences'),
+    ])
+
+    tickerSkills.value = skillsRes.data
+    projects.value = projectsRes.data
+    services.value = servicesRes.data
+    experiences.value = experiencesRes.data
+  } catch (error) {
+    $q.notify({
+      type: 'negative',
+      message: 'خطا در برقراری ارتباط با سرور',
+    })
+    console.error('Error fetching portfolio data:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+// واکنش به تغییر زبان کاربر
+// watch(locale, () => {
+//   fetchPortfolioData()
+// })
+
+onMounted(() => {
+  fetchPortfolioData()
+})
 
 function scrollTo(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -435,131 +502,29 @@ function downloadResume() {
   $q.notify({ type: 'info', message: t('contact.resume_ready') })
 }
 
-function submitContact() {
-  $q.notify({ type: 'positive', message: t('contact.success') })
-  form.name = ''
-  form.email = ''
-  form.subject = ''
-  form.message = ''
+async function submitContact() {
+  isSubmitting.value = true
+  try {
+    await api.post('/messages', form)
+
+    $q.notify({ type: 'positive', message: t('contact.success') })
+    form.name = ''
+    form.email = ''
+    form.subject = ''
+    form.message = ''
+  } catch (error) {
+    const errorMsg = error.response?.data?.message || 'خطا در ارسال پیام'
+    $q.notify({ type: 'negative', message: errorMsg })
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
-/** Numbers stay locale-neutral so they read correctly in both languages. */
-const stats = [
-  { labelKey: 'stats.projects', display: '+25' },
-  { labelKey: 'stats.years', display: '+4' },
-  { labelKey: 'stats.satisfaction', display: '100%' },
-  { labelKey: 'stats.quality', display: 'A+' },
-]
-
-const tickerSkills = ref([
-  { id: 1, name: 'Laravel', icon: 'dns' },
-  { id: 2, name: 'Vue.js', icon: 'code' },
-  { id: 3, name: 'Quasar', icon: 'dashboard' },
-  { id: 4, name: 'MySQL', icon: 'storage' },
-  { id: 5, name: 'Redis', icon: 'memory' },
-  { id: 6, name: 'Tailwind CSS', icon: 'palette' },
-  { id: 7, name: 'Docker', icon: 'inventory_2' },
-  { id: 8, name: 'Git', icon: 'commit' },
-])
-
-const projects = ref([
-  {
-    id: 1,
-    titleKey: 'projects.order_title',
-    summaryKey: 'projects.order_summary',
-    slug: 'order-management',
-    gradient: 'linear-gradient(135deg, #1e3a8a, #3b82f6)',
-    is_featured: true,
-    github_url: 'https://github.com',
-    demo_url: 'https://example.com',
-    skills: [
-      { id: 1, name: 'Laravel' },
-      { id: 2, name: 'Vue.js' },
-      { id: 3, name: 'MySQL' },
-    ],
-  },
-  {
-    id: 2,
-    titleKey: 'projects.analytics_title',
-    summaryKey: 'projects.analytics_summary',
-    slug: 'analytics-dashboard',
-    gradient: 'linear-gradient(135deg, #312e81, #6366f1)',
-    is_featured: true,
-    github_url: 'https://github.com',
-    demo_url: null,
-    skills: [
-      { id: 2, name: 'Vue 3' },
-      { id: 4, name: 'Tailwind' },
-    ],
-  },
-  {
-    id: 3,
-    titleKey: 'projects.marketplace_title',
-    summaryKey: 'projects.marketplace_summary',
-    slug: 'marketplace-app',
-    gradient: 'linear-gradient(135deg, #065f46, #10b981)',
-    is_featured: false,
-    github_url: null,
-    demo_url: 'https://example.com',
-    skills: [
-      { id: 1, name: 'Laravel' },
-      { id: 5, name: 'Redis' },
-    ],
-  },
-])
-
-const services = ref([
-  {
-    id: 1,
-    titleKey: 'services.web_title',
-    descriptionKey: 'services.web_description',
-    icon: 'web',
-  },
-  {
-    id: 2,
-    titleKey: 'services.api_title',
-    descriptionKey: 'services.api_description',
-    icon: 'api',
-  },
-  {
-    id: 3,
-    titleKey: 'services.perf_title',
-    descriptionKey: 'services.perf_description',
-    icon: 'speed',
-  },
-])
-
-const experiences = ref([
-  {
-    id: 1,
-    roleKey: 'experience.senior_role',
-    companyKey: 'experience.senior_company',
-    startKey: 'experience.senior_start',
-    endKey: null,
-    is_current: true,
-    descriptionKey: 'experience.senior_description',
-  },
-  {
-    id: 2,
-    roleKey: 'experience.fullstack_role',
-    companyKey: 'experience.fullstack_company',
-    startKey: 'experience.fullstack_start',
-    endKey: 'experience.fullstack_end',
-    is_current: false,
-    descriptionKey: 'experience.fullstack_description',
-  },
-])
-
-/**
- * Renders the "from – to" half of a timeline subtitle. Both the range wording
- * and the open-ended case differ per language, so they come from the
- * dictionary rather than being concatenated from raw dates. `t()` is called on
- * every render, which keeps the result reactive to locale changes.
- */
 function experiencePeriod(exp) {
-  return exp.is_current
-    ? `${t(exp.startKey)} — ${t('experience.until_now')}`
-    : `${t(exp.startKey)} — ${t('experience.until', { date: t(exp.endKey) })}`
+  const start = exp.start_date ? exp.start_date.split('-')[0] : ''
+  const end = exp.end_date ? exp.end_date.split('-')[0] : ''
+
+  return exp.is_current ? `${start} — ${t('experience.until_now')}` : `${start} — ${end}`
 }
 </script>
 
@@ -871,5 +836,86 @@ function experiencePeriod(exp) {
     width: 260px;
     height: 260px;
   }
+}
+/* Projects UI Polish */
+.project-card {
+  min-height: 440px;
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.project-card:hover {
+  border-color: var(--app-accent-border);
+  box-shadow: 0 12px 30px -10px rgba(59, 130, 246, 0.25);
+}
+
+.project-cover-container {
+  position: relative;
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+  background: radial-gradient(
+    circle at center,
+    rgba(37, 99, 235, 0.08) 0%,
+    rgba(15, 23, 42, 0.6) 100%
+  );
+  border-bottom: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.project-cover-img {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+}
+
+.project-card:hover .project-cover-img {
+  transform: scale(1.05);
+}
+
+.project-cover-placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.project-cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.5) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.featured-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.75);
+  color: #f1f5f9;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  z-index: 2;
+}
+
+.tech-badge {
+  background: var(--app-accent-soft);
+  color: var(--app-accent-ink);
+  border: 1px solid var(--app-accent-border);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 0.72rem;
+  font-weight: 500;
 }
 </style>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -10,10 +11,20 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
+  public function index(): JsonResponse
+{
+    $services = Service::query()
+        ->orderBy('sort_order')
+        ->get()
+        ->map(fn ($service) => [
+            'id' => $service->id,
+            'title' => $service->getTranslations('title'),
+            'description' => $service->getTranslations('description'),
+            'icon' => $service->icon,
+        ]);
+
+    return response()->json($services);
+}
 
     /**
      * Show the form for creating a new resource.

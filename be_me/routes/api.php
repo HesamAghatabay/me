@@ -16,7 +16,9 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('skills', SkillController::class)->only(['index']);
 
 // دریافت لیست پروژه‌ها و نمایش جزئیات پروژه با اسلاگ (Case Study)
-Route::apiResource('projects', ProjectController::class)->only(['index', 'show']);
+Route::apiResource('projects', ProjectController::class)
+    ->only(['index', 'show'])
+    ->scoped(['project' => 'slug']);
 
 // دریافت لیست خدمات
 Route::apiResource('services', ServiceController::class)->only(['index']);
