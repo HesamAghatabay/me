@@ -194,8 +194,8 @@
               {{ t('footer.direct_contact') }}
             </div>
             <div class="column q-gutter-y-sm text-body2 text-app-muted">
-              <span class="dir-ltr text-start">hesam@example.com</span>
-              <span>{{ t('footer.location') }}</span>
+              <span class="dir-ltr text-start">program.h.p.2023@fmail.com</span>
+              <!-- <span>{{ t('footer.location') }}</span> -->
               <div class="row q-gutter-xs q-mt-sm">
                 <q-btn
                   v-for="link in socials"
@@ -280,13 +280,17 @@ const navLinks = [
   { id: 'projects', labelKey: 'nav.projects', icon: 'devices' },
   { id: 'services', labelKey: 'nav.services', icon: 'widgets' },
   { id: 'experience', labelKey: 'nav.experience', icon: 'timeline' },
-  { id: 'contact', labelKey: 'nav.contact', icon: 'mail' },
+  // { id: 'contact', labelKey: 'nav.contact', icon: 'mail' },
 ]
 
 const socials = [
-  { labelKey: 'socials.github', icon: 'code', href: 'https://github.com' },
-  { labelKey: 'socials.linkedin', icon: 'work', href: 'https://linkedin.com' },
-  { labelKey: 'socials.telegram', icon: 'send', href: 'https://telegram.org' },
+  { labelKey: 'socials.github', icon: 'fab fa-github', href: 'https://github.com/HesamAghatabay' },
+  {
+    labelKey: 'socials.linkedin',
+    icon: 'fab fa-linkedin',
+    href: 'https://www.linkedin.com/in/hesam-aghatabay-364a712a8',
+  },
+  { labelKey: 'socials.telegram', icon: 'fab fa-telegram', href: 'https://t.me/Hesamaghatabay' },
 ]
 
 /**

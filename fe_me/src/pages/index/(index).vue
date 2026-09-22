@@ -324,19 +324,19 @@
                     </div>
                     <div class="tile-info">
                       <span class="tile-label">{{ t('contact.email_label') }}</span>
-                      <span class="tile-val dir-ltr">hesam@example.com</span>
+                      <span class="tile-val dir-ltr">program.h.p.2023@gmail.com</span>
                     </div>
                   </a>
 
-                  <div class="contact-tile">
+                  <a href="tel:+989123456789" class="contact-tile">
                     <div class="tile-icon-box bg-purple-glow">
-                      <q-icon name="location_on" size="20px" class="text-indigo" />
+                      <q-icon name="phone" size="20px" class="text-indigo" />
                     </div>
                     <div class="tile-info">
-                      <span class="tile-label">{{ t('contact.location_label') }}</span>
-                      <span class="tile-val">{{ t('contact.location_value') }}</span>
+                      <span class="tile-label">{{ t('contact.phone_label') }}</span>
+                      <span class="tile-val dir-ltr">09398175140</span>
                     </div>
-                  </div>
+                  </a>
 
                   <div class="contact-tile">
                     <div class="tile-icon-box bg-teal-glow">
@@ -377,7 +377,6 @@
                       outlined
                       dense
                       :label="t('contact.form_name')"
-                      :placeholder="t('contact.form_name_placeholder')"
                       class="modern-input"
                       :rules="[requiredRule]"
                     />
@@ -389,7 +388,6 @@
                       dense
                       type="email"
                       :label="t('contact.form_email')"
-                      placeholder="example@mail.com"
                       class="modern-input"
                       :rules="[requiredRule]"
                     />
@@ -401,7 +399,6 @@
                   outlined
                   dense
                   :label="t('contact.form_subject')"
-                  :placeholder="t('contact.form_subject_placeholder')"
                   class="modern-input q-mb-md"
                 />
 
@@ -412,7 +409,6 @@
                   type="textarea"
                   rows="4"
                   :label="t('contact.form_message')"
-                  :placeholder="t('contact.form_message_placeholder')"
                   class="modern-input q-mb-lg"
                   :rules="[requiredRule]"
                 />
@@ -466,9 +462,13 @@ function localize(field) {
 }
 
 const socials = [
-  { labelKey: 'socials.github', icon: 'code', href: 'https://github.com' },
-  { labelKey: 'socials.linkedin', icon: 'work', href: 'https://linkedin.com' },
-  { labelKey: 'socials.telegram', icon: 'send', href: 'https://telegram.org' },
+  { labelKey: 'socials.github', icon: 'fab fa-github', href: 'https://github.com/HesamAghatabay' },
+  {
+    labelKey: 'socials.linkedin',
+    icon: 'fab fa-linkedin',
+    href: 'https://www.linkedin.com/in/hesam-aghatabay-364a712a8',
+  },
+  { labelKey: 'socials.telegram', icon: 'fab fa-telegram', href: 'https://t.me/Hesamaghatabay' },
 ]
 
 const stats = [

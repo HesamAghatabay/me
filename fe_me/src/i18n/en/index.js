@@ -158,6 +158,7 @@ export default {
     required: 'This field is required',
     success: 'Your message was received. I will get back to you shortly.',
     resume_ready: 'The résumé link is ready to download.',
+    phone_label: 'Phone number',
   },
 
   // --- Project case study --------------------------------------------------
