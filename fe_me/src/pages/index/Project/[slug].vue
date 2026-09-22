@@ -6,20 +6,28 @@
         <q-spinner-dots size="56px" color="primary" />
       </div>
 
-      <template v-else-if="project">
+      <main v-else-if="project">
         <!-- 1. مسیر و دکمه بازگشت (Breadcrumb) -->
-        <nav class="row items-center justify-between q-mb-lg">
-          <div class="row items-center text-caption text-app-muted breadcrumb-row">
-            <router-link to="/" class="nav-crumb-link">
-              {{ t('project.breadcrumb_home') }}
-            </router-link>
-            <q-icon :name="crumbIcon" size="16px" class="q-mx-xs" />
-            <router-link to="/#projects" class="nav-crumb-link">
-              {{ t('project.breadcrumb_projects') }}
-            </router-link>
-            <q-icon :name="crumbIcon" size="16px" class="q-mx-xs" />
-            <span class="text-app-dim text-weight-medium">{{ localize(project.title) }}</span>
-          </div>
+        <nav class="row items-center justify-between q-mb-lg" aria-label="Breadcrumb">
+          <ol
+            class="row items-center text-caption text-app-muted breadcrumb-row q-pa-none q-ma-none list-none"
+          >
+            <li>
+              <router-link to="/" class="nav-crumb-link">
+                {{ t('project.breadcrumb_home') }}
+              </router-link>
+            </li>
+            <q-icon :name="crumbIcon" size="16px" class="q-mx-xs" aria-hidden="true" />
+            <li>
+              <router-link to="/#projects" class="nav-crumb-link">
+                {{ t('project.breadcrumb_projects') }}
+              </router-link>
+            </li>
+            <q-icon :name="crumbIcon" size="16px" class="q-mx-xs" aria-hidden="true" />
+            <li class="text-app-dim text-weight-medium" aria-current="page">
+              {{ localize(project.title) }}
+            </li>
+          </ol>
 
           <q-btn
             flat
@@ -33,10 +41,9 @@
           />
         </nav>
 
-        <!-- 2. بنر شاخص شیشه‌ای (Hero Showcase) -->
+        <!-- 2. بنر شاخص پروژه (Hero Showcase) -->
         <header class="glass-panel project-hero-card q-pa-lg q-pa-md-xl q-mb-xl">
           <div class="row items-center q-col-gutter-xl">
-            <!-- ستون متن و مشخصات پروژه -->
             <div class="col-12 col-md-7">
               <div class="row items-center q-gutter-sm q-mb-md">
                 <span v-if="project.is_featured" class="badge-featured">
@@ -49,6 +56,7 @@
                 </span>
               </div>
 
+              <!-- H1 اختصاصی این پروژه برای موتور جستجو -->
               <h1 class="text-h3 text-weight-bolder text-app q-mb-md leading-tight">
                 {{ localize(project.title) }}
               </h1>
@@ -64,7 +72,7 @@
                 </span>
               </div>
 
-              <!-- دکمه‌های اکشن اصلی -->
+              <!-- دکمه‌های اکشن -->
               <div class="row q-gutter-sm items-center">
                 <q-btn
                   v-if="project.demo_url"
@@ -91,7 +99,7 @@
               </div>
             </div>
 
-            <!-- ستون تصویر شاخص شناور -->
+            <!-- تصویر شاخص -->
             <div class="col-12 col-md-5 flex flex-center">
               <div class="hero-image-frame">
                 <q-img
@@ -115,10 +123,9 @@
           </div>
         </header>
 
-        <!-- 3. بدنه اصلی (مطالعه موردی فنی + نوار کناری مشخصات) -->
+        <!-- 3. بدنه اصلی (مطالعه موردی فنی + سایدبار) -->
         <div class="row q-col-gutter-xl items-start q-mb-xl">
-          <!-- ستون مطالعه موردی فنی (Case Study Body) -->
-          <main class="col-12 col-md-8">
+          <div class="col-12 col-md-8">
             <article class="glass-panel q-pa-lg q-pa-md-xl">
               <div class="section-title-row q-mb-lg">
                 <div class="heading-accent"></div>
@@ -127,38 +134,37 @@
                 </h2>
               </div>
 
-              <!-- محتوای HTML چندزبانه که در دیتابیس ثبت شده -->
+              <!-- محتوای مقاله -->
               <div
                 class="case-study-html line-relaxed"
                 v-html="localize(project.description)"
               ></div>
             </article>
-          </main>
+          </div>
 
-          <!-- سایدبار چسبان مشخصات واقعی و اشتراک‌گذاری -->
           <aside class="col-12 col-md-4 sticky-sidebar">
             <div class="glass-panel q-pa-lg q-mb-md">
-              <h3 class="text-subtitle1 text-weight-bold text-app q-mb-md">
+              <h2 class="text-subtitle1 text-weight-bold text-app q-mb-md">
                 {{ t('project.meta_heading') }}
-              </h3>
+              </h2>
 
-              <div class="meta-list">
+              <dl class="meta-list q-ma-none">
                 <div class="meta-row">
-                  <span class="meta-title">{{ t('project.meta_demo') }}</span>
-                  <span
-                    class="meta-val"
+                  <dt class="meta-title">{{ t('project.meta_demo') }}</dt>
+                  <dd
+                    class="meta-val q-ma-none"
                     :class="project.demo_url ? 'text-teal-4' : 'text-app-muted'"
                   >
                     {{
                       t(project.demo_url ? 'project.meta_demo_online' : 'project.meta_demo_private')
                     }}
-                  </span>
+                  </dd>
                 </div>
 
                 <div class="meta-row">
-                  <span class="meta-title">GitHub</span>
-                  <span
-                    class="meta-val"
+                  <dt class="meta-title">GitHub</dt>
+                  <dd
+                    class="meta-val q-ma-none"
                     :class="project.github_url ? 'text-indigo-3' : 'text-app-muted'"
                   >
                     {{
@@ -166,18 +172,17 @@
                         ? t('project.source_button')
                         : t('project.meta_demo_private')
                     }}
-                  </span>
+                  </dd>
                 </div>
 
                 <div class="meta-row">
-                  <span class="meta-title">{{ t('skills.heading') || 'تکنولوژی‌ها' }}</span>
-                  <span class="meta-val">{{ project.skills?.length || 0 }} مورد</span>
+                  <dt class="meta-title">{{ t('skills.heading') || 'تکنولوژی‌ها' }}</dt>
+                  <dd class="meta-val q-ma-none">{{ project.skills?.length || 0 }} مورد</dd>
                 </div>
-              </div>
+              </dl>
 
               <q-separator class="q-my-md app-hairline opacity-10" />
 
-              <!-- اشتراک گذاری -->
               <div class="row items-center justify-between">
                 <span class="text-caption text-app-muted">{{ t('project.share') }}</span>
                 <div class="row q-gutter-xs">
@@ -207,7 +212,6 @@
               </div>
             </div>
 
-            <!-- کارت شروع همکاری -->
             <div class="glass-panel q-pa-lg text-center cta-sidebar-card">
               <q-icon name="rocket_launch" size="32px" class="text-neon q-mb-xs" />
               <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
@@ -228,16 +232,20 @@
           </aside>
         </div>
 
-        <!-- 4. سکشن تمام‌عرض گالری تصاویر محیط نرم‌افزار -->
-        <section v-if="project.gallery && project.gallery.length" class="gallery-section q-mb-xl">
+        <!-- 4. سکشن گالری تصاویر -->
+        <section
+          v-if="project.gallery && project.gallery.length"
+          class="gallery-section q-mb-xl"
+          aria-labelledby="gallery-heading"
+        >
           <div class="glass-panel q-pa-lg q-pa-md-xl">
             <div class="row items-center justify-between q-mb-lg">
               <div class="section-title-row">
                 <div class="heading-accent"></div>
                 <div>
-                  <h3 class="text-h5 text-weight-bold text-app q-my-none">
+                  <h2 id="gallery-heading" class="text-h5 text-weight-bold text-app q-my-none">
                     {{ t('project.gallery_heading') || 'گالری و محیط اپلیکیشن' }}
-                  </h3>
+                  </h2>
                   <span class="text-caption text-app-muted q-mt-xs block">
                     برای مشاهده در ابعاد بزرگ روی تصاویر کلیک کنید
                   </span>
@@ -247,7 +255,6 @@
               <div class="badge-pill inline-block">{{ project.gallery.length }} تصویر</div>
             </div>
 
-            <!-- اصلاح ردیف گرید ۳ ستونه تصاویر -->
             <div class="row q-col-gutter-lg">
               <div
                 v-for="(img, index) in project.gallery"
@@ -258,7 +265,7 @@
                   <div class="gallery-img-wrapper">
                     <q-img
                       :src="img.url"
-                      :alt="localize(img.alt_text)"
+                      :alt="localize(img.alt_text) || `${localize(project.title)} preview`"
                       class="gallery-image"
                       fit="cover"
                     >
@@ -287,13 +294,12 @@
             </div>
           </div>
         </section>
-      </template>
+      </main>
     </div>
 
     <!-- مودال لایت‌باکس مجهز به ناوبری قبلی / بعدی -->
     <q-dialog v-model="lightboxOpen" backdrop-filter="blur(10px)" @keydown="handleKeydown">
       <div class="lightbox-wrapper column items-center justify-center">
-        <!-- نوار هدر لایت‌باکس: شمارنده عکس و دکمه بستن -->
         <div class="row items-center justify-between full-width q-mb-sm q-px-xs">
           <div class="lightbox-counter-badge">
             {{ activeLightboxIndex + 1 }} / {{ project.gallery.length }}
@@ -301,9 +307,7 @@
           <q-btn flat round dense color="white" icon="close" class="bg-dark-glass" v-close-popup />
         </div>
 
-        <!-- بدنه اسلایدر با دکمه‌های شناور چپ و راست -->
         <div class="lightbox-stage full-width row items-center justify-between no-wrap">
-          <!-- دکمه قبلی -->
           <q-btn
             flat
             round
@@ -315,12 +319,15 @@
             @click.stop="prevImage"
           />
 
-          <!-- فریم تصویر نمایش داده شده -->
           <div class="lightbox-img-card flex flex-center">
             <transition name="fade-slide" mode="out-in">
               <q-img
                 :key="currentLightboxImage?.url"
                 :src="currentLightboxImage?.url"
+                :alt="
+                  localize(currentLightboxImage?.alt_text) ||
+                  `${localize(project.title)} screenshot`
+                "
                 fit="contain"
                 class="full-width full-height"
                 spinner-color="primary"
@@ -328,7 +335,6 @@
             </transition>
           </div>
 
-          <!-- دکمه بعدی -->
           <q-btn
             flat
             round
@@ -341,7 +347,6 @@
           />
         </div>
 
-        <!-- کپشن و عنوان عکس فعال -->
         <div
           v-if="currentLightboxImage?.alt_text"
           class="text-caption text-app-muted q-mt-sm text-center"
@@ -352,12 +357,11 @@
     </q-dialog>
   </q-page>
 </template>
-
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
+import { useQuasar, useMeta } from 'quasar'
 import { storeToRefs } from 'pinia'
 import { useLocale } from '@/composables/useLocale'
 import { usePortfolioStore } from '@/stores/portfolio'
@@ -367,7 +371,7 @@ const $q = useQuasar()
 const { t, locale } = useI18n({ useScope: 'global' })
 const { isRtl } = useLocale()
 
-// اتصال به استور
+// ۱. اتصال به استور و تعریف متغیرهای اصلی
 const portfolioStore = usePortfolioStore()
 const { currentProject: project, loading } = storeToRefs(portfolioStore)
 
@@ -399,6 +403,62 @@ const currentLightboxImage = computed(() => {
   return project.value.gallery[activeLightboxIndex.value]
 })
 
+useMeta(() => {
+  if (!project.value) {
+    return {
+      title: 'پروژه در حال بارگذاری...',
+    }
+  }
+
+  const projectTitle = `${localize(project.value.title)} | ${t('brand.name')}`
+  const projectSummary = localize(project.value.summary)
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
+  const coverImage = primaryImage.value?.url || ''
+
+  // ساختار JSON-LD اختصاصی برای صفحه پروژه
+  const projectSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareSourceCode',
+    name: localize(project.value.title),
+    description: projectSummary,
+    codeRepository: project.value.github_url || undefined,
+    url: currentUrl,
+    image: coverImage || undefined,
+    programmingLanguage: project.value.skills?.map((s) => localize(s.name)) || [],
+    author: {
+      '@type': 'Person',
+      name: 'حسام آق آتابای',
+    },
+  }
+
+  return {
+    title: projectTitle,
+    meta: {
+      description: { name: 'description', content: projectSummary },
+      ogTitle: { property: 'og:title', content: projectTitle },
+      ogDescription: { property: 'og:description', content: projectSummary },
+      ogType: { property: 'og:type', content: 'article' },
+      ogUrl: { property: 'og:url', content: currentUrl },
+      ogImage: { property: 'og:image', content: coverImage },
+      twitterCard: { name: 'twitter:card', content: 'summary_large_image' },
+      twitterTitle: { name: 'twitter:title', content: projectTitle },
+      twitterDescription: { name: 'twitter:description', content: projectSummary },
+      twitterImage: { name: 'twitter:image', content: coverImage },
+    },
+    script: {
+      ldJson: {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(projectSchema),
+      },
+    },
+    htmlAttr: {
+      lang: locale.value,
+      dir: isRtl.value ? 'rtl' : 'ltr',
+    },
+  }
+})
+
+// ۳. توابع و متدهای بارگذاری داده
 async function loadProjectData() {
   const slug = route.params.slug
   try {
@@ -456,12 +516,14 @@ function handleKeydown(e) {
 }
 
 function copyProjectLink() {
-  navigator.clipboard?.writeText(window.location.href)
+  if (typeof window !== 'undefined') {
+    navigator.clipboard?.writeText(window.location.href)
+  }
   $q.notify({ type: 'positive', message: t('project.link_copied') })
 }
 
 function shareProject() {
-  if (navigator.share) {
+  if (typeof window !== 'undefined' && navigator.share) {
     navigator.share({
       title: localize(project.value.title),
       text: localize(project.value.summary),

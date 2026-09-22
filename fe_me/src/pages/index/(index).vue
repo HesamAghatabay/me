@@ -1,25 +1,26 @@
 <template>
   <q-page class="bg-transparent text-app q-px-md q-py-xl">
-    <div class="app-container">
+    <main class="app-container">
       <!-- 1. HERO SECTION RESPONSIVE -->
       <section id="hero" class="hero-section q-py-lg q-py-md-xl">
         <div class="row items-center q-col-gutter-y-xl q-col-gutter-md-xl">
           <!-- Text Column -->
-          <div class="col-12 col-md-7 text-center text-md-start">
+          <header class="col-12 col-md-7 text-center text-md-start">
             <div class="badge-pill inline-block q-mb-md">
               <span class="status-dot"></span>
               {{ t('hero.badge') }}
             </div>
 
+            <!-- تنها H1 صفحه اصلی -->
             <h1 class="hero-main-title text-weight-bolder text-app q-mb-xs">
               {{ t('hero.title_before') }}
               <span class="text-neon-blue">{{ t('hero.title_accent') }}</span>
               {{ t('hero.title_after') }}
             </h1>
 
-            <div class="hero-sub-title text-weight-bold text-indigo-4 q-mb-md dir-ltr">
+            <p class="hero-sub-title text-weight-bold text-indigo-4 q-mb-md dir-ltr">
               {{ t('brand.role_long') }}
-            </div>
+            </p>
 
             <p
               class="text-body2 text-md-body1 text-app-muted q-mb-lg line-relaxed max-w-text q-mx-auto q-mx-md-none"
@@ -65,7 +66,7 @@
                 <q-tooltip>{{ t(s.labelKey) }}</q-tooltip>
               </q-btn>
             </div>
-          </div>
+          </header>
 
           <!-- Graphic / Avatar Column -->
           <div class="col-12 col-md-5 flex flex-center order-first order-md-last">
@@ -73,29 +74,33 @@
               <div class="avatar-glow-ring"></div>
               <div class="avatar-inner-card flex flex-center">
                 <q-icon name="terminal" size="64px" class="text-neon" />
-                <div class="text-caption text-app-muted text-weight-medium q-mt-sm">
+                <span class="text-caption text-app-muted text-weight-medium q-mt-sm">
                   {{ t('brand.avatar_caption') }}
-                </div>
+                </span>
               </div>
             </div>
           </div>
         </div>
       </section>
+
       <!-- 2. SKILLS TICKER -->
-      <section class="ticker-wrapper q-my-xl">
+      <section class="ticker-wrapper q-my-xl" aria-label="Skills">
         <div class="ticker-scroll">
           <div v-for="skill in tickerSkills" :key="skill.id" class="ticker-pill">
-            <!-- <q-icon :name="skill.icon" size="18px" class="q-ml-xs text-neon" /> -->
             <span>{{ localize(skill.name) }}</span>
           </div>
         </div>
       </section>
 
       <!-- 3. ABOUT & STATS -->
-      <section id="about" class="q-py-xl">
+      <section id="about" class="q-py-xl" aria-labelledby="about-heading">
         <div class="section-title-box text-center q-mb-xl">
-          <div class="text-caption text-indigo-4 text-weight-bold">{{ t('about.eyebrow') }}</div>
-          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">{{ t('about.heading') }}</h3>
+          <span class="text-caption text-indigo-4 text-weight-bold block">{{
+            t('about.eyebrow')
+          }}</span>
+          <h2 id="about-heading" class="text-h4 text-weight-bold text-app q-mt-xs">
+            {{ t('about.heading') }}
+          </h2>
         </div>
 
         <div class="row q-col-gutter-xl items-center q-mb-xl">
@@ -118,28 +123,26 @@
       </section>
 
       <!-- 4. PROJECTS -->
-      <section id="projects" class="q-py-xl">
+      <section id="projects" class="q-py-xl" aria-labelledby="projects-heading">
         <div class="section-title-box text-center q-mb-xl">
-          <div class="text-caption text-indigo-4 text-weight-bold">{{ t('projects.eyebrow') }}</div>
-          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">{{ t('projects.heading') }}</h3>
+          <span class="text-caption text-indigo-4 text-weight-bold block">{{
+            t('projects.eyebrow')
+          }}</span>
+          <h2 id="projects-heading" class="text-h4 text-weight-bold text-app q-mt-xs">
+            {{ t('projects.heading') }}
+          </h2>
         </div>
 
         <div class="row q-col-gutter-xl">
           <div v-for="prj in projects" :key="prj.id" class="col-12 col-sm-6 col-md-4">
-            <q-card
-              flat
-              class="glass-card app-hover-lift modern-project-card column justify-between"
-            >
+            <article class="glass-card app-hover-lift modern-project-card column justify-between">
               <div class="card-top-content">
-                <!-- هدر ویترین شیشه‌ای تصویر -->
                 <div class="project-showcase-box">
-                  <!-- بج ویژه با جایگاه مشخص در بالای کاور -->
                   <span v-if="prj.is_featured" class="showcase-badge">
                     <q-icon name="star" size="13px" class="text-amber q-mr-xs" />
                     {{ t('projects.featured') }}
                   </span>
 
-                  <!-- قاب شناور لوگو/تصویر پروژه -->
                   <div class="project-logo-frame flex flex-center">
                     <q-img
                       v-if="prj.cover_image"
@@ -157,17 +160,15 @@
                   </div>
                 </div>
 
-                <!-- بدنه متنی و مشخصات -->
                 <div class="q-pa-lg">
-                  <h4 class="text-h6 text-weight-bolder text-app q-mb-xs project-heading">
+                  <h3 class="text-h6 text-weight-bolder text-app q-mb-xs project-heading">
                     {{ localize(prj.title) }}
-                  </h4>
+                  </h3>
 
                   <p class="text-body2 text-app-muted project-summary q-mb-md">
                     {{ localize(prj.summary) }}
                   </p>
 
-                  <!-- برچسب تکنولوژی‌ها -->
                   <div class="row q-gutter-xs items-center">
                     <span v-for="sk in prj.skills" :key="sk.id" class="modern-tech-pill">
                       {{ localize(sk.name) }}
@@ -176,7 +177,6 @@
                 </div>
               </div>
 
-              <!-- نوار کلیدهای اکشن پایین -->
               <div class="card-footer-action row items-center justify-between q-px-lg q-py-md">
                 <q-btn
                   flat
@@ -198,6 +198,7 @@
                     class="icon-ghost-btn"
                     :href="prj.github_url"
                     target="_blank"
+                    :aria-label="`Source code for ${localize(prj.title)}`"
                   >
                     <q-tooltip>GitHub</q-tooltip>
                   </q-btn>
@@ -211,51 +212,57 @@
                     class="icon-ghost-btn"
                     :href="prj.demo_url"
                     target="_blank"
+                    :aria-label="`Live demo of ${localize(prj.title)}`"
                   >
                     <q-tooltip>Demo</q-tooltip>
                   </q-btn>
                 </div>
               </div>
-            </q-card>
+            </article>
           </div>
         </div>
       </section>
 
       <!-- 5. SERVICES -->
-      <section id="services" class="q-py-xl">
+      <section id="services" class="q-py-xl" aria-labelledby="services-heading">
         <div class="section-title-box text-center q-mb-xl">
-          <div class="text-caption text-indigo-4 text-weight-bold">{{ t('services.eyebrow') }}</div>
-          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">{{ t('services.heading') }}</h3>
+          <span class="text-caption text-indigo-4 text-weight-bold block">{{
+            t('services.eyebrow')
+          }}</span>
+          <h2 id="services-heading" class="text-h4 text-weight-bold text-app q-mt-xs">
+            {{ t('services.heading') }}
+          </h2>
         </div>
 
         <div class="row q-col-gutter-lg">
           <div v-for="srv in services" :key="srv.id" class="col-12 col-sm-6 col-md-4">
-            <q-card flat class="glass-card app-hover-lift service-card q-pa-lg">
+            <article class="glass-card app-hover-lift service-card q-pa-lg">
               <div class="service-icon-box q-mb-md">
                 <q-icon :name="srv.icon" size="28px" color="white" />
               </div>
-              <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
+              <h3 class="text-subtitle1 text-weight-bold text-app q-mb-xs">
                 {{ localize(srv.title) }}
-              </div>
-              <div class="text-caption text-app-muted line-relaxed">
+              </h3>
+              <p class="text-caption text-app-muted line-relaxed q-mb-none">
                 {{ localize(srv.description) }}
-              </div>
-            </q-card>
+              </p>
+            </article>
           </div>
         </div>
       </section>
 
       <!-- 6. EXPERIENCE -->
-      <section id="experience" class="q-py-xl">
+      <section id="experience" class="q-py-xl" aria-labelledby="experience-heading">
         <div class="section-title-box text-center q-mb-xl">
-          <div class="text-caption text-indigo-4 text-weight-bold">
-            {{ t('experience.eyebrow') }}
-          </div>
-          <h3 class="text-h4 text-weight-bold text-app q-mt-xs">{{ t('experience.heading') }}</h3>
+          <span class="text-caption text-indigo-4 text-weight-bold block">{{
+            t('experience.eyebrow')
+          }}</span>
+          <h2 id="experience-heading" class="text-h4 text-weight-bold text-app q-mt-xs">
+            {{ t('experience.heading') }}
+          </h2>
         </div>
 
         <div class="max-w-timeline q-mx-auto">
-          <!-- `dark` is bound so the timeline ink follows the active theme. -->
           <q-timeline color="blue-5" :dark="isDark">
             <q-timeline-entry
               v-for="exp in experiences"
@@ -263,18 +270,18 @@
               :title="localize(exp.role)"
               :subtitle="`${localize(exp.company)} | ${experiencePeriod(exp)}`"
             >
-              <q-card flat class="glass-card q-pa-md q-mt-sm">
-                <div class="text-body2 text-app-muted line-relaxed">
+              <div class="glass-card q-pa-md q-mt-sm">
+                <p class="text-body2 text-app-muted line-relaxed q-mb-none">
                   {{ localize(exp.description) }}
-                </div>
-              </q-card>
+                </p>
+              </div>
             </q-timeline-entry>
           </q-timeline>
         </div>
       </section>
 
-      <!-- 7. CONTACT SECTION (MODERN GLASSMORPHISM) -->
-      <section id="contact" class="q-py-xl contact-section">
+      <!-- 7. CONTACT SECTION -->
+      <section id="contact" class="q-py-xl contact-section" aria-labelledby="contact-heading">
         <div class="contact-ambient-glow"></div>
 
         <div class="section-title-box text-center q-mb-xl">
@@ -282,7 +289,9 @@
             <span class="status-dot"></span>
             {{ t('contact.badge') }}
           </div>
-          <h3 class="text-h4 text-weight-bolder text-app q-mt-xs">{{ t('contact.heading') }}</h3>
+          <h2 id="contact-heading" class="text-h4 text-weight-bolder text-app q-mt-xs">
+            {{ t('contact.heading') }}
+          </h2>
           <p class="text-caption text-app-muted q-mt-sm">
             {{ t('contact.intro') }}
           </p>
@@ -290,18 +299,16 @@
 
         <div class="modern-contact-card glass-panel">
           <div class="row q-col-gutter-xl items-stretch">
-            <!-- سمت اطلاعات ارتباطی (کارت‌های تعاملی) -->
             <div class="col-12 col-md-5 column justify-between">
               <div>
-                <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
+                <h3 class="text-subtitle1 text-weight-bold text-app q-mb-xs">
                   {{ t('contact.channels') }}
-                </div>
+                </h3>
                 <p class="text-caption text-app-muted q-mb-lg">
                   {{ t('contact.channels_hint') }}
                 </p>
 
                 <div class="q-gutter-y-md">
-                  <!-- ایمیل -->
                   <a href="mailto:hesam@example.com" class="contact-tile">
                     <div class="tile-icon-box bg-blue-glow">
                       <q-icon name="mail" size="20px" class="text-neon" />
@@ -312,7 +319,6 @@
                     </div>
                   </a>
 
-                  <!-- موقعیت -->
                   <div class="contact-tile">
                     <div class="tile-icon-box bg-purple-glow">
                       <q-icon name="location_on" size="20px" class="text-indigo" />
@@ -323,7 +329,6 @@
                     </div>
                   </div>
 
-                  <!-- وضعیت کاری -->
                   <div class="contact-tile">
                     <div class="tile-icon-box bg-teal-glow">
                       <q-icon name="bolt" size="20px" class="text-teal" />
@@ -353,7 +358,7 @@
               </div>
             </div>
 
-            <!-- سمت فرم پیام -->
+            <!-- فرم پیام -->
             <div class="col-12 col-md-7">
               <q-form @submit.prevent="submitContact" class="contact-inner-form">
                 <div class="row q-col-gutter-md q-mb-md">
@@ -363,6 +368,7 @@
                       outlined
                       dense
                       :label="t('contact.form_name')"
+                      :placeholder="t('contact.form_name_placeholder')"
                       class="modern-input"
                       :rules="[requiredRule]"
                     />
@@ -374,6 +380,7 @@
                       dense
                       type="email"
                       :label="t('contact.form_email')"
+                      placeholder="example@mail.com"
                       class="modern-input"
                       :rules="[requiredRule]"
                     />
@@ -385,6 +392,7 @@
                   outlined
                   dense
                   :label="t('contact.form_subject')"
+                  :placeholder="t('contact.form_subject_placeholder')"
                   class="modern-input q-mb-md"
                 />
 
@@ -395,6 +403,7 @@
                   type="textarea"
                   rows="4"
                   :label="t('contact.form_message')"
+                  :placeholder="t('contact.form_message_placeholder')"
                   class="modern-input q-mb-lg"
                   :rules="[requiredRule]"
                 />
@@ -414,7 +423,7 @@
           </div>
         </div>
       </section>
-    </div>
+    </main>
   </q-page>
 </template>
 
@@ -422,7 +431,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
+import { useQuasar, useMeta } from 'quasar'
 import { storeToRefs } from 'pinia'
 import { useLocale } from '@/composables/useLocale'
 import { useTheme } from '@/composables/useTheme'
@@ -434,12 +443,13 @@ const { t, locale } = useI18n({ useScope: 'global' })
 const { isRtl } = useLocale()
 const { isDark } = useTheme()
 
-// استفاده از استور پینیا
+// ۱. اتصال به استور پینیا
 const portfolioStore = usePortfolioStore()
 const { tickerSkills, projects, services, experiences } = storeToRefs(portfolioStore)
 
 const requiredRule = (value) => !!value || t('contact.required')
 
+// ۲. تعریف تابع ترجمه
 function localize(field) {
   if (!field) return ''
   if (typeof field === 'string') return field
@@ -462,6 +472,62 @@ const stats = [
 const form = reactive({ name: '', email: '', subject: '', message: '' })
 const isSubmitting = ref(false)
 
+// ۳. متاتگ‌ها و JSON-LD (اینجا تمام متغیرها مقداردهی شده‌اند)
+useMeta(() => {
+  const pageTitle = t('seo.title') || 'حسام آق آتابای — توسعه‌دهنده فول‌استک'
+  const pageDescription = t('seo.description') || t('hero.lead')
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://yolbash.ir'
+
+  const schemaData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${siteUrl}/#website`,
+        url: siteUrl,
+        name: pageTitle,
+        description: pageDescription,
+        inLanguage: locale.value,
+      },
+      {
+        '@type': 'Person',
+        '@id': `${siteUrl}/#person`,
+        name: 'حسام آق آتابای',
+        alternateName: 'Hesam Agh Atabay',
+        jobTitle: 'Full-Stack Web Developer',
+        url: siteUrl,
+        sameAs: ['https://github.com', 'https://linkedin.com'],
+        knowsAbout: (tickerSkills.value || []).map((s) => localize(s.name)),
+      },
+    ],
+  }
+
+  return {
+    title: pageTitle,
+    meta: {
+      description: { name: 'description', content: pageDescription },
+      ogTitle: { property: 'og:title', content: pageTitle },
+      ogDescription: { property: 'og:description', content: pageDescription },
+      ogType: { property: 'og:type', content: 'website' },
+      ogUrl: { property: 'og:url', content: siteUrl },
+      twitterCard: { name: 'twitter:card', content: 'summary_large_image' },
+      twitterTitle: { name: 'twitter:title', content: pageTitle },
+      twitterDescription: { name: 'twitter:description', content: pageDescription },
+    },
+    script: {
+      ldJson: {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(schemaData),
+      },
+    },
+    htmlAttr: {
+      lang: locale.value,
+      dir: isRtl.value ? 'rtl' : 'ltr',
+    },
+  }
+})
+
+// ۴. دریافت داده‌ها و اکشن‌ها
 onMounted(async () => {
   try {
     await portfolioStore.fetchPortfolioData()
