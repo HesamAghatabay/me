@@ -124,63 +124,71 @@
           <h3 class="text-h4 text-weight-bold text-app q-mt-xs">{{ t('projects.heading') }}</h3>
         </div>
 
-        <div class="row q-col-gutter-lg">
+        <div class="row q-col-gutter-xl">
           <div v-for="prj in projects" :key="prj.id" class="col-12 col-sm-6 col-md-4">
-            <q-card flat class="glass-card app-hover-lift project-card flex column justify-between">
-              <div>
-                <!-- کاور بازطراحی‌شده با فریم و انیمیشن هوور -->
-                <div class="project-cover-container">
-                  <q-img
-                    v-if="prj.cover_image"
-                    :src="prj.cover_image"
-                    :alt="prj.title"
-                    fit="contain"
-                    class="project-cover-img"
-                  >
-                    <template #loading>
-                      <q-spinner-dots color="primary" />
-                    </template>
-                  </q-img>
-
-                  <div v-else class="project-cover-placeholder flex flex-center">
-                    <q-icon name="devices" size="48px" class="text-neon" />
-                  </div>
-
-                  <!-- گرادینت روی عکس برای ترکیب رنگ با کارت -->
-                  <div class="project-cover-overlay"></div>
-
-                  <!-- نشان ویژه -->
-                  <span v-if="prj.is_featured" class="featured-badge">
-                    <q-icon name="star" size="13px" class="q-mr-xs text-amber" />
+            <q-card
+              flat
+              class="glass-card app-hover-lift modern-project-card column justify-between"
+            >
+              <div class="card-top-content">
+                <!-- هدر ویترین شیشه‌ای تصویر -->
+                <div class="project-showcase-box">
+                  <!-- بج ویژه با جایگاه مشخص در بالای کاور -->
+                  <span v-if="prj.is_featured" class="showcase-badge">
+                    <q-icon name="star" size="13px" class="text-amber q-mr-xs" />
                     {{ t('projects.featured') }}
                   </span>
+
+                  <!-- قاب شناور لوگو/تصویر پروژه -->
+                  <div class="project-logo-frame flex flex-center">
+                    <q-img
+                      v-if="prj.cover_image"
+                      :src="prj.cover_image"
+                      :alt="localize(prj.title)"
+                      fit="contain"
+                      class="project-inner-img"
+                    >
+                      <template #loading>
+                        <q-spinner-dots color="primary" />
+                      </template>
+                    </q-img>
+
+                    <q-icon v-else name="terminal" size="44px" class="text-neon" />
+                  </div>
                 </div>
 
-                <div class="text-subtitle1 text-weight-bold text-app q-mb-xs">
-                  {{ localize(prj.title) }}
-                </div>
-                <p class="text-caption text-app-muted line-clamp-3 q-mb-md">
-                  {{ localize(prj.summary) }}
-                </p>
+                <!-- بدنه متنی و مشخصات -->
+                <div class="q-pa-lg">
+                  <h4 class="text-h6 text-weight-bolder text-app q-mb-xs project-heading">
+                    {{ localize(prj.title) }}
+                  </h4>
 
-                <div class="row q-gutter-xs q-mb-md">
-                  <q-badge v-for="sk in prj.skills" :key="sk.id" class="tech-badge">
-                    {{ localize(sk.name) }}
-                  </q-badge>
+                  <p class="text-body2 text-app-muted project-summary q-mb-md">
+                    {{ localize(prj.summary) }}
+                  </p>
+
+                  <!-- برچسب تکنولوژی‌ها -->
+                  <div class="row q-gutter-xs items-center">
+                    <span v-for="sk in prj.skills" :key="sk.id" class="modern-tech-pill">
+                      {{ localize(sk.name) }}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div class="q-pa-md border-top-glass row items-center justify-between">
+              <!-- نوار کلیدهای اکشن پایین -->
+              <div class="card-footer-action row items-center justify-between q-px-lg q-py-md">
                 <q-btn
                   flat
                   dense
                   no-caps
-                  class="link-arrow-btn"
+                  class="action-link-btn"
                   :icon-right="isRtl ? 'arrow_forward' : 'arrow_back'"
                   :label="t('actions.case_study')"
                   @click="goToProject(prj.slug)"
                 />
-                <div class="row q-gutter-xs">
+
+                <div class="row q-gutter-xs items-center">
                   <q-btn
                     v-if="prj.github_url"
                     flat
@@ -190,7 +198,10 @@
                     class="icon-ghost-btn"
                     :href="prj.github_url"
                     target="_blank"
-                  />
+                  >
+                    <q-tooltip>GitHub</q-tooltip>
+                  </q-btn>
+
                   <q-btn
                     v-if="prj.demo_url"
                     flat
@@ -200,7 +211,9 @@
                     class="icon-ghost-btn"
                     :href="prj.demo_url"
                     target="_blank"
-                  />
+                  >
+                    <q-tooltip>Demo</q-tooltip>
+                  </q-btn>
                 </div>
               </div>
             </q-card>
@@ -350,7 +363,6 @@
                       outlined
                       dense
                       :label="t('contact.form_name')"
-                      :placeholder="t('contact.form_name_placeholder')"
                       class="modern-input"
                       :rules="[requiredRule]"
                     />
@@ -362,7 +374,6 @@
                       dense
                       type="email"
                       :label="t('contact.form_email')"
-                      placeholder="example@mail.com"
                       class="modern-input"
                       :rules="[requiredRule]"
                     />
@@ -374,7 +385,6 @@
                   outlined
                   dense
                   :label="t('contact.form_subject')"
-                  :placeholder="t('contact.form_subject_placeholder')"
                   class="modern-input q-mb-md"
                 />
 
@@ -385,7 +395,6 @@
                   type="textarea"
                   rows="4"
                   :label="t('contact.form_message')"
-                  :placeholder="t('contact.form_message_placeholder')"
                   class="modern-input q-mb-lg"
                   :rules="[requiredRule]"
                 />
@@ -414,23 +423,29 @@ import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
+import { storeToRefs } from 'pinia'
 import { useLocale } from '@/composables/useLocale'
-import { api } from '@/boot/axios'
 import { useTheme } from '@/composables/useTheme'
+import { usePortfolioStore } from '@/stores/portfolio'
 
-const { isDark } = useTheme()
 const router = useRouter()
 const $q = useQuasar()
 const { t, locale } = useI18n({ useScope: 'global' })
 const { isRtl } = useLocale()
+const { isDark } = useTheme()
+
+// استفاده از استور پینیا
+const portfolioStore = usePortfolioStore()
+const { tickerSkills, projects, services, experiences } = storeToRefs(portfolioStore)
 
 const requiredRule = (value) => !!value || t('contact.required')
-// دریافت متن بر اساس زبان فعال سیستم
+
 function localize(field) {
   if (!field) return ''
   if (typeof field === 'string') return field
   return field[locale.value] || field.fa || field.en || ''
 }
+
 const socials = [
   { labelKey: 'socials.github', icon: 'code', href: 'https://github.com' },
   { labelKey: 'socials.linkedin', icon: 'work', href: 'https://linkedin.com' },
@@ -447,47 +462,16 @@ const stats = [
 const form = reactive({ name: '', email: '', subject: '', message: '' })
 const isSubmitting = ref(false)
 
-// وضعیت‌های داده از API
-const tickerSkills = ref([])
-const projects = ref([])
-const services = ref([])
-const experiences = ref([])
-const loading = ref(true)
-
-async function fetchPortfolioData() {
-  loading.value = true
-  api.defaults.headers.common['Accept-Language'] = locale.value
-
+onMounted(async () => {
   try {
-    const [skillsRes, projectsRes, servicesRes, experiencesRes] = await Promise.all([
-      api.get('/skills?ticker=1'),
-      api.get('/projects'),
-      api.get('/services'),
-      api.get('/experiences'),
-    ])
-
-    tickerSkills.value = skillsRes.data
-    projects.value = projectsRes.data
-    services.value = servicesRes.data
-    experiences.value = experiencesRes.data
+    await portfolioStore.fetchPortfolioData()
   } catch (error) {
     $q.notify({
       type: 'negative',
       message: 'خطا در برقراری ارتباط با سرور',
     })
     console.error('Error fetching portfolio data:', error)
-  } finally {
-    loading.value = false
   }
-}
-
-// واکنش به تغییر زبان کاربر
-// watch(locale, () => {
-//   fetchPortfolioData()
-// })
-
-onMounted(() => {
-  fetchPortfolioData()
 })
 
 function scrollTo(id) {
@@ -505,8 +489,7 @@ function downloadResume() {
 async function submitContact() {
   isSubmitting.value = true
   try {
-    await api.post('/messages', form)
-
+    await portfolioStore.sendMessage(form)
     $q.notify({ type: 'positive', message: t('contact.success') })
     form.name = ''
     form.email = ''
@@ -917,5 +900,133 @@ function experiencePeriod(exp) {
   padding: 3px 8px;
   font-size: 0.72rem;
   font-weight: 500;
+}
+/* --- Modern Project Card UI ------------------------------ */
+.modern-project-card {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  transition:
+    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-project-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--app-accent-border);
+  box-shadow: 0 16px 36px -12px rgba(37, 99, 235, 0.22);
+}
+
+/* ویترین شیب‌دار شیشه‌ای بالای کارت */
+.project-showcase-box {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  background: radial-gradient(
+    120% 120% at 50% 10%,
+    rgba(59, 130, 246, 0.12) 0%,
+    rgba(15, 23, 42, 0.5) 100%
+  );
+  border-bottom: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+/* قاب شناور لوگو برای رفع زنندگی پس‌زمینه سفید */
+.project-logo-frame {
+  width: 110px;
+  height: 110px;
+  border-radius: 22px;
+  background: #ffffff;
+  padding: 10px;
+  box-shadow:
+    0 12px 28px -6px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modern-project-card:hover .project-logo-frame {
+  transform: scale(1.08) rotate(-1.5deg);
+}
+
+.project-inner-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+/* نشان Featured */
+.showcase-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.78);
+  color: #f8fafc;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2;
+}
+
+/* تایپوگرافی کارت */
+.project-heading {
+  font-size: 1.18rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.project-summary {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  min-height: 44px;
+}
+
+/* بج‌های تگ تکنولوژی */
+.modern-tech-pill {
+  display: inline-block;
+  background: var(--app-pill-bg);
+  border: 1px solid var(--app-pill-border);
+  color: var(--app-accent-ink);
+  font-size: 0.74rem;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 8px;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.modern-tech-pill:hover {
+  background: var(--app-surface-hover);
+  border-color: var(--app-accent-border);
+}
+
+/* فوتر و دکمه مطالعه موردی */
+.card-footer-action {
+  border-top: 1px solid var(--app-border);
+  background: var(--app-surface-strong);
+}
+
+.action-link-btn {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--app-neon);
+  padding: 4px 10px;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.action-link-btn:hover {
+  transform: translateX(-3px);
 }
 </style>
