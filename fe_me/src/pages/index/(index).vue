@@ -350,7 +350,7 @@
                 </div>
               </div>
 
-              <div class="social-quick-row q-mt-xl">
+              <div class="social-quick-row q-mt-md">
                 <span class="text-caption text-app-muted q-ml-sm">{{ t('contact.socials') }}</span>
                 <q-btn
                   v-for="s in socials"
