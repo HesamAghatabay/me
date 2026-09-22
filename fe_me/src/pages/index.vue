@@ -171,30 +171,14 @@
             </div>
           </div>
 
-          <!-- Column 2: Quick Links -->
-          <div class="col-6 col-md-3">
-            <div class="text-subtitle2 text-weight-bold text-app q-mb-md">
-              {{ t('footer.quick_links') }}
-            </div>
-            <div class="column q-gutter-y-sm">
-              <a
-                v-for="link in navLinks"
-                :key="link.id"
-                class="footer-text-link"
-                @click.prevent="handleNavigation(link.id)"
-              >
-                {{ t(link.labelKey) }}
-              </a>
-            </div>
-          </div>
-
           <!-- Column 3: Direct Connect -->
-          <div class="col-6 col-md-4">
+          <div class="col-7 col-md-4">
             <div class="text-subtitle2 text-weight-bold text-app q-mb-md">
               {{ t('footer.direct_contact') }}
             </div>
             <div class="column q-gutter-y-sm text-body2 text-app-muted">
-              <span class="dir-ltr text-start">program.h.p.2023@fmail.com</span>
+              <span class="dir-ltr text-start">program.h.p.2023@gmail.com</span>
+              <span class="dir-ltr text-start">09398175140</span>
               <!-- <span>{{ t('footer.location') }}</span> -->
               <div class="row q-gutter-xs q-mt-sm">
                 <q-btn
@@ -212,6 +196,24 @@
               </div>
             </div>
           </div>
+
+          <!-- Column 2: Quick Links -->
+          <div class="col-5 col-md-3">
+            <div class="text-subtitle2 text-weight-bold text-app q-mb-md">
+              {{ t('footer.quick_links') }}
+            </div>
+            <div class="column q-gutter-y-sm">
+              <a
+                v-for="link in navLinks"
+                :key="link.id"
+                class="footer-text-link"
+                @click.prevent="handleNavigation(link.id)"
+              >
+                {{ t(link.labelKey) }}
+              </a>
+            </div>
+          </div>
+
         </div>
 
         <!-- Copyright Bottom Bar -->
@@ -219,10 +221,10 @@
           class="footer-bottom-bar border-top-glass q-pt-md row items-center justify-between text-caption text-app-dim"
         >
           <div>{{ t('footer.rights', { year: new Date().getFullYear() }) }}</div>
-          <div class="row items-center">
+          <!-- <div class="row items-center">
             {{ t('footer.built_with') }}
             <span class="text-neon q-mx-xs">Quasar & Vue 3</span>
-          </div>
+          </div> -->
         </div>
       </div>
     </footer>

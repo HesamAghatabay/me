@@ -370,7 +370,7 @@
             </div>
 
             <!-- فرم پیام -->
-            <div class="col-12 col-md-7">
+            <div class="col-12 col-md-7 q-mt-md">
               <q-form
                 ref="contactFormRef"
                 @submit.prevent="submitContact"
