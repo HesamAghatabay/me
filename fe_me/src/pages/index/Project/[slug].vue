@@ -109,6 +109,7 @@
                   fit="contain"
                   class="hero-inner-img cursor-pointer"
                   @click="openLightbox(primaryImageIndex)"
+                  loading="lazy"
                 >
                   <template #loading>
                     <q-spinner-dots color="primary" />
@@ -268,6 +269,7 @@
                       :alt="localize(img.alt_text) || `${localize(project.title)} preview`"
                       class="gallery-image"
                       fit="cover"
+                      loading="lazy"
                     >
                       <template #loading>
                         <q-spinner-dots color="primary" />
@@ -322,6 +324,7 @@
           <div class="lightbox-img-card flex flex-center">
             <transition name="fade-slide" mode="out-in">
               <q-img
+                loading="lazy"
                 :key="currentLightboxImage?.url"
                 :src="currentLightboxImage?.url"
                 :alt="
@@ -449,6 +452,12 @@ useMeta(() => {
       ldJson: {
         type: 'application/ld+json',
         innerHTML: JSON.stringify(projectSchema),
+      },
+    },
+    link: {
+      canonical: {
+        rel: 'canonical',
+        href: currentUrl,
       },
     },
     htmlAttr: {

@@ -45,6 +45,9 @@
                 icon="download"
                 :label="t('actions.download_resume')"
                 class="btn-muted-outline col-12 col-sm-auto q-px-lg q-py-sm"
+                href="/HesamAghatabayResume.pdf"
+                download="HesamAghatabayResume.pdf"
+                target="_blank"
                 @click="downloadResume"
               />
             </div>
@@ -519,6 +522,27 @@ useMeta(() => {
         type: 'application/ld+json',
         innerHTML: JSON.stringify(schemaData),
       },
+      link: {
+        canonical: {
+          rel: 'canonical',
+          href: siteUrl,
+        },
+        faAlt: {
+          rel: 'alternate',
+          hreflang: 'fa',
+          href: `${siteUrl}?lang=fa`,
+        },
+        enAlt: {
+          rel: 'alternate',
+          hreflang: 'en',
+          href: `${siteUrl}?lang=en`,
+        },
+        defaultAlt: {
+          rel: 'alternate',
+          hreflang: 'x-default',
+          href: siteUrl,
+        },
+      },
     },
     htmlAttr: {
       lang: locale.value,
@@ -548,10 +572,6 @@ function goToProject(slug) {
   router.push(`/project/${slug}`)
 }
 
-function downloadResume() {
-  $q.notify({ type: 'info', message: t('contact.resume_ready') })
-}
-
 async function submitContact() {
   isSubmitting.value = true
   try {
@@ -574,6 +594,22 @@ function experiencePeriod(exp) {
   const end = exp.end_date ? exp.end_date.split('-')[0] : ''
 
   return exp.is_current ? `${start} — ${t('experience.until_now')}` : `${start} — ${end}`
+}
+
+function downloadResume() {
+  const resumeUrl = '/HesamAghatabayResume.pdf'
+  const link = document.createElement('a')
+  link.href = resumeUrl
+  link.download = 'HesamAghatabayResume.pdf' // نام فایل دانلودی در سیستم کاربر
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+
+  $q.notify({
+    type: 'positive',
+    message: t('contact.resume_ready') || 'دانلود رزومه آغاز شد',
+    icon: 'download_done',
+  })
 }
 </script>
 
