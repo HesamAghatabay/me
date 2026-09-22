@@ -75,11 +75,17 @@
           <div class="col-12 col-md-5 flex flex-center order-first order-md-last">
             <div class="hero-avatar-box">
               <div class="avatar-glow-ring"></div>
-              <div class="avatar-inner-card flex flex-center">
-                <q-icon name="terminal" size="64px" class="text-neon" />
-                <span class="text-caption text-app-muted text-weight-medium q-mt-sm">
-                  {{ t('brand.avatar_caption') }}
-                </span>
+              <div class="avatar-inner-card">
+                <q-img
+                  src="/images/me.jpg"
+                  alt="Hesam Aghatabay"
+                  fit="cover"
+                  class="hero-inner-img full-width full-height"
+                >
+                  <template #loading>
+                    <q-spinner-dots color="primary" />
+                  </template>
+                </q-img>
               </div>
             </div>
           </div>
@@ -1130,5 +1136,31 @@ function downloadResume() {
 
 .action-link-btn:hover {
   transform: translateX(-3px);
+}
+.hero-avatar-box {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-inner-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 28px;
+  overflow: hidden; /* بسیار مهم: برای اینکه گوشه‌های عکس بیرون نزند */
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+}
+
+.hero-inner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>
