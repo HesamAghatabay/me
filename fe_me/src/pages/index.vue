@@ -41,7 +41,7 @@
             color="primary"
             icon-right="mail"
             :label="t('actions.contact_me')"
-            class="glow-cta-btn q-px-md gt-sm"
+            class="cta-btn q-px-md gt-sm"
             @click="handleNavigation('contact')"
           />
 
@@ -396,7 +396,7 @@ function scrollToSection(id) {
   background: var(--app-surface-hover);
 }
 
-.glow-cta-btn {
+.cta-btn {
   /* Amber halo instead of the old neon-blue one, with ink that reads on gold.
      The label/icon are lightened back to white in dark mode (see app.scss) so
      the header CTA matches the other primary buttons. */

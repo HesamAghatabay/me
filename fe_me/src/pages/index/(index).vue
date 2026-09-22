@@ -36,7 +36,7 @@
                 color="primary"
                 icon="rocket_launch"
                 :label="t('actions.view_projects')"
-                class="glow-button col-12 col-sm-auto q-px-lg q-py-sm"
+                class="col-12 col-sm-auto q-px-lg q-py-sm"
                 @click="scrollTo('projects')"
               />
               <q-btn
@@ -77,7 +77,7 @@
               <div class="avatar-glow-ring"></div>
               <div class="avatar-inner-card">
                 <q-img
-                  src="/app-icon.png"
+                  src="/img/me.jpg"
                   alt="Hesam Aghatabay"
                   fit="cover"
                   class="hero-inner-img full-width full-height"
@@ -318,7 +318,7 @@
                 </p>
 
                 <div class="q-gutter-y-md">
-                  <a href="mailto:hesam@example.com" class="contact-tile">
+                  <a href="mailto:program.h.p.2023@gmail.com" class="contact-tile">
                     <div class="tile-icon-box bg-blue-glow">
                       <q-icon name="mail" size="20px" class="text-neon" />
                     </div>
@@ -328,12 +328,12 @@
                     </div>
                   </a>
 
-                  <a href="tel:+989123456789" class="contact-tile">
+                  <a href="tel:09398175140" class="contact-tile">
                     <div class="tile-icon-box bg-purple-glow">
                       <q-icon name="phone" size="20px" class="text-indigo" />
                     </div>
                     <div class="tile-info">
-                      <span class="tile-label">{{ t('contact.phone_label') }}</span>
+                      <span class="tile-label">{{ t('contact.phone_label') || 'شماره تماس' }}</span>
                       <span class="tile-val dir-ltr">09398175140</span>
                     </div>
                   </a>
@@ -363,13 +363,19 @@
                   target="_blank"
                   class="social-btn icon-ghost-btn"
                   :aria-label="t(s.labelKey)"
-                />
+                >
+                  <q-tooltip>{{ t(s.labelKey) }}</q-tooltip>
+                </q-btn>
               </div>
             </div>
 
             <!-- فرم پیام -->
             <div class="col-12 col-md-7">
-              <q-form @submit.prevent="submitContact" class="contact-inner-form">
+              <q-form
+                ref="contactFormRef"
+                @submit.prevent="submitContact"
+                class="contact-inner-form"
+              >
                 <div class="row q-col-gutter-md q-mb-md">
                   <div class="col-12 col-sm-6">
                     <q-input
@@ -421,7 +427,7 @@
                   icon-right="send"
                   type="submit"
                   :loading="isSubmitting"
-                  class="full-width q-py-sm glow-button submit-btn"
+                  class="full-width q-py-sm submit-btn"
                 />
               </q-form>
             </div>
@@ -433,7 +439,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useQuasar, useMeta } from 'quasar'
@@ -452,6 +458,7 @@ const { isDark } = useTheme()
 const portfolioStore = usePortfolioStore()
 const { tickerSkills, projects, services, experiences } = storeToRefs(portfolioStore)
 
+const contactFormRef = ref(null)
 const requiredRule = (value) => !!value || t('contact.required')
 
 // ۲. تعریف تابع ترجمه
@@ -481,7 +488,7 @@ const stats = [
 const form = reactive({ name: '', email: '', subject: '', message: '' })
 const isSubmitting = ref(false)
 
-// ۳. متاتگ‌ها و JSON-LD (اینجا تمام متغیرها مقداردهی شده‌اند)
+// ۳. متاتگ‌ها و JSON-LD
 useMeta(() => {
   const pageTitle = t('seo.title') || 'حسام آق آتابای — توسعه‌دهنده فول‌استک'
   const pageDescription = t('seo.description') || t('hero.lead')
@@ -505,7 +512,10 @@ useMeta(() => {
         alternateName: 'Hesam Agh Atabay',
         jobTitle: 'Full-Stack Web Developer',
         url: siteUrl,
-        sameAs: ['https://github.com', 'https://linkedin.com'],
+        sameAs: [
+          'https://github.com/HesamAghatabay',
+          'https://www.linkedin.com/in/hesam-aghatabay-364a712a8',
+        ],
         knowsAbout: (tickerSkills.value || []).map((s) => localize(s.name)),
       },
     ],
@@ -579,17 +589,35 @@ function goToProject(slug) {
 }
 
 async function submitContact() {
+  if (isSubmitting.value) return
   isSubmitting.value = true
+
   try {
-    await portfolioStore.sendMessage(form)
-    $q.notify({ type: 'positive', message: t('contact.success') })
+    await portfolioStore.sendMessage({ ...form })
+    $q.notify({
+      type: 'positive',
+      message: t('contact.success') || 'پیام شما با موفقیت ارسال شد.',
+      icon: 'check_circle',
+    })
+
+    // پاک‌سازی مقادیر فرم
     form.name = ''
     form.email = ''
     form.subject = ''
     form.message = ''
+
+    // ریست کامل وضعیت اعتبارسنجی تا خطای فیلد اجباری نمایش داده نشود
+    await nextTick()
+    if (contactFormRef.value) {
+      contactFormRef.value.resetValidation()
+    }
   } catch (error) {
     const errorMsg = error.response?.data?.message || 'خطا در ارسال پیام'
-    $q.notify({ type: 'negative', message: errorMsg })
+    $q.notify({
+      type: 'negative',
+      message: errorMsg,
+      icon: 'error',
+    })
   } finally {
     isSubmitting.value = false
   }
@@ -606,7 +634,7 @@ function downloadResume() {
   const resumeUrl = '/HesamAghatabayResume.pdf'
   const link = document.createElement('a')
   link.href = resumeUrl
-  link.download = 'HesamAghatabayResume.pdf' // نام فایل دانلودی در سیستم کاربر
+  link.download = 'HesamAghatabayResume.pdf'
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
@@ -625,8 +653,6 @@ function downloadResume() {
   margin: 0 auto;
 }
 
-/* Accent line inside the hero H1 and the stat figures. The class name stays as
-   the template spells it; the ink is now the gold accent, not neon blue. */
 .text-neon-blue {
   color: var(--app-accent-ink);
 }
@@ -643,8 +669,6 @@ function downloadResume() {
   line-height: 1.85;
 }
 
-/* Glass cards: translucent slate in dark mode, frosted white in light mode.
-   The doubled class outranks Quasar's own `q-card` background. */
 .glass-card.glass-card {
   background: var(--app-surface);
   backdrop-filter: blur(12px);
@@ -653,7 +677,6 @@ function downloadResume() {
   border-radius: 16px;
 }
 
-/* Larger glass surface used by the contact block. */
 .glass-panel.glass-panel {
   background: var(--app-surface);
   backdrop-filter: blur(14px);
@@ -684,15 +707,10 @@ function downloadResume() {
   margin-left: 6px;
 }
 
-/* Compact gold CTA used for the hero and the contact submit. The gradient,
-   sheen, bevel and halo all come from the shared button gold in app.scss, so
-   only the geometry is owned here — that keeps every primary button on one
-   "polished gold" recipe instead of two drifting versions. */
 .glow-button {
   font-weight: 600;
 }
 
-/* Avatar Box */
 .hero-avatar-box {
   position: relative;
   width: 240px;
@@ -717,7 +735,6 @@ function downloadResume() {
   flex-direction: column;
 }
 
-/* Ticker */
 .ticker-wrapper {
   overflow: hidden;
   border-block: 1px solid var(--app-border);
@@ -742,7 +759,6 @@ function downloadResume() {
   font-size: 0.85rem;
 }
 
-/* Projects */
 .project-card {
   min-height: 400px;
   overflow: hidden;
@@ -774,20 +790,15 @@ function downloadResume() {
   overflow: hidden;
 }
 
-/* Services */
 .service-icon-box {
   width: 50px;
   height: 50px;
   border-radius: 12px;
-  /* Gold tile; the `color="white"` icon ink is restated in app.scss. */
   background: linear-gradient(135deg, var(--app-accent-3), var(--app-accent));
   display: flex;
   align-items: center;
   justify-content: center;
 }
-/* --- Contact block -------------------------------------------------------
-   Tiles, form and ambient glow read from the same tokens as the cards, so the
-   whole section flips cleanly between dark glass and frosted white. */
 
 .contact-section {
   position: relative;
@@ -809,7 +820,6 @@ function downloadResume() {
   padding: clamp(20px, 4vw, 40px);
 }
 
-/* Individual channel tile — a small glass card, not a plain row. */
 .contact-tile {
   display: flex;
   align-items: center;
@@ -845,8 +855,6 @@ function downloadResume() {
 }
 
 .bg-blue-glow {
-  /* Kept as the gold channel tint: the class name is the template's, the
-     colour is theme-aware so it works on ivory as well as obsidian. */
   background: var(--app-accent-soft);
 }
 
@@ -883,8 +891,6 @@ function downloadResume() {
   gap: 6px;
 }
 
-/* Quasar paints the field chrome itself; only the sizing and the faint
-   background are ours, which keeps both themes consistent. */
 .contact-inner-form .modern-input :deep(.q-field__control) {
   border-radius: 12px;
   background: var(--app-surface-sunken);
@@ -908,7 +914,6 @@ function downloadResume() {
   }
 }
 
-/* --- تایپوگرافی روان و بهینه برای موبایل --- */
 .hero-main-title {
   font-size: clamp(2rem, 6vw, 3.2rem);
   line-height: 1.25;
@@ -924,7 +929,6 @@ function downloadResume() {
   display: inline-block;
 }
 
-/* اصلاح ابعاد آواتار در موبایل */
 .hero-avatar-box {
   position: relative;
   width: min(200px, 60vw);
@@ -937,7 +941,7 @@ function downloadResume() {
     height: 260px;
   }
 }
-/* Projects UI Polish */
+
 .project-card {
   min-height: 440px;
   overflow: hidden;
@@ -988,16 +992,9 @@ function downloadResume() {
 .project-cover-overlay {
   position: absolute;
   inset: 0;
-  /* Warm scrim rather than the old navy one, so it works over ivory too. */
   background: linear-gradient(to top, rgba(28, 25, 23, 0.45) 0%, transparent 60%);
   pointer-events: none;
 }
-
-/* NOTE: the `Featured` pill actually rendered by the template is
-   `.showcase-badge` above; the earlier `.featured-badge` block is the tokenised
-   twin kept for the legacy markup. This duplicate was a hard-coded navy pill
-   that silently overrode that tokenised block, so it is removed — the crimson
-   `--app-badge-*` tokens now win in both themes. */
 
 .tech-badge {
   background: var(--app-accent-soft);
@@ -1008,7 +1005,7 @@ function downloadResume() {
   font-size: 0.72rem;
   font-weight: 500;
 }
-/* --- Modern Project Card UI ------------------------------ */
+
 .modern-project-card {
   border-radius: 20px;
   overflow: hidden;
@@ -1026,7 +1023,6 @@ function downloadResume() {
   box-shadow: 0 16px 36px -12px rgba(245, 158, 11, 0.26);
 }
 
-/* ویترین شیب‌دار شیشه‌ای بالای کارت */
 .project-showcase-box {
   position: relative;
   width: 100%;
@@ -1043,13 +1039,10 @@ function downloadResume() {
   padding: 16px;
 }
 
-/* قاب شناور لوگو برای رفع زنندگی پس‌زمینه سفید */
 .project-logo-frame {
   width: 110px;
   height: 110px;
   border-radius: 22px;
-  /* The frame hosts arbitrary brand logos, so it stays a true light plate in
-     both themes — but a warm ivory one, with a soft gold-tinted rim. */
   background: #fffdf9;
   padding: 10px;
   box-shadow:
@@ -1068,8 +1061,6 @@ function downloadResume() {
   border-radius: 12px;
 }
 
-/* نشان Featured — the limited crimson accent ("پروژه ویژه"). This is the one
-   highlight in the palette that is deliberately not gold. */
 .showcase-badge {
   position: absolute;
   top: 14px;
@@ -1088,7 +1079,6 @@ function downloadResume() {
   z-index: 2;
 }
 
-/* تایپوگرافی کارت */
 .project-heading {
   font-size: 1.18rem;
   line-height: 1.35;
@@ -1101,7 +1091,6 @@ function downloadResume() {
   min-height: 44px;
 }
 
-/* بج‌های تگ تکنولوژی */
 .modern-tech-pill {
   display: inline-block;
   background: var(--app-pill-bg);
@@ -1121,7 +1110,6 @@ function downloadResume() {
   border-color: var(--app-accent-border);
 }
 
-/* فوتر و دکمه مطالعه موردی */
 .card-footer-action {
   border-top: 1px solid var(--app-border);
   background: var(--app-surface-strong);
@@ -1139,6 +1127,7 @@ function downloadResume() {
 .action-link-btn:hover {
   transform: translateX(-3px);
 }
+
 .hero-avatar-box {
   position: relative;
   width: 280px;
@@ -1152,7 +1141,7 @@ function downloadResume() {
   width: 100%;
   height: 100%;
   border-radius: 28px;
-  overflow: hidden; /* بسیار مهم: برای اینکه گوشه‌های عکس بیرون نزند */
+  overflow: hidden;
   border: 1px solid var(--app-border);
   background: var(--app-surface);
   position: relative;
