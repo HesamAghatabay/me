@@ -77,7 +77,7 @@
               <div class="avatar-glow-ring"></div>
               <div class="avatar-inner-card">
                 <q-img
-                  src="/images/me.jpg"
+                  src="/app-icon.png"
                   alt="Hesam Aghatabay"
                   fit="cover"
                   class="hero-inner-img full-width full-height"
