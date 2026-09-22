@@ -1,9 +1,17 @@
 /* ==========================================================================
-   Global styles — "Luxury Dark Navy" design system
+   Global styles — "Obsidian & Royal Gold" design system
    --------------------------------------------------------------------------
    Tokens live here (not per-component) so every section shares one visual
-   language. Quasar clones its Sass palette onto :root, so the brand colours
-   below reference --q-* instead of hardcoding the same hex twice.
+   language. Two palettes, one accent family:
+
+     Dark  → obsidian canvas (#0b0f17) + cyber amber/gold accents
+     Light → warm ivory canvas + royal gold ink accents, frosted white glass
+
+   The neon blue / indigo palette is gone from buttons, glows and highlights.
+   Because Quasar resolves its own colours through `var(--q-*)`, the palette is
+   also re-declared on `body.body--dark` / `body.body--light`, which flips every
+   Quasar widget (QBtn, QTimeline, QSpinner, ripples, focus rings) with the
+   theme instead of freezing it to the Sass build.
 
    Note: postcss-rtlcss runs in `override` mode, so physical left/right
    properties in this file are automatically converted to logical ones for RTL.
@@ -21,46 +29,74 @@
 
 :root {
   /* Surfaces */
-  --app-bg: #0b0f19;
+  --app-bg: #0b0f17;
   --app-bg-soft: #0f172a;
   --app-surface: rgba(30, 41, 59, 0.7);
   --app-surface-strong: rgba(15, 23, 42, 0.85);
-  --app-surface-hover: rgba(255, 255, 255, 0.06);
+  --app-surface-hover: rgba(245, 158, 11, 0.08);
   --app-surface-sunken: rgba(15, 23, 42, 0.6);
   --app-border: rgba(255, 255, 255, 0.08);
-  --app-border-strong: rgba(255, 255, 255, 0.14);
+  --app-border-strong: rgba(245, 208, 120, 0.18);
+  --app-border-gold: rgba(245, 158, 11, 0.32);
 
   /* Chrome: header, footer, nav pills, mobile drawer */
-  --app-chrome: rgba(11, 15, 25, 0.8);
+  --app-chrome: rgba(11, 15, 23, 0.8);
   --app-badge-ink: #fcd34d;
   --app-badge-bg: rgba(245, 158, 11, 0.15);
   --app-badge-border: rgba(245, 158, 11, 0.4);
+  --app-badge-ink-strong: #fca5a5;
   --app-footer-bg: rgba(8, 11, 20, 0.95);
   --app-drawer-bg: #0f172a;
   --app-pill-bg: rgba(255, 255, 255, 0.03);
   --app-pill-border: rgba(255, 255, 255, 0.06);
 
-  /* Accents (mirrors the Sass palette above) */
-  --app-accent: var(--q-primary);
-  --app-accent-2: var(--q-secondary);
-  --app-neon: #38bdf8;
+  /* Accents — one gold family, no neon blue left anywhere.
+     The fallbacks matter: if a build ever ships without the --q-* clone, the
+     gold palette still resolves instead of silently falling back to Quasar's
+     default blue. */
+  --app-accent: var(--q-primary, #f59e0b);
+  --app-accent-2: var(--q-secondary, #fbbf24);
+  --app-accent-3: var(--q-accent, #eab308);
+  --app-accent-ink: #fbbf24;
+  --app-accent-soft: rgba(245, 158, 11, 0.12);
+  --app-accent-border: rgba(245, 158, 11, 0.3);
+  --app-gold: #f59e0b;
+  --app-gold-soft: rgba(245, 158, 11, 0.16);
+  --app-on-accent: #1c1917;
+  /* Primary-button gold is its own pair rather than a reuse of `--q-primary`.
+     A button is a *surface* (dark ink sits on it, so it can be as bright as we
+     like), whereas `--q-primary` is also consumed by the 2px focus ring, which
+     must stay >=3:1 against the canvas. Separating them lets the buttons get
+     brighter without dragging the focus indicator down with them. */
+  --app-btn-gold: #f59e0b;
+  --app-btn-gold-2: #fbbf24;
+  --app-btn-gold-3: #fcd34d;
+  --app-crimson: #f87171;
+  --app-crimson-soft: rgba(248, 113, 113, 0.14);
+  --app-crimson-border: rgba(248, 113, 113, 0.34);
+  --app-positive: #34d399;
+  --app-positive-soft: rgba(52, 211, 153, 0.14);
+  --app-positive-border: rgba(52, 211, 153, 0.3);
+
+  /* Legacy aliases still referenced by the templates' helper classes.
+     `--app-neon` now resolves to gold (the neon blue is gone); `--app-teal`
+     keeps its own hue so the "available" status stays distinguishable from
+     the brand accent. */
+  --app-neon: var(--app-gold);
   --app-teal: #2dd4bf;
-  --app-accent-soft: rgba(59, 130, 246, 0.12);
-  --app-accent-border: rgba(59, 130, 246, 0.3);
-  --app-accent-ink: #93c5fd;
 
   /* Text */
   --app-text: #f8fafc;
   --app-text-muted: #94a3b8;
   --app-text-dim: #64748b;
 
-  /* Effects */
-  --app-glow: 0 0 40px rgba(59, 130, 246, 0.35);
-  --app-glow-strong: 0 0 60px rgba(99, 102, 241, 0.45);
-  --app-ambient-1: rgba(59, 130, 246, 0.16);
-  --app-ambient-2: rgba(99, 102, 241, 0.14);
-  --app-scrollbar: #26324a;
-  --app-scrollbar-hover: #33415c;
+  /* Effects — amber glow instead of the old neon-blue halo. */
+  --app-glow: 0 0 40px rgba(245, 158, 11, 0.32);
+  --app-glow-strong: 0 0 60px rgba(234, 179, 8, 0.42);
+  --app-ambient-1: rgba(245, 158, 11, 0.13);
+  --app-ambient-2: rgba(234, 179, 8, 0.1);
+  --app-scrollbar: #2a2416;
+  --app-scrollbar-hover: #3d341d;
   --app-radius: 20px;
   --app-radius-sm: 14px;
   --app-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.75);
@@ -70,51 +106,116 @@
   --app-maxw: 1200px;
 }
 
-/* --- Light mode ----------------------------------------------------------
-   Quasar adds `body--light` whenever dark mode is off, including in `auto`
-   mode on a light OS. The page background stays a very light grey so the
-   frosted white cards keep a visible edge. */
+/* --- Dark mode: Obsidian & Cyber Amber -----------------------------------
+   Quasar defines its palette once on `:root` (see `quasar.variables.scss`),
+   so dark mode would otherwise inherit whatever the Sass build produced. These
+   declarations re-point the Quasar tokens at the amber/gold accent family.
+   `body.body--dark` outranks `:root` on specificity, and the app's own
+   `body.body--dark` rule is emitted by Quasar's Dark plugin on <body>. */
+
+body.body--dark {
+  --q-primary: #f59e0b; /* live cyber amber — CTAs, ripples, focus rings */
+  --q-secondary: #fbbf24; /* lighter amber — gradient end */
+  --q-accent: #eab308; /* gold — tertiary highlight */
+  --q-negative: #ef4444;
+  --q-positive: #34d399;
+  --q-info: #f59e0b;
+  --q-warning: #fbbf24;
+  --q-dark: #111827;
+  --q-dark-page: #0b0f17;
+}
+
+/* --- Light mode: Warm Ivory & Royal Gold ---------------------------------
+   Warm ivory canvas (never pure white) so the frosted white cards keep a
+   visible edge without the glare of #fff. The blur/translucency that makes the
+   glassmorphism read is declared on the surface classes below; only the tint
+   and the hairlines change here.
+
+   Quasar's own tokens are re-declared for the same reason as in dark mode: the
+   Sass build only produces one static palette. */
 
 body.body--light {
-  --app-bg: #f8fafc;
-  --app-bg-soft: #f1f5f9;
-  --app-surface: rgba(255, 255, 255, 0.85);
-  --app-surface-strong: rgba(255, 255, 255, 0.95);
-  --app-surface-hover: rgba(15, 23, 42, 0.05);
-  --app-surface-sunken: rgba(241, 245, 249, 0.9);
-  --app-border: rgba(15, 23, 42, 0.08);
-  --app-border-strong: rgba(15, 23, 42, 0.14);
+  /* Quasar palette — a brighter, more lustrous gold. Contrast is preserved by
+     splitting the accent in two: the *surface* gold (buttons, rings, tiles) is
+     pushed up in luminance, while any gold used as *ink* on ivory stays on the
+     deeper `--app-accent-ink` stop below. */
+  --q-primary: #e0b93c; /* lustrous gold — CTAs, ripples, focus rings */
+  --q-secondary: #b8860b; /* deep gold    — gradient end */
+  --q-accent: #f0d574; /* pale champagne — rings / highlights */
+  --q-negative: #b91c1c;
+  --q-positive: #10b981;
+  --q-info: #e0b93c;
+  --q-warning: #b45309;
+  --q-dark: #292524;
+  --q-dark-page: #fdfbf7;
 
-  --app-chrome: rgba(255, 255, 255, 0.82);
-  --app-badge-ink: #92400e;
-  --app-badge-bg: rgba(245, 158, 11, 0.14);
-  --app-badge-border: rgba(180, 83, 9, 0.32);
-  --app-footer-bg: rgba(241, 245, 249, 0.94);
-  --app-drawer-bg: #ffffff;
-  --app-pill-bg: rgba(15, 23, 42, 0.035);
-  --app-pill-border: rgba(15, 23, 42, 0.08);
+  /* Surfaces — very soft warm ivory canvas, frosted white glass above it. */
+  --app-bg: #fdfbf7;
+  --app-bg-soft: #f7f2e6;
+  --app-surface: rgba(255, 255, 255, 0.75);
+  --app-surface-strong: rgba(255, 255, 255, 0.92);
+  --app-surface-hover: rgba(224, 185, 60, 0.12);
+  --app-surface-sunken: rgba(248, 242, 229, 0.9);
+  /* Hairlines carry a champagne-gold cast rather than a cool slate one. */
+  --app-border: rgba(224, 185, 60, 0.32);
+  --app-border-strong: rgba(212, 175, 55, 0.5);
+  --app-border-gold: rgba(212, 175, 55, 0.58);
 
-  --app-neon: #0284c7;
-  --app-teal: #0d9488;
-  --app-accent-soft: rgba(37, 99, 235, 0.1);
-  --app-accent-border: rgba(37, 99, 235, 0.28);
-  --app-accent-ink: #1d4ed8;
+  --app-chrome: rgba(253, 251, 247, 0.84);
+  /* "پروژه ویژه" — the one place the limited crimson accent is used. */
+  --app-badge-ink: #b91c1c;
+  --app-badge-ink-strong: #991b1b;
+  --app-badge-bg: rgba(220, 38, 38, 0.09);
+  --app-badge-border: rgba(185, 28, 28, 0.28);
+  --app-footer-bg: rgba(247, 242, 231, 0.94);
+  --app-drawer-bg: #fffdf9;
+  --app-pill-bg: rgba(224, 185, 60, 0.11);
+  --app-pill-border: rgba(224, 185, 60, 0.34);
 
-  --app-text: #0f172a;
-  --app-text-muted: #475569;
-  --app-text-dim: #64748b;
+  /* Deep gold ink for small text on ivory. The lustrous gold only reaches
+     ~2.2:1 on the canvas, which is fine for a 2.5rem stat figure but not for a
+     0.75rem eyebrow label — this darker stop carries the AA contrast (5.0:1)
+     for captions, so the "brighter gold" lives on the surfaces, not in the ink. */
+  --app-accent-ink: #8a6712;
+  --app-accent-soft: rgba(224, 185, 60, 0.16);
+  --app-accent-border: rgba(212, 175, 55, 0.52);
+  --app-gold: #e0b93c;
+  --app-gold-soft: rgba(224, 185, 60, 0.2);
+  /* Deep warm ink on gold — white on gold is far too low-contrast. */
+  --app-on-accent: #1c1917;
+  /* Primary-button gold: deliberately brighter than `--q-primary`, because the
+     button carries the deep ink rather than gold text. #f7d96a sits at ~11:1
+     against that ink, so the brightness is free here. */
+  --app-btn-gold: #f7d96a;
+  --app-btn-gold-2: #d4af37;
+  --app-btn-gold-3: #fdf0b8;
+  --app-crimson: #dc2626;
+  --app-crimson-soft: rgba(220, 38, 38, 0.09);
+  --app-crimson-border: rgba(185, 28, 28, 0.28);
+  --app-positive: #047857;
+  --app-positive-soft: rgba(4, 120, 87, 0.1);
+  --app-positive-border: rgba(4, 120, 87, 0.28);
 
-  --app-ambient-1: rgba(37, 99, 235, 0.12);
-  --app-ambient-2: rgba(99, 102, 241, 0.1);
-  --app-scrollbar: #cbd5e1;
-  --app-scrollbar-hover: #94a3b8;
+  /* Legacy aliases — gold accent; teal darkened enough to read on ivory. */
+  --app-neon: #b8860b;
+  --app-teal: #0f766e;
+
+  /* Warm charcoal ink, not a cool slate one. */
+  --app-text: #1c1917;
+  --app-text-muted: #57534e;
+  --app-text-dim: #6b6560;
+
+  --app-ambient-1: rgba(224, 185, 60, 0.17);
+  --app-ambient-2: rgba(240, 213, 116, 0.14);
+  --app-scrollbar: #e8dfc9;
+  --app-scrollbar-hover: #d2c4a1;
   /* Light UI reads depth from a soft shadow, never from a glow. */
-  --app-shadow: 0 18px 40px -24px rgba(15, 23, 42, 0.35);
+  --app-shadow: 0 18px 42px -26px rgba(63, 48, 16, 0.4);
 }
 
 /* --- Light-mode corrections for fixed-shade utilities ---------------------
    The pages carry Quasar shade utilities (`text-white`, `text-grey-5`,
-   `border-top-glass`, …) written for the dark canvas. Rather than fork every
+   `text-indigo-4`, …) written for the dark canvas. Rather than fork every
    template in two, the shades are remapped here whenever the body is light.
    These rules live in the global sheet on purpose: `!important` inside a
    scoped block would still lose to Quasar's own utility specificity. */
@@ -124,45 +225,191 @@ body.body--light .text-slate-100 {
   color: var(--app-text) !important;
 }
 
-/* Secondary copy: grey-4 is far too pale to read on white. */
+/* Secondary copy: grey-4 is far too pale to read on ivory. */
 body.body--light .text-grey-4 {
-  color: #334155 !important;
+  color: #57534e !important;
 }
 
 body.body--light .text-grey-5 {
-  color: #475569 !important;
+  color: #57534e !important;
 }
 
 body.body--light .text-grey-6 {
-  color: #64748b !important;
+  color: #78716c !important;
 }
 
 body.body--light .text-grey-3 {
-  color: #1e293b !important;
+  color: #1c1917 !important;
 }
 
-/* Neon accents stay blue/indigo, just deep enough to pass contrast. */
+/* Eyebrow labels and highlighted lines read as gold in light mode. These are
+   ink on ivory, so they stay on the deeper stops rather than the lustrous
+   surface gold. */
 body.body--light .text-blue-4,
 body.body--light .text-blue-2 {
-  color: #2563eb !important;
+  color: #a67c00 !important;
 }
 
-body.body--light .text-indigo-4 {
-  color: #4f46e5 !important;
+body.body--light .text-indigo-4,
+body.body--light .text-indigo-3 {
+  color: var(--app-accent-ink) !important;
 }
 
 body.body--light .text-teal-4 {
-  color: #0d9488 !important;
+  color: #0f766e !important;
 }
 
 body.body--light .text-amber-4,
 body.body--light .text-amber-6 {
-  color: #b45309 !important;
+  color: #a16207 !important;
+}
+
+/* The experience timeline's dot follows the accent family, not the hardcoded
+   `color="blue-5"` the template passes. `currentColor` is what paints the dot
+   -- and the connecting line -- so recolouring it here removes the last neon
+   blue from the composition while leaving the template attribute untouched. */
+.q-timeline__dot {
+  color: var(--app-accent-ink) !important;
+}
+
+body.body--dark .q-timeline__dot {
+  color: var(--app-accent) !important;
+}
+
+/* Primary (gold) buttons: the deep warm ink is what reads on gold, and the
+   templates' `color="primary"` ships a `text-white` label — which lands at
+   ~2:1 on both the lustrous light gold and the dark theme's amber, failing
+   WCAG AA. The ink is therefore restated per theme below. */
+body.body--light .glow-button .q-btn__content,
+body.body--light .glow-button .q-icon,
+body.body--light .glow-cta-btn .q-btn__content,
+body.body--light .glow-cta-btn .q-icon {
+  color: var(--app-on-accent) !important;
+}
+
+/* Polished metal buttons.
+   The base gold is the bright pair (`--app-btn-gold*`), not `--q-primary`, so
+   these can out-shine the rest of the accent scale. The luster is built from
+   four layers:
+     1. a vertical gradient (lit top → saturated bottom),
+     2. a crisp 1px white bevel along the top edge,
+     3. a warm dark line along the bottom edge (the "thickness" of the metal),
+     4. an amber halo that seats the button on the ivory canvas.
+   A diagonal sheen then sweeps across on a loop, which is what actually reads
+   as "glossy" rather than merely flat-bright. */
+.glow-button,
+.glow-cta-btn,
+.app-btn-glow.app-btn-glow {
+  position: relative;
+  background-image: linear-gradient(
+    180deg,
+    var(--app-btn-gold-3) 0%,
+    var(--app-btn-gold) 42%,
+    var(--app-btn-gold-2) 100%
+  );
+  color: var(--app-on-accent);
+}
+
+.glow-button::after,
+.glow-cta-btn::after,
+.app-btn-glow.app-btn-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* `inherit` (rather than clipping the button) keeps Quasar's ripple and any
+     overflow intact while still rounding the sheen to the button's corners. */
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.5) 46%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 255, 255, 0.5) 54%,
+    transparent 70%
+  );
+  transform: translateX(-130%);
+  animation: app-btn-sheen 4.6s ease-in-out infinite;
+}
+
+body.body--light .glow-button,
+body.body--light .app-btn-glow.app-btn-glow,
+body.body--light .glow-cta-btn {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(140, 99, 0, 0.28),
+    inset 0 -3px 6px -3px rgba(140, 99, 0, 0.3),
+    0 6px 18px -8px rgba(224, 185, 60, 0.75);
+}
+
+body.body--light .glow-button:hover,
+body.body--light .app-btn-glow.app-btn-glow:hover,
+body.body--light .glow-cta-btn:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(140, 99, 0, 0.22),
+    inset 0 -3px 6px -3px rgba(140, 99, 0, 0.26),
+    0 10px 26px -8px rgba(212, 175, 55, 0.85);
+}
+
+/* Dark mode keeps the amber pair and gains the same bevel, so the two themes
+   share one button language. */
+body.body--dark .glow-button,
+body.body--dark .app-btn-glow.app-btn-glow,
+body.body--dark .glow-cta-btn {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(120, 70, 0, 0.45),
+    inset 0 -3px 6px -3px rgba(120, 70, 0, 0.5),
+    0 8px 22px -10px rgba(245, 158, 11, 0.75);
+}
+
+@keyframes app-btn-sheen {
+  0%,
+  62% {
+    transform: translateX(-130%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+body.body--dark .glow-button .q-btn__content,
+body.body--dark .glow-button .q-icon,
+body.body--dark .glow-cta-btn .q-btn__content,
+body.body--dark .glow-cta-btn .q-icon {
+  color: var(--app-on-accent) !important;
+}
+
+/* Solid-gold icon tiles (brand mark, service icons). The templates pass
+   `color="white"` for the dark canvas, but white sits at ~2:1 on gold, so the
+   icon ink is restated as the deep warm tone in BOTH themes. The class names
+   are untouched — only the declarations behind them change. */
+.logo-icon-box,
+.service-icon-box {
+  background: linear-gradient(135deg, var(--app-accent-3), var(--app-accent));
+}
+
+.logo-icon-box .q-icon,
+.service-icon-box .q-icon {
+  color: var(--app-on-accent) !important;
 }
 
 body.body--light .border-top-glass,
 body.body--light .border-glass {
   border-color: var(--app-border) !important;
+}
+
+/* The 404 route keeps `bg-blue` / `text-color="blue"` in its template, so the
+   template stays untouched and the surface is recoloured here instead. */
+body.body--light .bg-blue {
+  background: var(--app-bg) !important;
+  color: var(--app-text);
+}
+
+body.body--dark .bg-blue {
+  background: var(--app-bg) !important;
 }
 
 /* Native UI (scrollbars, form controls, `color-scheme`-aware widgets). */
@@ -190,6 +437,8 @@ body.body--light {
   color: var(--app-text-dim) !important;
 }
 
+/* Gold accent. The class name is kept for template compatibility; the old neon
+   blue it used to carry no longer exists in the palette. */
 .text-neon {
   color: var(--app-neon) !important;
 }
@@ -430,15 +679,19 @@ a {
   max-width: 62ch;
 }
 
-/* Animated gradient text used for key headings. */
+/* Animated gradient text used for key headings — a gold shimmer sweep.
+   Gold ink on ivory cannot use the bright surface tones: every stop past
+   ~#b8860b drops under the 3:1 floor and the letters vanish mid-sweep. The
+   sweep therefore runs deep-gold → bright-gold, the widest lustrous range that
+   still stays legible on the ivory canvas. Both stops clear 3:1. */
 .app-gradient-text {
   background: linear-gradient(
     100deg,
-    #60a5fa 0%,
-    #818cf8 25%,
-    #c084fc 50%,
-    #818cf8 75%,
-    #60a5fa 100%
+    #8a6712 0%,
+    #b8860b 25%,
+    #8a6712 50%,
+    #b8860b 75%,
+    #8a6712 100%
   );
   background-size: 250% auto;
   -webkit-background-clip: text;
@@ -453,7 +706,20 @@ a {
   }
 }
 
-/* Neon CTA button — deliberately compact and quiet so it reads as an accent,
+/* The shimmer has to sit on amber tones in dark mode: the deep bronze stops
+   above would disappear into the obsidian canvas. */
+body.body--dark .app-gradient-text {
+  background-image: linear-gradient(
+    100deg,
+    #f59e0b 0%,
+    #fbbf24 25%,
+    #fef08a 50%,
+    #fbbf24 75%,
+    #f59e0b 100%
+  );
+}
+
+/* Gold CTA button — deliberately compact and quiet so it reads as an accent,
    not the loudest thing on the page.
 
    Quasar sizes buttons as `min-height: 2.572em` with `font-size:
@@ -468,8 +734,10 @@ a {
   font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
+  /* Deep warm ink reads on amber/gold; white would wash out. */
+  color: var(--app-on-accent);
   background: linear-gradient(120deg, var(--app-accent), var(--app-accent-2));
-  box-shadow: 0 8px 22px -12px rgba(59, 130, 246, 0.7);
+  box-shadow: 0 8px 22px -12px rgba(245, 158, 11, 0.7);
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease,
@@ -479,7 +747,7 @@ a {
 .app-btn-glow.app-btn-glow:hover {
   transform: translateY(-1px);
   filter: brightness(1.06);
-  box-shadow: 0 12px 28px -12px rgba(99, 102, 241, 0.8);
+  box-shadow: 0 12px 28px -12px rgba(234, 179, 8, 0.8);
 }
 
 /* Outline/ghost button that only reveals its border tint on hover. */
@@ -493,7 +761,7 @@ a {
   font-weight: 500;
   letter-spacing: 0;
   text-transform: none;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--app-surface-hover);
   transition:
     border-color 0.22s ease,
     background 0.22s ease,
@@ -501,8 +769,8 @@ a {
 }
 
 .app-btn-ghost.app-btn-ghost:hover {
-  border-color: rgba(59, 130, 246, 0.6);
-  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--app-accent-border);
+  background: var(--app-accent-soft);
   transform: translateY(-1px);
 }
 
@@ -516,7 +784,7 @@ a {
 
 .app-hover-lift:hover {
   transform: translateY(-6px);
-  border-color: rgba(59, 130, 246, 0.4);
+  border-color: var(--app-accent-border);
   box-shadow: var(--app-shadow);
 }
 
@@ -577,6 +845,13 @@ body[data-theme-transition] .glass-panel {
   border-radius: 6px;
 }
 
+/* The lustrous gold is a surface colour: as a 2px ring on ivory it drops to
+   ~1.8:1, under the 3:1 minimum for non-text UI. The deeper ink stop keeps the
+   ring clearly visible without giving up the gold identity. */
+body.body--light :focus-visible {
+  outline-color: var(--app-accent-ink);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -584,6 +859,15 @@ body[data-theme-transition] .glass-panel {
 
   .app-gradient-text {
     animation: none;
+  }
+
+  /* The button sheen is a looping decorative sweep; users who ask for reduced
+     motion get the polished bevel and halo without it. */
+  .glow-button::after,
+  .glow-cta-btn::after,
+  .app-btn-glow.app-btn-glow::after {
+    animation: none;
+    opacity: 0;
   }
 
   .app-reveal {

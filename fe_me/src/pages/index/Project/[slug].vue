@@ -571,11 +571,12 @@ function shareProject() {
   width: 220px;
   height: 220px;
   border-radius: 32px;
-  background: #ffffff;
+  /* Warm ivory plate with a champagne rim, not a hard #fff one. */
+  background: #fffdf9;
   padding: 18px;
   box-shadow:
-    0 20px 45px -10px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(255, 255, 255, 0.25);
+    0 20px 45px -10px rgba(63, 48, 16, 0.45),
+    0 0 0 1px rgba(212, 175, 55, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -601,12 +602,13 @@ function shareProject() {
   color: var(--app-neon);
 }
 
+/* "پروژه ویژه" — the limited crimson accent. */
 .badge-featured {
   display: inline-flex;
   align-items: center;
-  background: rgba(15, 23, 42, 0.78);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #f8fafc;
+  background: var(--app-crimson-soft);
+  border: 1px solid var(--app-crimson-border);
+  color: var(--app-badge-ink-strong);
   font-size: 0.75rem;
   padding: 4px 12px;
   border-radius: 999px;
@@ -616,8 +618,8 @@ function shareProject() {
 .badge-status {
   display: inline-flex;
   align-items: center;
-  background: rgba(20, 184, 166, 0.15);
-  border: 1px solid rgba(20, 184, 166, 0.3);
+  background: var(--app-positive-soft);
+  border: 1px solid var(--app-positive-border);
   color: var(--app-teal);
   font-size: 0.75rem;
   padding: 4px 12px;
@@ -629,7 +631,7 @@ function shareProject() {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background-color: #34d399;
+  background-color: var(--app-positive);
 }
 
 .modern-tech-pill {
@@ -652,7 +654,7 @@ function shareProject() {
 .heading-accent {
   width: 4px;
   height: 22px;
-  background: #3b82f6;
+  background: linear-gradient(180deg, var(--app-accent-3), var(--app-accent));
   border-radius: 4px;
 }
 
@@ -730,7 +732,7 @@ function shareProject() {
 .modern-gallery-card:hover {
   transform: translateY(-4px);
   border-color: var(--app-accent-border);
-  box-shadow: 0 14px 28px -10px rgba(59, 130, 246, 0.28);
+  box-shadow: 0 14px 28px -10px rgba(245, 158, 11, 0.3);
 }
 
 .gallery-img-wrapper {
@@ -753,7 +755,8 @@ function shareProject() {
 .gallery-hover-veil {
   position: absolute;
   inset: 0;
-  background: rgba(11, 15, 25, 0.5);
+  /* Warm obsidian veil — works as a scrim over both canvases. */
+  background: rgba(28, 25, 23, 0.5);
   backdrop-filter: blur(2px);
   opacity: 0;
   pointer-events: none;
@@ -768,21 +771,21 @@ function shareProject() {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: var(--app-neon);
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+  background: var(--app-accent);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
 }
 
 .primary-badge {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: rgba(15, 23, 42, 0.8);
-  color: #38bdf8;
+  background: rgba(28, 25, 23, 0.8);
+  color: var(--app-accent-ink);
   font-size: 0.7rem;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 6px;
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  border: 1px solid var(--app-accent-border);
   backdrop-filter: blur(6px);
 }
 
@@ -812,16 +815,17 @@ function shareProject() {
   height: 78vh;
   border-radius: 20px;
   overflow: hidden;
-  background: rgba(15, 23, 42, 0.94);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  /* The lightbox is its own dark stage in both themes. */
+  background: rgba(15, 20, 28, 0.94);
+  border: 1px solid rgba(245, 208, 120, 0.18);
   box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.85);
   padding: 14px;
 }
 
 .lightbox-counter-badge {
-  background: rgba(15, 23, 42, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #94a3b8;
+  background: rgba(15, 20, 28, 0.75);
+  border: 1px solid rgba(245, 208, 120, 0.2);
+  color: #cbd5e1;
   font-size: 0.8rem;
   font-weight: 600;
   padding: 4px 12px;
@@ -830,9 +834,9 @@ function shareProject() {
 }
 
 .lightbox-nav-btn {
-  background: rgba(15, 23, 42, 0.75) !important;
+  background: rgba(15, 20, 28, 0.75) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(245, 208, 120, 0.22);
   backdrop-filter: blur(8px);
   width: 46px;
   height: 46px;
@@ -845,13 +849,15 @@ function shareProject() {
 
 .lightbox-nav-btn:hover:not(:disabled) {
   transform: scale(1.1);
-  background: var(--app-neon) !important;
-  border-color: var(--app-neon);
+  background: var(--app-gold) !important;
+  border-color: var(--app-gold);
+  /* Dark ink on the amber disc keeps the arrow legible when it lights up. */
+  color: var(--app-on-accent) !important;
 }
 
 .bg-dark-glass {
-  background: rgba(15, 23, 42, 0.75) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 20, 28, 0.75) !important;
+  border: 1px solid rgba(245, 208, 120, 0.22);
   backdrop-filter: blur(6px);
 }
 

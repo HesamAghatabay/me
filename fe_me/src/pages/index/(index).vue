@@ -625,8 +625,10 @@ function downloadResume() {
   margin: 0 auto;
 }
 
+/* Accent line inside the hero H1 and the stat figures. The class name stays as
+   the template spells it; the ink is now the gold accent, not neon blue. */
 .text-neon-blue {
-  color: var(--app-neon);
+  color: var(--app-accent-ink);
 }
 
 .max-w-text {
@@ -678,12 +680,16 @@ function downloadResume() {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #34d399;
+  background-color: var(--app-positive);
   margin-left: 6px;
 }
 
+/* Compact gold CTA used for the hero and the contact submit. The gradient,
+   sheen, bevel and halo all come from the shared button gold in app.scss, so
+   only the geometry is owned here — that keeps every primary button on one
+   "polished gold" recipe instead of two drifting versions. */
 .glow-button {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  font-weight: 600;
 }
 
 /* Avatar Box */
@@ -697,7 +703,7 @@ function downloadResume() {
   position: absolute;
   inset: -10px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.4), transparent 70%);
+  background: radial-gradient(circle, var(--app-gold-soft), transparent 70%);
 }
 
 .avatar-inner-card {
@@ -773,7 +779,8 @@ function downloadResume() {
   width: 50px;
   height: 50px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  /* Gold tile; the `color="white"` icon ink is restated in app.scss. */
+  background: linear-gradient(135deg, var(--app-accent-3), var(--app-accent));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -838,15 +845,17 @@ function downloadResume() {
 }
 
 .bg-blue-glow {
+  /* Kept as the gold channel tint: the class name is the template's, the
+     colour is theme-aware so it works on ivory as well as obsidian. */
   background: var(--app-accent-soft);
 }
 
 .bg-purple-glow {
-  background: rgba(139, 92, 246, 0.14);
+  background: var(--app-gold-soft);
 }
 
 .bg-teal-glow {
-  background: rgba(20, 184, 166, 0.14);
+  background: var(--app-positive-soft);
 }
 
 .tile-info {
@@ -940,7 +949,7 @@ function downloadResume() {
 
 .project-card:hover {
   border-color: var(--app-accent-border);
-  box-shadow: 0 12px 30px -10px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 12px 30px -10px rgba(245, 158, 11, 0.28);
 }
 
 .project-cover-container {
@@ -950,8 +959,8 @@ function downloadResume() {
   overflow: hidden;
   background: radial-gradient(
     circle at center,
-    rgba(37, 99, 235, 0.08) 0%,
-    rgba(15, 23, 42, 0.6) 100%
+    var(--app-accent-soft) 0%,
+    var(--app-surface-strong) 100%
   );
   border-bottom: 1px solid var(--app-border);
   display: flex;
@@ -979,26 +988,16 @@ function downloadResume() {
 .project-cover-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(15, 23, 42, 0.5) 0%, transparent 60%);
+  /* Warm scrim rather than the old navy one, so it works over ivory too. */
+  background: linear-gradient(to top, rgba(28, 25, 23, 0.45) 0%, transparent 60%);
   pointer-events: none;
 }
 
-.featured-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  display: flex;
-  align-items: center;
-  background: rgba(15, 23, 42, 0.75);
-  color: #f1f5f9;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  z-index: 2;
-}
+/* NOTE: the `Featured` pill actually rendered by the template is
+   `.showcase-badge` above; the earlier `.featured-badge` block is the tokenised
+   twin kept for the legacy markup. This duplicate was a hard-coded navy pill
+   that silently overrode that tokenised block, so it is removed — the crimson
+   `--app-badge-*` tokens now win in both themes. */
 
 .tech-badge {
   background: var(--app-accent-soft);
@@ -1024,7 +1023,7 @@ function downloadResume() {
 .modern-project-card:hover {
   transform: translateY(-6px);
   border-color: var(--app-accent-border);
-  box-shadow: 0 16px 36px -12px rgba(37, 99, 235, 0.22);
+  box-shadow: 0 16px 36px -12px rgba(245, 158, 11, 0.26);
 }
 
 /* ویترین شیب‌دار شیشه‌ای بالای کارت */
@@ -1034,8 +1033,8 @@ function downloadResume() {
   height: 190px;
   background: radial-gradient(
     120% 120% at 50% 10%,
-    rgba(59, 130, 246, 0.12) 0%,
-    rgba(15, 23, 42, 0.5) 100%
+    var(--app-gold-soft) 0%,
+    var(--app-surface-strong) 100%
   );
   border-bottom: 1px solid var(--app-border);
   display: flex;
@@ -1049,11 +1048,13 @@ function downloadResume() {
   width: 110px;
   height: 110px;
   border-radius: 22px;
-  background: #ffffff;
+  /* The frame hosts arbitrary brand logos, so it stays a true light plate in
+     both themes — but a warm ivory one, with a soft gold-tinted rim. */
+  background: #fffdf9;
   padding: 10px;
   box-shadow:
-    0 12px 28px -6px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.2);
+    0 12px 28px -6px rgba(63, 48, 16, 0.38),
+    0 0 0 1px rgba(212, 175, 55, 0.28);
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -1067,20 +1068,21 @@ function downloadResume() {
   border-radius: 12px;
 }
 
-/* نشان Featured */
+/* نشان Featured — the limited crimson accent ("پروژه ویژه"). This is the one
+   highlight in the palette that is deliberately not gold. */
 .showcase-badge {
   position: absolute;
   top: 14px;
   right: 14px;
   display: inline-flex;
   align-items: center;
-  background: rgba(15, 23, 42, 0.78);
-  color: #f8fafc;
+  background: var(--app-crimson-soft);
+  color: var(--app-badge-ink-strong);
   font-size: 0.72rem;
   font-weight: 600;
   padding: 4px 11px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--app-crimson-border);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 2;

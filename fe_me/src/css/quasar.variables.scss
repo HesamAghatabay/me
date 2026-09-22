@@ -1,23 +1,33 @@
 // Quasar Sass (& SCSS) Variables
 // --------------------------------------------------
-// Design system: "Luxury Dark Navy"
-// Deep navy canvas + dark glassmorphism cards + neon blue / indigo accents.
+// Design system: "Obsidian & Royal Gold"
 //
-// These variables are also emitted to CSS as custom properties on :root
-// (Quasar clones $primary -> --q-primary, and so on), so app.scss can reuse
-// them without redeclaring hex values.
+// One accent family drives both themes:
+//   Light → Warm Ivory canvas + royal gold ink accents (Warm Ivory & Royal Gold)
+//   Dark  → Obsidian canvas + cyber amber/gold accents (Obsidian & Cyber Amber)
+//
+// The neon blue / indigo palette that used to reach Quasar components through
+// these variables is gone. The three brand variables are deliberately set to
+// the LIGHT theme's royal gold so any static Sass compilation matches the
+// light palette.
+//
+// The real per-theme values are emitted as CSS custom properties in
+// `src/css/app.scss`: Quasar resolves its own colours through `var(--q-*)`, so
+// `body.body--light` / `body.body--dark` re-declare `--q-primary` and friends
+// and every Quasar widget (QBtn, QTimeline, QSpinner, ripples, focus rings)
+// flips with the theme instead of being frozen to the Sass build.
 
 // --- Brand colours -------------------------------------------------------
-$primary: #3b82f6; // neon blue   — primary accent / CTA
-$secondary: #6366f1; // indigo      — secondary accent / gradients
-$accent: #8b5cf6; // violet      — tertiary highlight
+$primary: #c59b27; // royal gold  — primary accent / CTA
+$secondary: #a67c00; // deep gold   — secondary accent / gradient end
+$accent: #d4af37; // champagne   — tertiary highlight / rings
 
 // --- Surfaces ------------------------------------------------------------
-$dark: #1e293b; // card / surface base
-$dark-page: #0b0f19; // page canvas (deepest navy)
+$dark: #111827; // card / surface base (obsidian lift)
+$dark-page: #0b0f17; // page canvas (deep obsidian, unchanged)
 
 // --- Semantic ------------------------------------------------------------
-$positive: #34d399;
-$negative: #f87171;
-$info: #38bdf8;
-$warning: #fbbf24;
+$positive: #10b981;
+$negative: #b91c1c; // modern crimson — the limited crimson accent
+$info: #d4af37;
+$warning: #f59e0b;

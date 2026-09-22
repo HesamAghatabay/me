@@ -359,7 +359,9 @@ function scrollToSection(id) {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: linear-gradient(135deg, #2563eb, #6366f1);
+  /* Gold brand mark. The icon ink is set globally in app.scss so the
+     `color="white"` on the template still reads on the gold tile. */
+  background: linear-gradient(135deg, var(--app-accent-3), var(--app-accent));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -395,9 +397,13 @@ function scrollToSection(id) {
 }
 
 .glow-cta-btn {
-  box-shadow: 0 0 16px rgba(59, 130, 246, 0.35);
+  /* Amber halo instead of the old neon-blue one, with ink that reads on gold.
+     The label/icon are lightened back to white in dark mode (see app.scss) so
+     the header CTA matches the other primary buttons. */
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
   font-weight: 600;
   font-size: 0.82rem;
+  color: var(--app-on-accent);
 }
 
 /* Locale switch: same shape as the theme switch, but the label carries the
@@ -491,7 +497,7 @@ function scrollToSection(id) {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #34d399;
+  background-color: var(--app-positive);
 }
 
 .dir-ltr {
@@ -535,19 +541,20 @@ function scrollToSection(id) {
   color: var(--app-text);
 }
 
-/* Drawer CTA keeps the neon gradient in both themes. `body.body--light` remaps
+/* Drawer CTA keeps the gold gradient in both themes. `body.body--light` remaps
    `.text-white` to dark ink, so the label colour is restated with a matching
-   specificity (plus the icon via `color`) instead of relying on inheritance. */
+   specificity (plus the icon via `color`) instead of relying on inheritance.
+   The ink itself is the deep warm tone that reads on gold, never pure white. */
 .mobile-drawer .drawer-cta,
 .mobile-drawer .drawer-cta:hover {
   background: linear-gradient(120deg, var(--app-accent), var(--app-accent-2)) !important;
-  color: #fff;
-  box-shadow: 0 10px 26px -14px rgba(59, 130, 246, 0.9);
+  color: var(--app-on-accent);
+  box-shadow: 0 10px 26px -14px rgba(245, 158, 11, 0.9);
 }
 
 .mobile-drawer .drawer-cta .q-item__section,
 .mobile-drawer .drawer-cta .q-icon {
-  color: #fff !important;
+  color: var(--app-on-accent) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

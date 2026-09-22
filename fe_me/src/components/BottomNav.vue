@@ -71,7 +71,9 @@ useAutoHideChrome()
   padding: 6px;
   list-style: none;
   border-radius: 22px;
-  background: rgba(15, 23, 42, 0.86);
+  /* Opaque themed panel (it floats over page content, so translucency would
+     smear the text underneath) with a warm obsidian / ivory rim. */
+  background: var(--app-drawer-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--app-border-strong);
@@ -124,15 +126,16 @@ useAutoHideChrome()
   max-width: 100%;
 }
 
-/* Active tab: filled accent pill around the icon, brightened label. */
+/* Active tab: filled gold pill around the icon, brightened label. The icon ink
+   is the deep warm tone that reads on gold, never pure white. */
 .bottom-nav-link.is-active {
   color: var(--app-text);
 }
 
 .bottom-nav-link.is-active .bottom-nav-icon {
-  color: #fff;
+  color: var(--app-on-accent) !important;
   background: linear-gradient(135deg, var(--app-accent), var(--app-accent-2));
-  box-shadow: 0 8px 20px -8px rgba(59, 130, 246, 0.9);
+  box-shadow: 0 8px 20px -8px rgba(245, 158, 11, 0.9);
 }
 
 @media (max-width: 380px) {
